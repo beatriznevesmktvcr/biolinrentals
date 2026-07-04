@@ -1,0 +1,4 @@
+Fonte da marca: BROTHERS
+Coloque aqui o arquivo da fonte (Brothers.woff2 / Brothers.woff / Brothers.otf).
+Enquanto o arquivo nao estiver aqui, os titulos usam a fonte de fallback "Rubik".
+A fonte secundaria (League Spartan) e carregada automaticamente via Google Fonts.

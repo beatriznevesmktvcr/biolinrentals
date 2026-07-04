@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LL BURGER — Bio Oficial</title>
+<meta name="description" content="LL Burger — Hamburgueria artesanal na brasa. Reserve, peça no delivery e comemore com a gente.">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800;900&family=Rubik:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ===== Fonte da marca (Brothers) — solte o arquivo em assets/fonts/ para ativar ===== */
+@font-face{
+  font-family:'Brothers';
+  src:url('assets/fonts/Brothers.woff2') format('woff2'),
+      url('assets/fonts/Brothers.woff') format('woff'),
+      url('assets/fonts/Brothers.otf') format('opentype');
+  font-weight:400 900;
+  font-display:swap;
+}
+
+:root{
+  --mustard:#f2971a;
+  --mustard-soft:rgba(242,151,26,.16);
+  --black:#000000;
+  --ink:#0c0b0a;        /* preto levemente aquecido */
+  --panel:#151311;      /* superfície */
+  --panel-2:#1c1a17;
+  --line:rgba(255,255,255,.12);
+  --line-strong:rgba(242,151,26,.55);
+  --white:#ffffff;
+  --muted:rgba(255,255,255,.62);
+  --font-display:'Brothers','Rubik',sans-serif;
+  --font-body:'League Spartan',system-ui,sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-body);
+  background:var(--ink);
+  color:var(--white);
+  line-height:1.5;
+  letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* fundo com textura sutil, sem gradiente “de IA” — trama mostarda quase imperceptível */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-color:var(--ink);
+  background-image:
+    linear-gradient(0deg,rgba(242,151,26,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(242,151,26,.035) 1px,transparent 1px);
+  background-size:38px 38px;
+  opacity:.5;
+}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+.wrap{max-width:480px;margin:0 auto;padding:0 20px 40px}
+
+/* ================= TOPO ================= */
+.top{padding:34px 0 8px;text-align:center}
+.logo{
+  display:inline-flex;flex-direction:column;align-items:center;gap:2px;
+}
+.logo .mark{
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:15px;letter-spacing:.42em;
+  color:var(--mustard);
+  text-transform:uppercase;
+  padding-left:.42em;
+}
+.logo .name{
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:clamp(46px,15vw,60px);
+  line-height:.86;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+}
+.logo .name b{color:var(--mustard)}
+.logo .flame{width:26px;height:2px;background:var(--mustard);margin:9px 0 0;border-radius:2px}
+
+.tag{
+  margin:15px auto 0;max-width:330px;
+  font-size:12.5px;font-weight:500;color:var(--muted);
+  letter-spacing:.02em;line-height:1.6;
+}
+.tag b{color:var(--white);font-weight:700}
+
+/* ícones quadrados */
+.social{
+  display:flex;justify-content:center;gap:11px;margin:20px 0 0;
+}
+.social a{
+  width:52px;height:52px;flex:0 0 auto;
+  display:grid;place-items:center;
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:14px;
+  transition:.22s ease;
+}
+.social a svg{width:22px;height:22px;stroke:var(--white);fill:none;stroke-width:1.7;transition:.22s ease}
+.social a .fill{fill:var(--white);stroke:none}
+.social a:hover{border-color:var(--line-strong);background:var(--panel-2);transform:translateY(-2px)}
+.social a:hover svg{stroke:var(--mustard)}
+.social a:hover .fill{fill:var(--mustard)}
+
+/* ============ BOTÃO PRINCIPAL ============ */
+.reserve{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:22px 0 4px;
+  padding:16px 18px;
+  border:1.5px solid var(--mustard);
+  border-radius:16px;
+  background:transparent;
+  font-family:var(--font-display);
+  font-weight:700;font-size:15px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--white);
+  transition:.24s ease;
+}
+.reserve svg{width:19px;height:19px;stroke:var(--mustard);fill:none;stroke-width:1.8}
+.reserve:hover{background:var(--mustard);color:var(--black)}
+.reserve:hover svg{stroke:var(--black)}
+
+/* ============ SEÇÕES / TÍTULOS ============ */
+.section{margin-top:34px}
+.sec-head{display:flex;align-items:baseline;gap:10px;margin:0 2px 15px}
+.sec-head h2{
+  font-family:var(--font-display);
+  font-weight:800;font-size:19px;letter-spacing:.03em;text-transform:uppercase;
+}
+.sec-head .bar{flex:1;height:1px;background:var(--line)}
+.sec-head .dot{color:var(--mustard)}
+
+/* ============ CARDS VITRINE (scroll lateral) ============ */
+.rail{
+  display:flex;gap:14px;overflow-x:auto;
+  padding:4px 20px 14px;margin:0 -20px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.rail::-webkit-scrollbar{display:none}
+.card{
+  flex:0 0 200px;scroll-snap-align:start;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:.24s ease;
+}
+.card:hover{border-color:var(--line-strong);transform:translateY(-3px)}
+.card .ph{
+  position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--panel-2);
+}
+.card .ph img{width:100%;height:100%;object-fit:cover}
+.card .body{padding:13px 14px 15px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{
+  font-family:var(--font-display);
+  font-weight:700;font-size:16px;letter-spacing:.02em;text-transform:uppercase;
+}
+.card p{font-size:12px;color:var(--muted);line-height:1.5;flex:1}
+.card .go{
+  display:inline-flex;align-items:center;gap:7px;margin-top:4px;
+  font-weight:700;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--mustard);
+}
+.card .go svg{width:13px;height:13px;stroke:var(--mustard);fill:none;stroke-width:2;transition:.2s}
+.card:hover .go svg{transform:translateX(3px)}
+.hint{font-size:10.5px;color:rgba(255,255,255,.34);letter-spacing:.14em;text-transform:uppercase;margin:2px 2px 0;text-align:right}
+
+/* ============ INSTAGRAM ============ */
+.ig-head{display:flex;align-items:center;gap:9px;margin:0 2px 15px}
+.ig-head svg{width:22px;height:22px;stroke:var(--white);fill:none;stroke-width:1.7}
+.ig-head span{font-weight:700;font-size:15px;letter-spacing:.01em}
+.ig-head .at{color:var(--mustard)}
+.ig-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ig-card{
+  border:1px solid var(--line-strong);
+  border-radius:14px;overflow:hidden;background:var(--panel);
+  transition:.24s ease;
+}
+.ig-card:hover{transform:translateY(-3px);box-shadow:0 8px 26px rgba(0,0,0,.5)}
+.ig-cover{aspect-ratio:1/1;overflow:hidden;background:var(--panel-2)}
+.ig-cover img{width:100%;height:100%;object-fit:cover}
+.ig-actions{
+  display:flex;align-items:center;gap:12px;padding:9px 11px;
+}
+.ig-actions svg{width:17px;height:17px;stroke:var(--white);fill:none;stroke-width:1.6}
+.ig-actions .save{margin-left:auto}
+.ig-card:hover .heart{stroke:var(--mustard);fill:var(--mustard)}
+
+/* ============ LINKS FINAIS ============ */
+.finals{margin-top:34px;display:flex;flex-direction:column;gap:12px}
+.flink{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:17px 18px;border-radius:15px;
+  border:1px solid var(--line);background:var(--panel);
+  font-family:var(--font-display);
+  font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;
+  transition:.24s ease;
+}
+.flink .r{display:flex;align-items:center;gap:11px}
+.flink .r svg:first-child{width:19px;height:19px;stroke:var(--mustard);fill:none;stroke-width:1.7}
+.flink .arrow{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2;transition:.2s}
+.flink:hover{border-color:var(--line-strong);background:var(--panel-2)}
+.flink:hover .arrow{stroke:var(--mustard);transform:translateX(3px)}
+
+/* ============ RODAPÉ ============ */
+.foot{margin-top:30px;text-align:center;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em}
+.foot b{color:var(--mustard);font-weight:700}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <!-- ============ TOPO ============ -->
+  <header class="top">
+    <div class="logo">
+      <span class="mark">Hamburgueria</span>
+      <span class="name">LL<b>.</b>BURGER</span>
+      <span class="flame"></span>
+    </div>
+    <p class="tag">
+      Hamburgueria artesanal <b>na brasa</b> · Área kids · Delivery<br>
+      Todos os dias · <b>18h às 00h</b>
+    </p>
+
+    <nav class="social">
+      <a href="https://www.instagram.com/llburgeroficial/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" class="fill"/></svg>
+      </a>
+      <a href="https://api.whatsapp.com/send/?phone=5521969850358&text&type=phone_number&app_absent=0" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M3.5 20.5l1.3-4.4A8 8 0 1 1 8 19.2l-4.5 1.3z"/><path d="M9 8.2c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.6l-.4.5c-.2.2-.2.3-.1.5.3.6 1.6 1.9 2.4 2.2.2.1.4.1.5-.1l.5-.5c.2-.2.4-.2.6-.1l1.5.8c.4.2.5.3.5.5s0 1-.4 1.4c-.4.4-1.1.7-1.7.7-1.3 0-3.4-.9-4.9-2.5C8.4 12.5 8 11 8 9.9c0-.6.3-1.3.7-1.7z" class="fill"/></svg>
+      </a>
+      <a href="https://app.cardapioweb.com/l_l_burger" target="_blank" rel="noopener" aria-label="Pedir no delivery">
+        <svg viewBox="0 0 24 24"><path d="M6 8h12l-1 11a2 2 0 0 1-2 1.8H9A2 2 0 0 1 7 19L6 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+      </a>
+    </nav>
+
+    <!-- BOTÃO PRINCIPAL -->
+    <a class="reserve" href="https://api.whatsapp.com/send?phone=5521969850358&text=Ol%C3%A1%2C%20vim%20do%20instagram%20e%20quero%20reservar.&type=phone_number&app_absent=0" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
+      Faça sua reserva
+    </a>
+  </header>
+
+  <!-- ============ CARDS VITRINE ============ -->
+  <section class="section">
+    <div class="sec-head">
+      <h2>Como podemos te ajudar<span class="dot">?</span></h2>
+      <span class="bar"></span>
+    </div>
+
+    <div class="rail">
+      <article class="card">
+        <div class="ph"><img src="assets/img/delivery.jpg" alt="Peça no delivery"></div>
+        <div class="body">
+          <h3>Peça no delivery</h3>
+          <p>Nossos clássicos na brasa, quentinhos, na sua porta.</p>
+          <a class="go" href="https://app.cardapioweb.com/l_l_burger" target="_blank" rel="noopener">Clique aqui
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="ph"><img src="assets/img/comemore.jpg" alt="Comemore na LL"></div>
+        <div class="body">
+          <h3>Comemore na LL</h3>
+          <p>Aniversários e festas com área kids e clima de brasa.</p>
+          <a class="go" href="https://api.whatsapp.com/send?phone=5521969850358&text=Ol%C3%A1%2C%20quero%20saber%20sobre%20festas%20e%20comemora%C3%A7%C3%B5es%20na%20LL%20Burger.&type=phone_number&app_absent=0" target="_blank" rel="noopener">Clique aqui
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="ph"><img src="assets/img/fale.jpg" alt="Fale com a gente"></div>
+        <div class="body">
+          <h3>Fale com a gente</h3>
+          <p>Dúvidas, reservas e pedidos direto no nosso WhatsApp.</p>
+          <a class="go" href="https://api.whatsapp.com/send/?phone=5521969850358&text&type=phone_number&app_absent=0" target="_blank" rel="noopener">Clique aqui
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+    </div>
+    <p class="hint">arraste para o lado →</p>
+  </section>
+
+  <!-- ============ INSTAGRAM ============ -->
+  <section class="section">
+    <div class="ig-head">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>
+      <span>@<span class="at">llburgeroficial</span></span>
+    </div>
+
+    <div class="ig-grid">
+      <a class="ig-card" href="https://www.instagram.com/p/DaJASUEEeFW/" target="_blank" rel="noopener">
+        <div class="ig-cover"><img src="assets/img/ig1.jpg" alt="Publicação LL Burger"></div>
+        <div class="ig-actions">
+          <svg class="heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.2-8.2A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9.2 5.8C19 15.6 12 20 12 20z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a7.5 7.5 0 0 1-10.7 6.8L4 20l1.7-5.3A7.5 7.5 0 1 1 21 11.5z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M22 3L11 14M22 3l-7 18-4-7-7-4 18-7z"/></svg>
+          <svg class="save" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
+        </div>
+      </a>
+      <a class="ig-card" href="https://www.instagram.com/p/DX7IV09kSQW/" target="_blank" rel="noopener">
+        <div class="ig-cover"><img src="assets/img/ig2.jpg" alt="Publicação LL Burger"></div>
+        <div class="ig-actions">
+          <svg class="heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.2-8.2A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9.2 5.8C19 15.6 12 20 12 20z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a7.5 7.5 0 0 1-10.7 6.8L4 20l1.7-5.3A7.5 7.5 0 1 1 21 11.5z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M22 3L11 14M22 3l-7 18-4-7-7-4 18-7z"/></svg>
+          <svg class="save" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
+        </div>
+      </a>
+      <a class="ig-card" href="https://www.instagram.com/p/DZkv0SIRJys/" target="_blank" rel="noopener">
+        <div class="ig-cover"><img src="assets/img/ig3.jpg" alt="Publicação LL Burger"></div>
+        <div class="ig-actions">
+          <svg class="heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.2-8.2A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9.2 5.8C19 15.6 12 20 12 20z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a7.5 7.5 0 0 1-10.7 6.8L4 20l1.7-5.3A7.5 7.5 0 1 1 21 11.5z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M22 3L11 14M22 3l-7 18-4-7-7-4 18-7z"/></svg>
+          <svg class="save" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
+        </div>
+      </a>
+      <a class="ig-card" href="https://www.instagram.com/p/DZGbgPkRhno/" target="_blank" rel="noopener">
+        <div class="ig-cover"><img src="assets/img/ig4.jpg" alt="Publicação LL Burger"></div>
+        <div class="ig-actions">
+          <svg class="heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.2-8.2A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9.2 5.8C19 15.6 12 20 12 20z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a7.5 7.5 0 0 1-10.7 6.8L4 20l1.7-5.3A7.5 7.5 0 1 1 21 11.5z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M22 3L11 14M22 3l-7 18-4-7-7-4 18-7z"/></svg>
+          <svg class="save" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ LINKS FINAIS ============ -->
+  <section class="finals">
+    <a class="flink" href="https://api.whatsapp.com/send?phone=5521969850358&text=Ol%C3%A1%2C%20tenho%20interesse%20em%20trabalhar%20na%20LL%20Burger.&type=phone_number&app_absent=0" target="_blank" rel="noopener">
+      <span class="r">
+        <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"/></svg>
+        Trabalhe conosco
+      </span>
+      <svg class="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <a class="flink" href="https://app.cardapioweb.com/l_l_burger" target="_blank" rel="noopener">
+      <span class="r">
+        <svg viewBox="0 0 24 24"><path d="M6 8h12l-1 11a2 2 0 0 1-2 1.8H9A2 2 0 0 1 7 19L6 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+        Ver cardápio completo
+      </span>
+      <svg class="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </section>
+
+  <p class="foot">LL <b>BURGER</b> · na brasa desde sempre</p>
+
+</main>
+</body>
+</html>
