@@ -67,7 +67,7 @@ img{display:block;max-width:100%}
   display:inline-flex;flex-direction:column;align-items:center;gap:0;
 }
 .logo .logo-img{
-  width:auto;height:96px;margin-bottom:8px;
+  width:auto;height:120px;
   filter:drop-shadow(0 4px 14px rgba(0,0,0,.5));
 }
 .logo .name{
@@ -81,11 +81,12 @@ img{display:block;max-width:100%}
 .logo .flame{width:26px;height:2px;background:var(--mustard);margin:10px 0 0;border-radius:2px}
 
 .tag{
-  margin:15px auto 0;max-width:330px;
-  font-size:12.5px;font-weight:500;color:var(--muted);
-  letter-spacing:.02em;line-height:1.6;
+  margin:16px auto 0;max-width:330px;
+  font-size:12px;font-weight:600;color:var(--muted);
+  letter-spacing:.11em;line-height:1.9;text-transform:uppercase;
 }
-.tag b{color:var(--white);font-weight:700}
+.tag b{color:var(--white);font-weight:800}
+.tag .sep{color:var(--mustard);font-weight:700;margin:0 3px}
 
 /* ícones quadrados */
 .social{
@@ -242,7 +243,7 @@ img{display:block;max-width:100%}
 .flink:hover .arrow{stroke:var(--mustard);transform:translateX(3px)}
 
 /* ============ RODAPÉ ============ */
-.foot{margin-top:30px;text-align:center;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em}
+.foot{margin-top:30px;text-align:center;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.16em;text-transform:uppercase}
 .foot b{color:var(--mustard);font-weight:700}
 </style>
 </head>
@@ -252,13 +253,12 @@ img{display:block;max-width:100%}
   <!-- ============ TOPO ============ -->
   <header class="top">
     <div class="logo">
-      <img class="logo-img" src="assets/img/logo.png" alt="LL Burger" width="96" height="102">
-      <span class="name">LL BURGER</span>
+      <img class="logo-img" src="assets/img/logo.png" alt="LL Burger" width="120" height="127">
       <span class="flame"></span>
     </div>
     <p class="tag">
-      Hamburgueria artesanal <b>na brasa</b> · Área kids · Delivery<br>
-      Todos os dias · <b>18h às 00h</b>
+      Burger na brasa <span class="sep">|</span> Área kids <span class="sep">|</span><br>
+      Todos os dias de <b>18h às 00h</b>
     </p>
 
     <nav class="social">
@@ -383,7 +383,7 @@ img{display:block;max-width:100%}
     </a>
   </section>
 
-  <p class="foot">LL <b>BURGER</b> · na brasa desde sempre</p>
+  <p class="foot">Na brasa desde <b>2020</b></p>
 
 </main>
 </body>
