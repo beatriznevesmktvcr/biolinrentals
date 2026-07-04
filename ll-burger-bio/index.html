@@ -67,7 +67,7 @@ img{display:block;max-width:100%}
   display:inline-flex;flex-direction:column;align-items:center;gap:0;
 }
 .logo .logo-img{
-  width:auto;height:120px;
+  width:auto;height:84px;
   filter:drop-shadow(0 4px 14px rgba(0,0,0,.5));
 }
 .logo .name{
@@ -136,6 +136,7 @@ img{display:block;max-width:100%}
 /* ============ CARDS VITRINE (scroll lateral) ============ */
 .rail{
   display:flex;gap:14px;overflow-x:auto;
+  justify-content:safe center;
   padding:4px 20px 14px;margin:0 -20px;
   scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;
@@ -143,7 +144,7 @@ img{display:block;max-width:100%}
 }
 .rail::-webkit-scrollbar{display:none}
 .card{
-  flex:0 0 200px;scroll-snap-align:start;
+  flex:0 0 158px;scroll-snap-align:start;
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:18px;overflow:hidden;
