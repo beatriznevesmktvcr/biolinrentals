@@ -1,0 +1,484 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CARROSSÉIS IRRESISTÍVEIS — Gerador</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111111;        /* preto */
+    --ink2:#333;
+    --muted:#8b8b8b;
+    --line:#e7e7e7;
+    --bg:#f4f4f4;
+    --panel:#ffffff;
+    --accent:#111111;     /* destaque da UI = preto */
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Poppins',system-ui,sans-serif;color:var(--ink);
+    background:var(--bg);min-height:100vh;
+  }
+  header.topbar{
+    display:flex;align-items:center;gap:12px;
+    padding:14px 22px;background:#111;color:#fff;border-bottom:1px solid #000;
+    position:sticky;top:0;z-index:20;
+  }
+  .logo-dot{width:36px;height:36px;border-radius:9px;background:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#111;font-size:14px}
+  .topbar h1{font-size:15px;margin:0;font-weight:800;letter-spacing:.04em}
+  .topbar h1 small{display:block;font-size:11px;color:#bdbdbd;font-weight:500;letter-spacing:.02em}
+  .layout{display:grid;grid-template-columns:340px 1fr 300px;gap:18px;padding:18px;max-width:1400px;margin:0 auto}
+  @media(max-width:1080px){.layout{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+  .panel h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+  label.field{display:block;font-size:12px;font-weight:600;margin:12px 0 5px;color:#444}
+  input[type=text],textarea,select{
+    width:100%;font-family:inherit;font-size:13px;padding:9px 11px;border:1px solid var(--line);
+    border-radius:10px;background:#fff;color:var(--ink);resize:vertical}
+  textarea{min-height:64px}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink)}
+  .btn{font-family:inherit;font-weight:600;font-size:13px;border:none;border-radius:10px;
+    padding:10px 14px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;justify-content:center}
+  .btn-primary{background:var(--ink);color:#fff;width:100%}
+  .btn-primary:hover{background:#000}
+  .btn-outline{background:#fff;color:#111;border:1.5px solid #111;width:100%}
+  .btn-outline:hover{background:#111;color:#fff}
+  .btn-ghost{background:#f2f2f2;color:#333}
+  .btn-ghost:hover{background:#e9e9e9}
+  .row{display:flex;gap:8px}
+  /* template picker */
+  .tpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tpl-card{border:2px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;background:#fff;transition:.15s}
+  .tpl-card.active{border-color:#111;box-shadow:0 0 0 3px rgba(0,0,0,.12)}
+  .tpl-card canvas{width:100%;display:block}
+  .tpl-card span{display:block;font-size:11px;font-weight:600;text-align:center;padding:6px 4px;color:#555}
+  /* slides list */
+  .slides{display:flex;flex-wrap:wrap;gap:8px}
+  .slide-thumb{position:relative;width:58px;height:72px;border-radius:8px;overflow:hidden;border:2px solid var(--line);cursor:pointer;background:#eee}
+  .slide-thumb.active{border-color:#111}
+  .slide-thumb canvas{width:100%;height:100%;object-fit:cover;display:block}
+  .slide-thumb .num{position:absolute;top:2px;left:4px;font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+  .slide-thumb .del{position:absolute;top:1px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;
+    width:16px;height:16px;border-radius:50%;font-size:11px;line-height:1;cursor:pointer;padding:0}
+  .add-slide{width:58px;height:72px;border:2px dashed var(--line);border-radius:8px;background:#fafafa;
+    font-size:22px;color:var(--muted);cursor:pointer}
+  .add-slide:hover{border-color:#111;color:#111}
+  /* preview */
+  .stage{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .preview-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;
+    display:flex;justify-content:center;box-shadow:0 8px 30px rgba(0,0,0,.05)}
+  #preview{width:100%;max-width:360px;height:auto;border-radius:8px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+  .nav{display:flex;align-items:center;gap:14px}
+  .nav button{background:#fff;border:1px solid var(--line);width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer}
+  .nav button:hover{border-color:#111}
+  .nav .count{font-size:13px;color:#555;font-weight:600;min-width:80px;text-align:center}
+  .hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:8px}
+  .swatch-row{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+  .swatch{width:28px;height:28px;border-radius:8px;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer}
+  .swatch.sel{box-shadow:0 0 0 2px var(--ink)}
+  .filename{font-size:11px;color:var(--muted);margin-top:5px;word-break:break-all}
+  .divider{height:1px;background:var(--line);margin:16px 0}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#444;margin-top:10px;cursor:pointer}
+  .toggle input{width:auto}
+</style>
+
+<header class="topbar">
+  <div class="logo-dot">CI</div>
+  <h1>CARROSSÉIS IRRESISTÍVEIS <small>Gerador automático · Instagram 1080×1350</small></h1>
+</header>
+
+<div class="layout">
+  <!-- ============ COLUNA 1: CONTEÚDO ============ -->
+  <section class="panel">
+    <h2>1 · Conteúdo do slide</h2>
+
+    <label class="field">Foto de fundo</label>
+    <button class="btn btn-ghost" style="width:100%" id="btnUpload">📷 Escolher foto</button>
+    <input type="file" id="fileInput" accept="image/*" hidden>
+    <div class="filename" id="fileName">Nenhuma foto neste slide</div>
+
+    <label class="field">Kicker / etiqueta <span style="color:var(--muted);font-weight:400">(opcional)</span></label>
+    <input type="text" id="inKicker" placeholder="Ex: NOVIDADE" maxlength="40">
+
+    <label class="field">Título</label>
+    <textarea id="inTitle" placeholder="Ex: 5 dicas para vender mais"></textarea>
+
+    <label class="field">Texto de apoio <span style="color:var(--muted);font-weight:400">(opcional)</span></label>
+    <textarea id="inBody" placeholder="Ex: arraste para o lado e confira →"></textarea>
+
+    <div class="divider"></div>
+    <label class="field">Posição do texto</label>
+    <select id="inTextPos">
+      <option value="bottom">Embaixo</option>
+      <option value="center">Centro</option>
+      <option value="top">Em cima</option>
+    </select>
+
+    <label class="field">Cor de destaque</label>
+    <div class="swatch-row" id="swatches"></div>
+  </section>
+
+  <!-- ============ COLUNA 2: PREVIEW ============ -->
+  <section class="stage">
+    <div class="nav">
+      <button id="prevSlide">‹</button>
+      <span class="count" id="slideCount">Slide 1</span>
+      <button id="nextSlide">›</button>
+    </div>
+    <div class="preview-wrap">
+      <canvas id="preview" width="1080" height="1350"></canvas>
+    </div>
+    <div style="width:100%;max-width:392px">
+      <h2 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:4px 0 8px">Slides do carrossel</h2>
+      <div class="slides" id="slidesList"></div>
+    </div>
+  </section>
+
+  <!-- ============ COLUNA 3: TEMPLATE + EXPORT ============ -->
+  <section class="panel">
+    <h2>2 · Template</h2>
+    <div class="tpl-grid" id="tplGrid"></div>
+
+    <label class="field">Assinatura da marca <span style="color:var(--muted);font-weight:400">(opcional)</span></label>
+    <input type="text" id="inBrand" placeholder="@seuperfil" maxlength="30">
+    <label class="toggle"><input type="checkbox" id="showLogo"> Mostrar assinatura nos slides</label>
+
+    <div class="divider"></div>
+    <h2>3 · Exportar</h2>
+    <button class="btn btn-outline" id="btnExportOne" style="margin-bottom:8px">⬇️ Baixar este slide</button>
+    <button class="btn btn-primary" id="btnExportAll">⬇️ Baixar carrossel completo</button>
+    <p class="hint">Cada slide sai como PNG em 1080×1350 (Instagram vertical), pronto para postar. No "carrossel completo", os arquivos são baixados em sequência — se o navegador pedir, permita múltiplos downloads.</p>
+  </section>
+</div>
+
+<script>
+/* ============================================================
+   CARROSSÉIS IRRESISTÍVEIS — Gerador de Carrosséis
+   Renderização 100% em <canvas>, sem dependências externas.
+   Cada "template" é uma função de desenho pura.
+   ============================================================ */
+const W = 1080, H = 1350;
+const INK = '#111111', WHITE = '#ffffff';
+/* paleta preto & branco + cores opcionais de destaque */
+const ACCENTS = ['#111111','#ffffff','#8b8b8b','#FBBC05','#EA4335','#4285F4','#159A9A'];
+
+/* ---------- estado ---------- */
+const state = {
+  template: 'cover',
+  showLogo: false,
+  brand: '',
+  slides: [ newSlide() ],
+  current: 0,
+};
+function newSlide(){
+  return { img:null, imgName:'', kicker:'', title:'', body:'', textPos:'bottom', accent:INK };
+}
+function slide(){ return state.slides[state.current]; }
+
+/* ---------- helpers de desenho ---------- */
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+// desenha imagem cobrindo (object-fit: cover) uma área
+function drawCover(ctx,img,dx,dy,dw,dh){
+  if(!img){ return false; }
+  const ir = img.width/img.height, dr = dw/dh;
+  let sw,sh,sx,sy;
+  if(ir>dr){ sh=img.height; sw=sh*dr; sx=(img.width-sw)/2; sy=0; }
+  else     { sw=img.width;  sh=sw/dr; sx=0; sy=(img.height-sh)/2; }
+  ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+  return true;
+}
+// placeholder quando não há foto
+function drawPlaceholder(ctx,x,y,w,h){
+  ctx.fillStyle='#ededed'; ctx.fillRect(x,y,w,h);
+  ctx.fillStyle='#b9bcc0';
+  ctx.font='600 40px Poppins'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('📷  Adicione uma foto', x+w/2, y+h/2);
+  ctx.textBaseline='alphabetic';
+}
+// quebra de linha por largura; retorna array de linhas (respeita \n)
+function wrap(ctx,text,maxW){
+  const out=[];
+  (text||'').split('\n').forEach(para=>{
+    const words=para.split(/\s+/).filter(Boolean); let line='';
+    if(words.length===0){ out.push(''); return; }
+    for(const w of words){
+      const t=line?line+' '+w:w;
+      if(ctx.measureText(t).width>maxW && line){ out.push(line); line=w; }
+      else line=t;
+    }
+    if(line) out.push(line);
+  });
+  return out;
+}
+// desenha bloco de texto multi-linha, retorna altura usada
+function drawLines(ctx,lines,x,y,lh,align='left'){
+  ctx.textAlign=align;
+  lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lh));
+  return lines.length*lh;
+}
+function signature(ctx,color,x,y){
+  if(!state.showLogo || !state.brand) return;
+  ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+  ctx.font='600 28px Poppins'; ctx.fillStyle=color;
+  ctx.fillText(state.brand, x, y);
+}
+function isDark(hex){
+  const c=hex.replace('#',''); const r=parseInt(c.substr(0,2),16),g=parseInt(c.substr(2,2),16),b=parseInt(c.substr(4,2),16);
+  return (0.299*r+0.587*g+0.114*b) < 150;
+}
+function withFont(ctx,font,fn){ ctx.font=font; return fn(); }
+
+/* ============================================================
+   TEMPLATES  — assinatura: (ctx, s)  s = dados do slide
+   ============================================================ */
+const TEMPLATES = {
+  /* --- 1. CAPA: foto cheia + gradiente + título grande --- */
+  cover(ctx,s){
+    if(!drawCover(ctx,s.img,0,0,W,H)){ ctx.fillStyle='#111'; ctx.fillRect(0,0,W,H); }
+    const g=ctx.createLinearGradient(0,H*0.30,0,H);
+    g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,0.85)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+    const M=72;
+    const titleLines = withFont(ctx,'800 86px Poppins',()=>wrap(ctx,s.title||'Seu título aqui',W-M*2));
+    const bodyLines  = s.body ? withFont(ctx,'400 38px Poppins',()=>wrap(ctx,s.body,W-M*2)) : [];
+    const blockH = (s.kicker?70:0) + titleLines.length*94 + (bodyLines.length?24+bodyLines.length*50:0);
+
+    let y;
+    if(s.textPos==='top') y = 160;
+    else if(s.textPos==='center') y = (H-blockH)/2;
+    else y = H - blockH - 150;
+
+    if(s.kicker){
+      ctx.font='700 30px Poppins'; ctx.fillStyle=(s.accent===WHITE?'#fff':s.accent); ctx.textAlign='left';
+      ctx.fillText(s.kicker.toUpperCase(), M, y); y+=70;
+    }
+    ctx.fillStyle='#fff'; ctx.font='800 86px Poppins';
+    y+=drawLines(ctx,titleLines,M,y+72,94)-72+34;
+    if(bodyLines.length){
+      ctx.fillStyle='rgba(255,255,255,.9)'; ctx.font='400 38px Poppins';
+      drawLines(ctx,bodyLines,M,y+34,50);
+    }
+    ctx.fillStyle=s.accent; ctx.fillRect(0,H-14,W,14);
+    signature(ctx,'#fff',M,H-48);
+  },
+
+  /* --- 2. CARTÃO: foto em cima + cartão branco embaixo --- */
+  card(ctx,s){
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+    const photoH=Math.round(H*0.62);
+    if(!drawCover(ctx,s.img,0,0,W,photoH)) drawPlaceholder(ctx,0,0,W,photoH);
+    const cardY=photoH-60;
+    ctx.save();
+    ctx.shadowColor='rgba(0,0,0,.12)'; ctx.shadowBlur=40; ctx.shadowOffsetY=-6;
+    ctx.fillStyle='#fff'; roundRect(ctx,0,cardY,W,H-cardY,44); ctx.fill();
+    ctx.restore();
+    ctx.fillStyle=s.accent; roundRect(ctx,72,cardY+56,84,10,5); ctx.fill();
+
+    const M=72; let y=cardY+120;
+    if(s.kicker){
+      ctx.font='700 26px Poppins'; ctx.fillStyle=(s.accent===WHITE?'#111':s.accent); ctx.textAlign='left';
+      ctx.fillText(s.kicker.toUpperCase(),M,y); y+=52;
+    }
+    ctx.fillStyle=INK; ctx.font='800 66px Poppins';
+    const tl=wrap(ctx,s.title||'Seu título aqui',W-M*2);
+    y+=drawLines(ctx,tl,M,y+62,76);
+    if(s.body){
+      ctx.fillStyle='#555'; ctx.font='400 36px Poppins';
+      drawLines(ctx,wrap(ctx,s.body,W-M*2),M,y+40,50);
+    }
+    signature(ctx,INK,M,H-56);
+  },
+
+  /* --- 3. TEXTO: fundo sólido, texto central --- */
+  text(ctx,s){
+    ctx.fillStyle=s.accent; ctx.fillRect(0,0,W,H);
+    const dark = isDark(s.accent);
+    const fg = dark?'#fff':INK;
+    // detalhe geométrico
+    ctx.fillStyle = dark?'rgba(255,255,255,.07)':'rgba(0,0,0,.05)';
+    ctx.beginPath(); ctx.arc(W-120,160,260,0,Math.PI*2); ctx.fill();
+    const M=96;
+    ctx.textAlign='left';
+    if(s.kicker){
+      ctx.font='700 30px Poppins'; ctx.fillStyle=dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.6)';
+      ctx.fillText(s.kicker.toUpperCase(),M,H*0.3);
+    }
+    ctx.fillStyle=fg; ctx.font='800 92px Poppins';
+    const tl=wrap(ctx,s.title||'Escreva aqui uma\nmensagem de destaque',W-M*2);
+    let y=H*0.36;
+    y+=drawLines(ctx,tl,M,y+92,104);
+    if(s.body){
+      ctx.font='400 40px Poppins'; ctx.fillStyle=dark?'rgba(255,255,255,.9)':'rgba(0,0,0,.7)';
+      drawLines(ctx,wrap(ctx,s.body,W-M*2),M,y+50,54);
+    }
+    signature(ctx,fg,M,H-80);
+  },
+
+  /* --- 4. SPLIT: metade foto / metade cor --- */
+  split(ctx,s){
+    const dark=isDark(s.accent), fg=dark?'#fff':INK;
+    ctx.fillStyle=s.accent; ctx.fillRect(0,0,W,H);
+    const photoH=Math.round(H*0.52);
+    if(!drawCover(ctx,s.img,0,0,W,photoH)) drawPlaceholder(ctx,0,0,W,photoH);
+    const M=80; let y=photoH+96;
+    if(s.kicker){
+      ctx.font='700 28px Poppins'; ctx.fillStyle=dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.55)'; ctx.textAlign='left';
+      ctx.fillText(s.kicker.toUpperCase(),M,y); y+=56;
+    }
+    ctx.fillStyle=fg; ctx.font='800 72px Poppins';
+    const tl=wrap(ctx,s.title||'Seu título aqui',W-M*2);
+    y+=drawLines(ctx,tl,M,y+68,84);
+    if(s.body){
+      ctx.font='400 36px Poppins'; ctx.fillStyle=dark?'rgba(255,255,255,.9)':'rgba(0,0,0,.65)';
+      drawLines(ctx,wrap(ctx,s.body,W-M*2),M,y+42,50);
+    }
+    signature(ctx,fg,M,H-70);
+  },
+};
+const TEMPLATE_LIST=[
+  ['cover','Capa'],['card','Cartão'],['text','Texto'],['split','Split']
+];
+
+/* ---------- render principal ---------- */
+const preview=document.getElementById('preview');
+const pctx=preview.getContext('2d');
+function render(){
+  const s=slide();
+  pctx.clearRect(0,0,W,H);
+  (TEMPLATES[state.template]||TEMPLATES.cover)(pctx,s);
+}
+
+/* ---------- UI: template picker (com mini-preview) ---------- */
+function buildTemplatePicker(){
+  const grid=document.getElementById('tplGrid'); grid.innerHTML='';
+  TEMPLATE_LIST.forEach(([key,label])=>{
+    const card=document.createElement('div');
+    card.className='tpl-card'+(state.template===key?' active':'');
+    const c=document.createElement('canvas'); c.width=W; c.height=H;
+    const demo={img:null,imgName:'',kicker:'novidade',title:'Título de exemplo',body:'texto de apoio',textPos:'bottom',accent:INK};
+    TEMPLATES[key](c.getContext('2d'),demo);
+    const span=document.createElement('span'); span.textContent=label;
+    card.appendChild(c); card.appendChild(span);
+    card.onclick=()=>{ state.template=key; buildTemplatePicker(); render(); buildSlides(); };
+    grid.appendChild(card);
+  });
+}
+
+/* ---------- UI: swatches ---------- */
+function buildSwatches(){
+  const box=document.getElementById('swatches'); box.innerHTML='';
+  ACCENTS.forEach(col=>{
+    const sw=document.createElement('div');
+    sw.className='swatch'+(slide().accent===col?' sel':'');
+    sw.style.background=col;
+    sw.onclick=()=>{ slide().accent=col; buildSwatches(); render(); buildSlides(); };
+    box.appendChild(sw);
+  });
+}
+
+/* ---------- UI: lista de slides ---------- */
+function buildSlides(){
+  const list=document.getElementById('slidesList'); list.innerHTML='';
+  state.slides.forEach((s,i)=>{
+    const th=document.createElement('div');
+    th.className='slide-thumb'+(i===state.current?' active':'');
+    const c=document.createElement('canvas'); c.width=W; c.height=H;
+    TEMPLATES[state.template](c.getContext('2d'),s);
+    const num=document.createElement('span'); num.className='num'; num.textContent=i+1;
+    th.appendChild(c); th.appendChild(num);
+    if(state.slides.length>1){
+      const del=document.createElement('button'); del.className='del'; del.textContent='×';
+      del.onclick=(e)=>{ e.stopPropagation(); state.slides.splice(i,1);
+        state.current=Math.max(0,Math.min(state.current,state.slides.length-1));
+        syncInputs(); buildSlides(); render(); };
+      th.appendChild(del);
+    }
+    th.onclick=()=>{ state.current=i; syncInputs(); buildSlides(); render(); };
+    list.appendChild(th);
+  });
+  const add=document.createElement('button'); add.className='add-slide'; add.textContent='+';
+  add.title='Adicionar slide';
+  add.onclick=()=>{ state.slides.push(newSlide()); state.current=state.slides.length-1;
+    syncInputs(); buildSlides(); render(); };
+  list.appendChild(add);
+  document.getElementById('slideCount').textContent=`Slide ${state.current+1} de ${state.slides.length}`;
+}
+
+/* ---------- sincronizar inputs com slide atual ---------- */
+function syncInputs(){
+  const s=slide();
+  document.getElementById('inKicker').value=s.kicker;
+  document.getElementById('inTitle').value=s.title;
+  document.getElementById('inBody').value=s.body;
+  document.getElementById('inTextPos').value=s.textPos;
+  document.getElementById('fileName').textContent=s.imgName||'Nenhuma foto neste slide';
+  buildSwatches();
+}
+
+/* ---------- listeners de conteúdo ---------- */
+document.getElementById('inKicker').oninput=e=>{ slide().kicker=e.target.value; render(); buildSlides(); };
+document.getElementById('inTitle').oninput =e=>{ slide().title =e.target.value; render(); buildSlides(); };
+document.getElementById('inBody').oninput  =e=>{ slide().body  =e.target.value; render(); buildSlides(); };
+document.getElementById('inTextPos').onchange=e=>{ slide().textPos=e.target.value; render(); buildSlides(); };
+document.getElementById('inBrand').oninput=e=>{ state.brand=e.target.value; render(); buildSlides(); };
+document.getElementById('showLogo').onchange=e=>{ state.showLogo=e.target.checked; render(); buildSlides(); };
+
+document.getElementById('btnUpload').onclick=()=>document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const img=new Image();
+  img.onload=()=>{ slide().img=img; slide().imgName=f.name;
+    document.getElementById('fileName').textContent=f.name; render(); buildSlides(); };
+  img.src=URL.createObjectURL(f);
+};
+
+/* ---------- navegação ---------- */
+document.getElementById('prevSlide').onclick=()=>{ if(state.current>0){state.current--;syncInputs();buildSlides();render();} };
+document.getElementById('nextSlide').onclick=()=>{ if(state.current<state.slides.length-1){state.current++;syncInputs();buildSlides();render();} };
+
+/* ---------- export ---------- */
+function renderTo(canvas,s){
+  canvas.width=W; canvas.height=H;
+  TEMPLATES[state.template](canvas.getContext('2d'),s);
+}
+function download(canvas,name){
+  canvas.toBlob(blob=>{
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  },'image/png');
+}
+document.getElementById('btnExportOne').onclick=()=>{
+  const c=document.createElement('canvas'); renderTo(c,slide());
+  download(c,`carrossel-slide-${state.current+1}.png`);
+};
+document.getElementById('btnExportAll').onclick=async()=>{
+  for(let i=0;i<state.slides.length;i++){
+    const c=document.createElement('canvas'); renderTo(c,state.slides[i]);
+    await new Promise(r=>{ c.toBlob(blob=>{
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+      a.download=`carrossel-slide-${i+1}.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000); r();
+    },'image/png'); });
+    await new Promise(r=>setTimeout(r,350));
+  }
+};
+
+/* ---------- boot ---------- */
+function boot(){ buildTemplatePicker(); buildSlides(); buildSwatches(); syncInputs(); render(); }
+if(document.fonts && document.fonts.ready){
+  document.fonts.load('800 86px Poppins').then(()=>document.fonts.ready).then(boot);
+  setTimeout(boot,1500);
+} else { boot(); }
+</script>
