@@ -180,34 +180,28 @@ const TEMPLATES = {
   /* estilo @uniconvite: foto + degradê + título grande + corpo + @handle */
   editorial(ctx,s){
     if(!drawCover(ctx,s.img,0,0,W,H)){ ctx.fillStyle='#161616'; ctx.fillRect(0,0,W,H); }
-    // escurecimento geral leve + degradê forte embaixo
-    ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(0,0,W,H);
-    const g=ctx.createLinearGradient(0,H*0.30,0,H);
-    g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(0.55,'rgba(0,0,0,0.55)'); g.addColorStop(1,'rgba(0,0,0,0.90)');
+    // degradê suave só embaixo (mantém a foto clara)
+    const g=ctx.createLinearGradient(0,H*0.44,0,H);
+    g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(0.6,'rgba(0,0,0,0.30)'); g.addColorStop(1,'rgba(0,0,0,0.70)');
     ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 
     const M=80, maxW=W-M*2;
     ctx.textAlign='left'; ctx.textBaseline='alphabetic';
-    const titleLines = (ctx.font=f(800,90), wrap(ctx,s.title||'Seu título aqui',maxW));
-    const bodyLines  = s.body ? (ctx.font=f(600,38), wrap(ctx,s.body,maxW)) : [];
-    const TLH=92, BLH=52;
+    const titleLines = (ctx.font=f(400,90), wrap(ctx,s.title||'Seu título aqui',maxW));
+    const bodyLines  = s.body ? (ctx.font=f(400,38), wrap(ctx,s.body,maxW)) : [];
+    const TLH=96, BLH=52;
     let blockH = (s.kicker?66:0) + titleLines.length*TLH + (bodyLines.length? 30+bodyLines.length*BLH : 0);
     const bottomReserve = 150;                 // espaço do @handle
     let y = H - bottomReserve - blockH;
 
-    if(s.kicker){ ctx.font=f(700,30); ctx.fillStyle='#fff';
-      ctx.fillText(s.kicker.toUpperCase(), M, y+30); y+=66; }
-    ctx.fillStyle='#fff'; ctx.font=f(800,90);
+    if(s.kicker){ ctx.font=f(600,28); ctx.fillStyle='#fff';
+      ctx.fillText(s.kicker.toUpperCase(), M, y+28); y+=64; }
+    ctx.fillStyle='#fff'; ctx.font=f(400,90);
     y += drawLines(ctx,titleLines,M,y+74,TLH);
-    if(bodyLines.length){ ctx.fillStyle='rgba(255,255,255,0.94)'; ctx.font=f(600,38);
+    if(bodyLines.length){ ctx.fillStyle='rgba(255,255,255,0.92)'; ctx.font=f(400,38);
       drawLines(ctx,bodyLines,M,y+42,BLH); }
 
-    // @handle centralizado no rodapé
-    ctx.textAlign='center';
-    if(ctx.letterSpacing!==undefined) ctx.letterSpacing='3px';
-    ctx.fillStyle='#fff'; ctx.font=f(800,30);
-    ctx.fillText((state.handle||'').toUpperCase(), W/2, H-70);
-    if(ctx.letterSpacing!==undefined) ctx.letterSpacing='0px';
+    drawHandle(ctx);
   },
 
   /* slide de texto puro (fundo preto) — bom p/ frases de impacto */
@@ -218,18 +212,23 @@ const TEMPLATES = {
     let y=H*0.34;
     if(s.kicker){ ctx.font=f(700,30); ctx.fillStyle='rgba(255,255,255,0.8)';
       ctx.fillText(s.kicker.toUpperCase(),M,y); y+=60; }
-    ctx.fillStyle='#fff'; ctx.font=f(800,92);
+    ctx.fillStyle='#fff'; ctx.font=f(400,92);
     const tl=wrap(ctx,s.title||'Frase de impacto',maxW);
-    y += drawLines(ctx,tl,M,y+90,102);
+    y += drawLines(ctx,tl,M,y+90,104);
     if(s.body){ ctx.font=f(400,42); ctx.fillStyle='rgba(255,255,255,0.9)';
       drawLines(ctx,wrap(ctx,s.body,maxW),M,y+50,56); }
-    ctx.textAlign='center';
-    if(ctx.letterSpacing!==undefined) ctx.letterSpacing='3px';
-    ctx.font=f(800,30); ctx.fillStyle='#fff';
-    ctx.fillText((state.handle||'').toUpperCase(), W/2, H-70);
-    if(ctx.letterSpacing!==undefined) ctx.letterSpacing='0px';
+    drawHandle(ctx);
   },
 };
+/* assinatura: itálico fininho, mais para cima */
+function drawHandle(ctx){
+  ctx.textAlign='center';
+  if(ctx.letterSpacing!==undefined) ctx.letterSpacing='0.5px';
+  ctx.fillStyle='rgba(255,255,255,0.92)';
+  ctx.font='italic 400 30px '+FF;
+  ctx.fillText(state.handle||'', W/2, H-104);
+  if(ctx.letterSpacing!==undefined) ctx.letterSpacing='0px';
+}
 const TEMPLATE_LIST=[['editorial','Editorial'],['texto','Texto']];
 
 /* ---------- render ---------- */
@@ -342,18 +341,25 @@ function applySlides(data){
   syncInputs(); buildSlides(); render();
 }
 
-/* corte automático (sem IA): distribui parágrafos nas 5 partes */
+/* corte automático: CADA bloco (separado por linha em branco) vira 1 slide.
+   Dentro do bloco: as primeiras linhas até um ponto/interrogação viram o
+   título; o resto vira o texto de apoio. */
+function splitBlock(block){
+  const lines=block.split('\n').map(l=>l.trim()).filter(Boolean);
+  if(lines.length<=1) return { title:(lines[0]||''), body:'' };
+  let cut=0;                                   // por padrão: 1ª linha = título
+  for(let i=0;i<lines.length;i++){ if(/[.!?:…]$/.test(lines[i])){ cut=i; break; } }
+  return { title:lines.slice(0,cut+1).join(' '), body:lines.slice(cut+1).join('\n') };
+}
 function heuristicSplit(text){
-  const paras=text.split(/\n{2,}|\n/).map(s=>s.trim()).filter(Boolean);
-  const out=[]; const n=paras.length;
-  const titleOf=p=>{ const s=p.split(/[.!?]/)[0].trim(); return s.length>60? s.slice(0,58)+'…':s; };
-  if(n<=1){ out.push({tipo:'Capa',title:titleOf(text),body:''}); return out; }
-  const buckets={Capa:[],Problema:[],Virada:[],Solução:[],CTA:[]};
-  const order=TIPOS; paras.forEach((p,i)=>{ const b=order[Math.min(order.length-1, Math.floor(i*order.length/n))]; buckets[b].push(p); });
-  order.forEach(t=>{ const chunk=buckets[t]; if(!chunk.length) return;
-    out.push({ tipo:t, title:titleOf(chunk[0]), body: chunk.join(' ').replace(titleOf(chunk[0]),'').replace(/^[\s.!?…]+/,'').trim() });
+  const blocks=text.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);
+  if(!blocks.length) return [{tipo:'Capa',title:text.trim(),body:''}];
+  const mids=['Problema','Virada','Solução'];
+  return blocks.map((block,i)=>{
+    const {title,body}=splitBlock(block);
+    let tipo = i===0 ? 'Capa' : (i===blocks.length-1 ? 'CTA' : mids[(i-1)%mids.length]);
+    return { tipo, kicker:'', title, body };
   });
-  return out.length?out:[{tipo:'Capa',title:titleOf(text),body:''}];
 }
 
 /* IA de verdade (Claude API, direto do navegador) */
@@ -404,7 +410,7 @@ function dl(blob,name){ const a=document.createElement('a'); a.href=URL.createOb
 /* ---------- boot ---------- */
 function boot(){ buildTemplatePicker(); buildSlides(); syncInputs(); render(); }
 if(document.fonts&&document.fonts.load){
-  Promise.all(['800 90px Poppins','700 30px Poppins','600 38px Poppins','400 40px Poppins'].map(x=>document.fonts.load(x)))
+  Promise.all(['400 90px Poppins','600 28px Poppins','400 38px Poppins','italic 400 30px Poppins'].map(x=>document.fonts.load(x)))
     .then(()=>document.fonts.ready).then(boot).catch(boot);
   setTimeout(boot,1200);
 } else boot();
