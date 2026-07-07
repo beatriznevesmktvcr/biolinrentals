@@ -200,7 +200,7 @@ function drawCover(ctx,img,dx,dy,dw,dh){
 function drawPlaceholder(ctx,x,y,w,h){
   ctx.fillStyle='#ededed'; ctx.fillRect(x,y,w,h);
   ctx.fillStyle='#b9bcc0';
-  ctx.font='600 40px Poppins'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.font='600 40px Poppins, Arial, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.fillText('📷  Adicione uma foto', x+w/2, y+h/2);
   ctx.textBaseline='alphabetic';
 }
@@ -228,7 +228,7 @@ function drawLines(ctx,lines,x,y,lh,align='left'){
 function signature(ctx,color,x,y){
   if(!state.showLogo || !state.brand) return;
   ctx.textAlign='left'; ctx.textBaseline='alphabetic';
-  ctx.font='600 28px Poppins'; ctx.fillStyle=color;
+  ctx.font='600 28px Poppins, Arial, sans-serif'; ctx.fillStyle=color;
   ctx.fillText(state.brand, x, y);
 }
 function isDark(hex){
@@ -249,8 +249,8 @@ const TEMPLATES = {
     ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 
     const M=72;
-    const titleLines = withFont(ctx,'800 86px Poppins',()=>wrap(ctx,s.title||'Seu título aqui',W-M*2));
-    const bodyLines  = s.body ? withFont(ctx,'400 38px Poppins',()=>wrap(ctx,s.body,W-M*2)) : [];
+    const titleLines = withFont(ctx,'800 86px Poppins, Arial, sans-serif',()=>wrap(ctx,s.title||'Seu título aqui',W-M*2));
+    const bodyLines  = s.body ? withFont(ctx,'400 38px Poppins, Arial, sans-serif',()=>wrap(ctx,s.body,W-M*2)) : [];
     const blockH = (s.kicker?70:0) + titleLines.length*94 + (bodyLines.length?24+bodyLines.length*50:0);
 
     let y;
@@ -259,13 +259,13 @@ const TEMPLATES = {
     else y = H - blockH - 150;
 
     if(s.kicker){
-      ctx.font='700 30px Poppins'; ctx.fillStyle=(s.accent===WHITE?'#fff':s.accent); ctx.textAlign='left';
+      ctx.font='700 30px Poppins, Arial, sans-serif'; ctx.fillStyle=(s.accent===WHITE?'#fff':s.accent); ctx.textAlign='left';
       ctx.fillText(s.kicker.toUpperCase(), M, y); y+=70;
     }
-    ctx.fillStyle='#fff'; ctx.font='800 86px Poppins';
+    ctx.fillStyle='#fff'; ctx.font='800 86px Poppins, Arial, sans-serif';
     y+=drawLines(ctx,titleLines,M,y+72,94)-72+34;
     if(bodyLines.length){
-      ctx.fillStyle='rgba(255,255,255,.9)'; ctx.font='400 38px Poppins';
+      ctx.fillStyle='rgba(255,255,255,.9)'; ctx.font='400 38px Poppins, Arial, sans-serif';
       drawLines(ctx,bodyLines,M,y+34,50);
     }
     ctx.fillStyle=s.accent; ctx.fillRect(0,H-14,W,14);
@@ -286,14 +286,14 @@ const TEMPLATES = {
 
     const M=72; let y=cardY+120;
     if(s.kicker){
-      ctx.font='700 26px Poppins'; ctx.fillStyle=(s.accent===WHITE?'#111':s.accent); ctx.textAlign='left';
+      ctx.font='700 26px Poppins, Arial, sans-serif'; ctx.fillStyle=(s.accent===WHITE?'#111':s.accent); ctx.textAlign='left';
       ctx.fillText(s.kicker.toUpperCase(),M,y); y+=52;
     }
-    ctx.fillStyle=INK; ctx.font='800 66px Poppins';
+    ctx.fillStyle=INK; ctx.font='800 66px Poppins, Arial, sans-serif';
     const tl=wrap(ctx,s.title||'Seu título aqui',W-M*2);
     y+=drawLines(ctx,tl,M,y+62,76);
     if(s.body){
-      ctx.fillStyle='#555'; ctx.font='400 36px Poppins';
+      ctx.fillStyle='#555'; ctx.font='400 36px Poppins, Arial, sans-serif';
       drawLines(ctx,wrap(ctx,s.body,W-M*2),M,y+40,50);
     }
     signature(ctx,INK,M,H-56);
@@ -310,15 +310,15 @@ const TEMPLATES = {
     const M=96;
     ctx.textAlign='left';
     if(s.kicker){
-      ctx.font='700 30px Poppins'; ctx.fillStyle=dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.6)';
+      ctx.font='700 30px Poppins, Arial, sans-serif'; ctx.fillStyle=dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.6)';
       ctx.fillText(s.kicker.toUpperCase(),M,H*0.3);
     }
-    ctx.fillStyle=fg; ctx.font='800 92px Poppins';
+    ctx.fillStyle=fg; ctx.font='800 92px Poppins, Arial, sans-serif';
     const tl=wrap(ctx,s.title||'Escreva aqui uma\nmensagem de destaque',W-M*2);
     let y=H*0.36;
     y+=drawLines(ctx,tl,M,y+92,104);
     if(s.body){
-      ctx.font='400 40px Poppins'; ctx.fillStyle=dark?'rgba(255,255,255,.9)':'rgba(0,0,0,.7)';
+      ctx.font='400 40px Poppins, Arial, sans-serif'; ctx.fillStyle=dark?'rgba(255,255,255,.9)':'rgba(0,0,0,.7)';
       drawLines(ctx,wrap(ctx,s.body,W-M*2),M,y+50,54);
     }
     signature(ctx,fg,M,H-80);
@@ -332,14 +332,14 @@ const TEMPLATES = {
     if(!drawCover(ctx,s.img,0,0,W,photoH)) drawPlaceholder(ctx,0,0,W,photoH);
     const M=80; let y=photoH+96;
     if(s.kicker){
-      ctx.font='700 28px Poppins'; ctx.fillStyle=dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.55)'; ctx.textAlign='left';
+      ctx.font='700 28px Poppins, Arial, sans-serif'; ctx.fillStyle=dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.55)'; ctx.textAlign='left';
       ctx.fillText(s.kicker.toUpperCase(),M,y); y+=56;
     }
-    ctx.fillStyle=fg; ctx.font='800 72px Poppins';
+    ctx.fillStyle=fg; ctx.font='800 72px Poppins, Arial, sans-serif';
     const tl=wrap(ctx,s.title||'Seu título aqui',W-M*2);
     y+=drawLines(ctx,tl,M,y+68,84);
     if(s.body){
-      ctx.font='400 36px Poppins'; ctx.fillStyle=dark?'rgba(255,255,255,.9)':'rgba(0,0,0,.65)';
+      ctx.font='400 36px Poppins, Arial, sans-serif'; ctx.fillStyle=dark?'rgba(255,255,255,.9)':'rgba(0,0,0,.65)';
       drawLines(ctx,wrap(ctx,s.body,W-M*2),M,y+42,50);
     }
     signature(ctx,fg,M,H-70);
@@ -478,7 +478,7 @@ document.getElementById('btnExportAll').onclick=async()=>{
 /* ---------- boot ---------- */
 function boot(){ buildTemplatePicker(); buildSlides(); buildSwatches(); syncInputs(); render(); }
 if(document.fonts && document.fonts.ready){
-  document.fonts.load('800 86px Poppins').then(()=>document.fonts.ready).then(boot);
+  document.fonts.load('800 86px Poppins, Arial, sans-serif').then(()=>document.fonts.ready).then(boot);
   setTimeout(boot,1500);
 } else { boot(); }
 </script>
