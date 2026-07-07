@@ -1,484 +1,401 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CARROSSÉIS IRRESISTÍVEIS — Gerador</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>CARROSSÉIS IRRESISTÍVEIS — Gerador com IA</title>
 <style>
   :root{
-    --ink:#111111;        /* preto */
-    --ink2:#333;
-    --muted:#8b8b8b;
-    --line:#e7e7e7;
-    --bg:#f4f4f4;
-    --panel:#ffffff;
-    --accent:#111111;     /* destaque da UI = preto */
-    --radius:14px;
+    --ink:#0f0f0f; --ink2:#333; --muted:#8b8b8b; --line:#e7e7e7;
+    --bg:#f4f4f4; --panel:#ffffff; --radius:14px;
+    --cap:#111; --prob:#c0392b; --vir:#b8860b; --sol:#1e8449; --cta:#8e44ad;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
-  body{
-    font-family:'Poppins',system-ui,sans-serif;color:var(--ink);
-    background:var(--bg);min-height:100vh;
-  }
-  header.topbar{
-    display:flex;align-items:center;gap:12px;
-    padding:14px 22px;background:#111;color:#fff;border-bottom:1px solid #000;
-    position:sticky;top:0;z-index:20;
-  }
-  .logo-dot{width:36px;height:36px;border-radius:9px;background:#fff;
-    display:flex;align-items:center;justify-content:center;font-weight:800;color:#111;font-size:14px}
+  body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh}
+  header.topbar{display:flex;align-items:center;gap:12px;padding:14px 22px;background:#111;color:#fff;position:sticky;top:0;z-index:20}
+  .logo-dot{width:36px;height:36px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;color:#111;font-size:14px}
   .topbar h1{font-size:15px;margin:0;font-weight:800;letter-spacing:.04em}
-  .topbar h1 small{display:block;font-size:11px;color:#bdbdbd;font-weight:500;letter-spacing:.02em}
-  .layout{display:grid;grid-template-columns:340px 1fr 300px;gap:18px;padding:18px;max-width:1400px;margin:0 auto}
+  .topbar h1 small{display:block;font-size:11px;color:#bdbdbd;font-weight:500}
+  .layout{display:grid;grid-template-columns:360px 1fr 300px;gap:18px;padding:18px;max-width:1440px;margin:0 auto}
   @media(max-width:1080px){.layout{grid-template-columns:1fr}}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
   .panel h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
   label.field{display:block;font-size:12px;font-weight:600;margin:12px 0 5px;color:#444}
-  input[type=text],textarea,select{
-    width:100%;font-family:inherit;font-size:13px;padding:9px 11px;border:1px solid var(--line);
-    border-radius:10px;background:#fff;color:var(--ink);resize:vertical}
+  input[type=text],input[type=password],textarea,select{width:100%;font-family:inherit;font-size:13px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);resize:vertical}
   textarea{min-height:64px}
+  textarea.big{min-height:150px}
   input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink)}
-  .btn{font-family:inherit;font-weight:600;font-size:13px;border:none;border-radius:10px;
-    padding:10px 14px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;justify-content:center}
+  .btn{font-family:inherit;font-weight:700;font-size:13px;border:none;border-radius:10px;padding:11px 14px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;justify-content:center}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
   .btn-primary{background:var(--ink);color:#fff;width:100%}
-  .btn-primary:hover{background:#000}
+  .btn-primary:hover:not(:disabled){background:#000}
   .btn-outline{background:#fff;color:#111;border:1.5px solid #111;width:100%}
-  .btn-outline:hover{background:#111;color:#fff}
-  .btn-ghost{background:#f2f2f2;color:#333}
-  .btn-ghost:hover{background:#e9e9e9}
-  .row{display:flex;gap:8px}
-  /* template picker */
+  .btn-outline:hover:not(:disabled){background:#111;color:#fff}
+  .btn-ghost{background:#f2f2f2;color:#333;width:100%}
+  .btn-ghost:hover:not(:disabled){background:#e9e9e9}
+  .divider{height:1px;background:var(--line);margin:16px 0}
+  .hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:8px}
+  .filename{font-size:11px;color:var(--muted);margin-top:6px;word-break:break-word}
   .tpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .tpl-card{border:2px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;background:#fff;transition:.15s}
+  .tpl-card{border:2px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;background:#fff}
   .tpl-card.active{border-color:#111;box-shadow:0 0 0 3px rgba(0,0,0,.12)}
   .tpl-card canvas{width:100%;display:block}
   .tpl-card span{display:block;font-size:11px;font-weight:600;text-align:center;padding:6px 4px;color:#555}
-  /* slides list */
   .slides{display:flex;flex-wrap:wrap;gap:8px}
   .slide-thumb{position:relative;width:58px;height:72px;border-radius:8px;overflow:hidden;border:2px solid var(--line);cursor:pointer;background:#eee}
   .slide-thumb.active{border-color:#111}
   .slide-thumb canvas{width:100%;height:100%;object-fit:cover;display:block}
-  .slide-thumb .num{position:absolute;top:2px;left:4px;font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
-  .slide-thumb .del{position:absolute;top:1px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;
-    width:16px;height:16px;border-radius:50%;font-size:11px;line-height:1;cursor:pointer;padding:0}
-  .add-slide{width:58px;height:72px;border:2px dashed var(--line);border-radius:8px;background:#fafafa;
-    font-size:22px;color:var(--muted);cursor:pointer}
-  .add-slide:hover{border-color:#111;color:#111}
-  /* preview */
+  .slide-thumb .num{position:absolute;top:2px;left:4px;font-size:10px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+  .slide-thumb .del{position:absolute;top:1px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;width:16px;height:16px;border-radius:50%;font-size:11px;line-height:1;cursor:pointer;padding:0}
+  .add-slide{width:58px;height:72px;border:2px dashed var(--line);border-radius:8px;background:#fafafa;font-size:22px;color:var(--muted);cursor:pointer}
   .stage{display:flex;flex-direction:column;align-items:center;gap:14px}
-  .preview-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;
-    display:flex;justify-content:center;box-shadow:0 8px 30px rgba(0,0,0,.05)}
-  #preview{width:100%;max-width:360px;height:auto;border-radius:8px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+  .preview-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;justify-content:center;box-shadow:0 8px 30px rgba(0,0,0,.05)}
+  #preview{width:100%;max-width:340px;height:auto;border-radius:8px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
   .nav{display:flex;align-items:center;gap:14px}
   .nav button{background:#fff;border:1px solid var(--line);width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer}
-  .nav button:hover{border-color:#111}
-  .nav .count{font-size:13px;color:#555;font-weight:600;min-width:80px;text-align:center}
-  .hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:8px}
-  .swatch-row{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
-  .swatch{width:28px;height:28px;border-radius:8px;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer}
-  .swatch.sel{box-shadow:0 0 0 2px var(--ink)}
-  .filename{font-size:11px;color:var(--muted);margin-top:5px;word-break:break-all}
-  .divider{height:1px;background:var(--line);margin:16px 0}
-  .toggle{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#444;margin-top:10px;cursor:pointer}
-  .toggle input{width:auto}
+  .nav .count{font-size:13px;color:#555;font-weight:600;min-width:90px;text-align:center}
+  .badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;padding:3px 8px;border-radius:20px}
+  .b-Capa{background:var(--cap)} .b-Problema{background:var(--prob)} .b-Virada{background:var(--vir)} .b-Solução{background:var(--sol)} .b-CTA{background:var(--cta)}
+  .status{font-size:12px;padding:8px 10px;border-radius:8px;margin-top:8px;display:none}
+  .status.show{display:block}
+  .status.err{background:#fdecea;color:#a12} .status.ok{background:#eafaf0;color:#176}.status.work{background:#eef;color:#337}
+  details.apikey{margin-top:10px;font-size:12px}
+  details.apikey summary{cursor:pointer;color:#555;font-weight:600}
 </style>
 
 <header class="topbar">
   <div class="logo-dot">CI</div>
-  <h1>CARROSSÉIS IRRESISTÍVEIS <small>Gerador automático · Instagram 1080×1350</small></h1>
+  <h1>CARROSSÉIS IRRESISTÍVEIS <small>Gerador com IA · Instagram 1080×1350</small></h1>
 </header>
 
 <div class="layout">
-  <!-- ============ COLUNA 1: CONTEÚDO ============ -->
+  <!-- ========= COLUNA 1: IA + CONTEÚDO ========= -->
   <section class="panel">
-    <h2>1 · Conteúdo do slide</h2>
+    <h2>1 · Gerar com IA</h2>
+    <label class="field">Suba todas as fotos de uma vez</label>
+    <button class="btn btn-ghost" id="btnBulk">📷 Escolher fotos</button>
+    <input type="file" id="bulkInput" accept="image/*" multiple hidden>
+    <div class="filename" id="bulkName">Nenhuma foto ainda</div>
 
-    <label class="field">Foto de fundo</label>
-    <button class="btn btn-ghost" style="width:100%" id="btnUpload">📷 Escolher foto</button>
-    <input type="file" id="fileInput" accept="image/*" hidden>
-    <div class="filename" id="fileName">Nenhuma foto neste slide</div>
+    <label class="field">Cole o texto inteiro</label>
+    <textarea id="fullText" class="big" placeholder="Cole aqui todo o conteúdo do post. A IA vai cortar e adaptar em: Capa, Problema, Virada, Solução e CTA."></textarea>
 
-    <label class="field">Kicker / etiqueta <span style="color:var(--muted);font-weight:400">(opcional)</span></label>
-    <input type="text" id="inKicker" placeholder="Ex: NOVIDADE" maxlength="40">
+    <label class="field">@ do perfil (assinatura)</label>
+    <input type="text" id="inHandle" placeholder="@seuperfil" value="@carrosseisirresistiveis">
 
-    <label class="field">Título</label>
-    <textarea id="inTitle" placeholder="Ex: 5 dicas para vender mais"></textarea>
+    <button class="btn btn-primary" id="btnGenerate" style="margin-top:14px">✨ Gerar carrossel</button>
+    <div class="status" id="status"></div>
 
-    <label class="field">Texto de apoio <span style="color:var(--muted);font-weight:400">(opcional)</span></label>
-    <textarea id="inBody" placeholder="Ex: arraste para o lado e confira →"></textarea>
+    <details class="apikey">
+      <summary>⚙️ Chave da IA (Claude API) — opcional</summary>
+      <p class="hint">Com uma chave da Anthropic, a IA reescreve o texto de verdade para cada slide. Sem chave, uso um corte automático simples. A chave fica salva só no seu navegador.</p>
+      <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off">
+      <p class="hint">Só funciona no arquivo aberto no seu navegador (não no preview do claude.ai).</p>
+    </details>
 
     <div class="divider"></div>
-    <label class="field">Posição do texto</label>
-    <select id="inTextPos">
-      <option value="bottom">Embaixo</option>
-      <option value="center">Centro</option>
-      <option value="top">Em cima</option>
+    <h2>2 · Editar slide atual</h2>
+    <label class="field">Tipo do slide</label>
+    <select id="inTipo">
+      <option>Capa</option><option>Problema</option><option>Virada</option><option>Solução</option><option>CTA</option>
     </select>
-
-    <label class="field">Cor de destaque</label>
-    <div class="swatch-row" id="swatches"></div>
+    <label class="field">Kicker / etiqueta (opcional)</label>
+    <input type="text" id="inKicker" maxlength="40" placeholder="Ex: TENDÊNCIA 2026">
+    <label class="field">Título</label>
+    <textarea id="inTitle" placeholder="Título grande do slide"></textarea>
+    <label class="field">Texto de apoio (opcional)</label>
+    <textarea id="inBody" placeholder="Parágrafo abaixo do título"></textarea>
+    <button class="btn btn-ghost" id="btnPhoto" style="margin-top:10px">📷 Trocar foto deste slide</button>
+    <input type="file" id="fileInput" accept="image/*" hidden>
+    <div class="filename" id="fileName">Nenhuma foto neste slide</div>
   </section>
 
-  <!-- ============ COLUNA 2: PREVIEW ============ -->
+  <!-- ========= COLUNA 2: PREVIEW ========= -->
   <section class="stage">
     <div class="nav">
       <button id="prevSlide">‹</button>
       <span class="count" id="slideCount">Slide 1</span>
       <button id="nextSlide">›</button>
     </div>
-    <div class="preview-wrap">
-      <canvas id="preview" width="1080" height="1350"></canvas>
-    </div>
+    <div class="preview-wrap"><canvas id="preview" width="1080" height="1350"></canvas></div>
     <div style="width:100%;max-width:392px">
       <h2 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:4px 0 8px">Slides do carrossel</h2>
       <div class="slides" id="slidesList"></div>
     </div>
   </section>
 
-  <!-- ============ COLUNA 3: TEMPLATE + EXPORT ============ -->
+  <!-- ========= COLUNA 3: TEMPLATE + EXPORT ========= -->
   <section class="panel">
-    <h2>2 · Template</h2>
+    <h2>3 · Template</h2>
     <div class="tpl-grid" id="tplGrid"></div>
-
-    <label class="field">Assinatura da marca <span style="color:var(--muted);font-weight:400">(opcional)</span></label>
-    <input type="text" id="inBrand" placeholder="@seuperfil" maxlength="30">
-    <label class="toggle"><input type="checkbox" id="showLogo"> Mostrar assinatura nos slides</label>
-
     <div class="divider"></div>
-    <h2>3 · Exportar</h2>
+    <h2>4 · Exportar</h2>
     <button class="btn btn-outline" id="btnExportOne" style="margin-bottom:8px">⬇️ Baixar este slide</button>
     <button class="btn btn-primary" id="btnExportAll">⬇️ Baixar carrossel completo</button>
-    <p class="hint">Cada slide sai como PNG em 1080×1350 (Instagram vertical), pronto para postar. No "carrossel completo", os arquivos são baixados em sequência — se o navegador pedir, permita múltiplos downloads.</p>
+    <p class="hint">Cada slide sai em PNG 1080×1350, pronto para o Instagram. No completo, os arquivos baixam em sequência.</p>
   </section>
 </div>
 
 <script>
-/* ============================================================
-   CARROSSÉIS IRRESISTÍVEIS — Gerador de Carrosséis
-   Renderização 100% em <canvas>, sem dependências externas.
-   Cada "template" é uma função de desenho pura.
-   ============================================================ */
-const W = 1080, H = 1350;
-const INK = '#111111', WHITE = '#ffffff';
-/* paleta preto & branco + cores opcionais de destaque */
-const ACCENTS = ['#111111','#ffffff','#8b8b8b','#FBBC05','#EA4335','#4285F4','#159A9A'];
+/* =========================================================================
+   CARROSSÉIS IRRESISTÍVEIS — Gerador de carrosséis com IA
+   - Cole o texto + suba fotos → IA corta em Capa/Problema/Virada/Solução/CTA
+   - Renderização 100% em <canvas>, estilo editorial (foto + degradê + título)
+   ========================================================================= */
+const W=1080, H=1350, INK='#0f0f0f', WHITE='#ffffff';
+const FF = "'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+const TIPOS = ['Capa','Problema','Virada','Solução','CTA'];
 
-/* ---------- estado ---------- */
-const state = {
-  template: 'cover',
-  showLogo: false,
-  brand: '',
-  slides: [ newSlide() ],
-  current: 0,
-};
-function newSlide(){
-  return { img:null, imgName:'', kicker:'', title:'', body:'', textPos:'bottom', accent:INK };
-}
+const state = { template:'editorial', handle:'@carrosseisirresistiveis', slides:[demoSlide()], current:0 };
+function demoSlide(){ return { tipo:'Capa', kicker:'', title:'Seu título aqui', body:'', img:null, imgName:'' }; }
+function newSlide(tipo){ return { tipo:tipo||'Capa', kicker:'', title:'', body:'', img:null, imgName:'' }; }
 function slide(){ return state.slides[state.current]; }
 
-/* ---------- helpers de desenho ---------- */
-function roundRect(ctx,x,y,w,h,r){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.arcTo(x+w,y,x+w,y+h,r);
-  ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r);
-  ctx.arcTo(x,y,x+w,y,r);
-  ctx.closePath();
-}
-// desenha imagem cobrindo (object-fit: cover) uma área
+/* ---------- desenho ---------- */
+function f(weight,size){ return `${weight} ${size}px ${FF}`; }
 function drawCover(ctx,img,dx,dy,dw,dh){
-  if(!img){ return false; }
-  const ir = img.width/img.height, dr = dw/dh;
-  let sw,sh,sx,sy;
+  if(!img) return false;
+  const ir=img.width/img.height, dr=dw/dh; let sw,sh,sx,sy;
   if(ir>dr){ sh=img.height; sw=sh*dr; sx=(img.width-sw)/2; sy=0; }
-  else     { sw=img.width;  sh=sw/dr; sx=0; sy=(img.height-sh)/2; }
-  ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
-  return true;
+  else{ sw=img.width; sh=sw/dr; sx=0; sy=(img.height-sh)/2; }
+  ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh); return true;
 }
-// placeholder quando não há foto
-function drawPlaceholder(ctx,x,y,w,h){
-  ctx.fillStyle='#ededed'; ctx.fillRect(x,y,w,h);
-  ctx.fillStyle='#b9bcc0';
-  ctx.font='600 40px Poppins, Arial, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('📷  Adicione uma foto', x+w/2, y+h/2);
-  ctx.textBaseline='alphabetic';
-}
-// quebra de linha por largura; retorna array de linhas (respeita \n)
 function wrap(ctx,text,maxW){
-  const out=[];
-  (text||'').split('\n').forEach(para=>{
-    const words=para.split(/\s+/).filter(Boolean); let line='';
-    if(words.length===0){ out.push(''); return; }
-    for(const w of words){
-      const t=line?line+' '+w:w;
-      if(ctx.measureText(t).width>maxW && line){ out.push(line); line=w; }
-      else line=t;
-    }
+  const out=[]; (text||'').split('\n').forEach(p=>{
+    const words=p.split(/\s+/).filter(Boolean); let line='';
+    if(!words.length){ out.push(''); return; }
+    for(const w of words){ const t=line?line+' '+w:w;
+      if(ctx.measureText(t).width>maxW && line){ out.push(line); line=w; } else line=t; }
     if(line) out.push(line);
-  });
-  return out;
+  }); return out;
 }
-// desenha bloco de texto multi-linha, retorna altura usada
-function drawLines(ctx,lines,x,y,lh,align='left'){
-  ctx.textAlign=align;
-  lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lh));
-  return lines.length*lh;
-}
-function signature(ctx,color,x,y){
-  if(!state.showLogo || !state.brand) return;
-  ctx.textAlign='left'; ctx.textBaseline='alphabetic';
-  ctx.font='600 28px Poppins, Arial, sans-serif'; ctx.fillStyle=color;
-  ctx.fillText(state.brand, x, y);
-}
-function isDark(hex){
-  const c=hex.replace('#',''); const r=parseInt(c.substr(0,2),16),g=parseInt(c.substr(2,2),16),b=parseInt(c.substr(4,2),16);
-  return (0.299*r+0.587*g+0.114*b) < 150;
-}
-function withFont(ctx,font,fn){ ctx.font=font; return fn(); }
+function drawLines(ctx,lines,x,y,lh){ lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lh)); return lines.length*lh; }
 
-/* ============================================================
-   TEMPLATES  — assinatura: (ctx, s)  s = dados do slide
-   ============================================================ */
+/* ---------- templates ---------- */
 const TEMPLATES = {
-  /* --- 1. CAPA: foto cheia + gradiente + título grande --- */
-  cover(ctx,s){
-    if(!drawCover(ctx,s.img,0,0,W,H)){ ctx.fillStyle='#111'; ctx.fillRect(0,0,W,H); }
+  /* estilo @uniconvite: foto + degradê + título grande + corpo + @handle */
+  editorial(ctx,s){
+    if(!drawCover(ctx,s.img,0,0,W,H)){ ctx.fillStyle='#161616'; ctx.fillRect(0,0,W,H); }
+    // escurecimento geral leve + degradê forte embaixo
+    ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(0,0,W,H);
     const g=ctx.createLinearGradient(0,H*0.30,0,H);
-    g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,0.85)');
+    g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(0.55,'rgba(0,0,0,0.55)'); g.addColorStop(1,'rgba(0,0,0,0.90)');
     ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 
-    const M=72;
-    const titleLines = withFont(ctx,'800 86px Poppins, Arial, sans-serif',()=>wrap(ctx,s.title||'Seu título aqui',W-M*2));
-    const bodyLines  = s.body ? withFont(ctx,'400 38px Poppins, Arial, sans-serif',()=>wrap(ctx,s.body,W-M*2)) : [];
-    const blockH = (s.kicker?70:0) + titleLines.length*94 + (bodyLines.length?24+bodyLines.length*50:0);
+    const M=80, maxW=W-M*2;
+    ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+    const titleLines = (ctx.font=f(800,86), wrap(ctx,s.title||'Seu título aqui',maxW));
+    const bodyLines  = s.body ? (ctx.font=f(400,40), wrap(ctx,s.body,maxW)) : [];
+    const TLH=96, BLH=54;
+    let blockH = (s.kicker?66:0) + titleLines.length*TLH + (bodyLines.length? 30+bodyLines.length*BLH : 0);
+    const bottomReserve = 150;                 // espaço do @handle
+    let y = H - bottomReserve - blockH;
 
-    let y;
-    if(s.textPos==='top') y = 160;
-    else if(s.textPos==='center') y = (H-blockH)/2;
-    else y = H - blockH - 150;
+    if(s.kicker){ ctx.font=f(700,30); ctx.fillStyle='#fff';
+      ctx.fillText(s.kicker.toUpperCase(), M, y+30); y+=66; }
+    ctx.fillStyle='#fff'; ctx.font=f(800,86);
+    y += drawLines(ctx,titleLines,M,y+72,TLH);
+    if(bodyLines.length){ ctx.fillStyle='rgba(255,255,255,0.92)'; ctx.font=f(400,40);
+      drawLines(ctx,bodyLines,M,y+42,BLH); }
 
-    if(s.kicker){
-      ctx.font='700 30px Poppins, Arial, sans-serif'; ctx.fillStyle=(s.accent===WHITE?'#fff':s.accent); ctx.textAlign='left';
-      ctx.fillText(s.kicker.toUpperCase(), M, y); y+=70;
-    }
-    ctx.fillStyle='#fff'; ctx.font='800 86px Poppins, Arial, sans-serif';
-    y+=drawLines(ctx,titleLines,M,y+72,94)-72+34;
-    if(bodyLines.length){
-      ctx.fillStyle='rgba(255,255,255,.9)'; ctx.font='400 38px Poppins, Arial, sans-serif';
-      drawLines(ctx,bodyLines,M,y+34,50);
-    }
-    ctx.fillStyle=s.accent; ctx.fillRect(0,H-14,W,14);
-    signature(ctx,'#fff',M,H-48);
+    // @handle centralizado no rodapé
+    ctx.textAlign='center';
+    if(ctx.letterSpacing!==undefined) ctx.letterSpacing='3px';
+    ctx.fillStyle='#fff'; ctx.font=f(800,30);
+    ctx.fillText((state.handle||'').toUpperCase(), W/2, H-70);
+    if(ctx.letterSpacing!==undefined) ctx.letterSpacing='0px';
   },
 
-  /* --- 2. CARTÃO: foto em cima + cartão branco embaixo --- */
-  card(ctx,s){
-    ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
-    const photoH=Math.round(H*0.62);
-    if(!drawCover(ctx,s.img,0,0,W,photoH)) drawPlaceholder(ctx,0,0,W,photoH);
-    const cardY=photoH-60;
-    ctx.save();
-    ctx.shadowColor='rgba(0,0,0,.12)'; ctx.shadowBlur=40; ctx.shadowOffsetY=-6;
-    ctx.fillStyle='#fff'; roundRect(ctx,0,cardY,W,H-cardY,44); ctx.fill();
-    ctx.restore();
-    ctx.fillStyle=s.accent; roundRect(ctx,72,cardY+56,84,10,5); ctx.fill();
-
-    const M=72; let y=cardY+120;
-    if(s.kicker){
-      ctx.font='700 26px Poppins, Arial, sans-serif'; ctx.fillStyle=(s.accent===WHITE?'#111':s.accent); ctx.textAlign='left';
-      ctx.fillText(s.kicker.toUpperCase(),M,y); y+=52;
-    }
-    ctx.fillStyle=INK; ctx.font='800 66px Poppins, Arial, sans-serif';
-    const tl=wrap(ctx,s.title||'Seu título aqui',W-M*2);
-    y+=drawLines(ctx,tl,M,y+62,76);
-    if(s.body){
-      ctx.fillStyle='#555'; ctx.font='400 36px Poppins, Arial, sans-serif';
-      drawLines(ctx,wrap(ctx,s.body,W-M*2),M,y+40,50);
-    }
-    signature(ctx,INK,M,H-56);
-  },
-
-  /* --- 3. TEXTO: fundo sólido, texto central --- */
-  text(ctx,s){
-    ctx.fillStyle=s.accent; ctx.fillRect(0,0,W,H);
-    const dark = isDark(s.accent);
-    const fg = dark?'#fff':INK;
-    // detalhe geométrico
-    ctx.fillStyle = dark?'rgba(255,255,255,.07)':'rgba(0,0,0,.05)';
-    ctx.beginPath(); ctx.arc(W-120,160,260,0,Math.PI*2); ctx.fill();
-    const M=96;
-    ctx.textAlign='left';
-    if(s.kicker){
-      ctx.font='700 30px Poppins, Arial, sans-serif'; ctx.fillStyle=dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.6)';
-      ctx.fillText(s.kicker.toUpperCase(),M,H*0.3);
-    }
-    ctx.fillStyle=fg; ctx.font='800 92px Poppins, Arial, sans-serif';
-    const tl=wrap(ctx,s.title||'Escreva aqui uma\nmensagem de destaque',W-M*2);
-    let y=H*0.36;
-    y+=drawLines(ctx,tl,M,y+92,104);
-    if(s.body){
-      ctx.font='400 40px Poppins, Arial, sans-serif'; ctx.fillStyle=dark?'rgba(255,255,255,.9)':'rgba(0,0,0,.7)';
-      drawLines(ctx,wrap(ctx,s.body,W-M*2),M,y+50,54);
-    }
-    signature(ctx,fg,M,H-80);
-  },
-
-  /* --- 4. SPLIT: metade foto / metade cor --- */
-  split(ctx,s){
-    const dark=isDark(s.accent), fg=dark?'#fff':INK;
-    ctx.fillStyle=s.accent; ctx.fillRect(0,0,W,H);
-    const photoH=Math.round(H*0.52);
-    if(!drawCover(ctx,s.img,0,0,W,photoH)) drawPlaceholder(ctx,0,0,W,photoH);
-    const M=80; let y=photoH+96;
-    if(s.kicker){
-      ctx.font='700 28px Poppins, Arial, sans-serif'; ctx.fillStyle=dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.55)'; ctx.textAlign='left';
-      ctx.fillText(s.kicker.toUpperCase(),M,y); y+=56;
-    }
-    ctx.fillStyle=fg; ctx.font='800 72px Poppins, Arial, sans-serif';
-    const tl=wrap(ctx,s.title||'Seu título aqui',W-M*2);
-    y+=drawLines(ctx,tl,M,y+68,84);
-    if(s.body){
-      ctx.font='400 36px Poppins, Arial, sans-serif'; ctx.fillStyle=dark?'rgba(255,255,255,.9)':'rgba(0,0,0,.65)';
-      drawLines(ctx,wrap(ctx,s.body,W-M*2),M,y+42,50);
-    }
-    signature(ctx,fg,M,H-70);
+  /* slide de texto puro (fundo preto) — bom p/ frases de impacto */
+  texto(ctx,s){
+    ctx.fillStyle='#111'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,255,255,0.05)'; ctx.beginPath(); ctx.arc(W-120,170,270,0,Math.PI*2); ctx.fill();
+    const M=96, maxW=W-M*2; ctx.textAlign='left';
+    let y=H*0.34;
+    if(s.kicker){ ctx.font=f(700,30); ctx.fillStyle='rgba(255,255,255,0.8)';
+      ctx.fillText(s.kicker.toUpperCase(),M,y); y+=60; }
+    ctx.fillStyle='#fff'; ctx.font=f(800,92);
+    const tl=wrap(ctx,s.title||'Frase de impacto',maxW);
+    y += drawLines(ctx,tl,M,y+90,102);
+    if(s.body){ ctx.font=f(400,42); ctx.fillStyle='rgba(255,255,255,0.9)';
+      drawLines(ctx,wrap(ctx,s.body,maxW),M,y+50,56); }
+    ctx.textAlign='center';
+    if(ctx.letterSpacing!==undefined) ctx.letterSpacing='3px';
+    ctx.font=f(800,30); ctx.fillStyle='#fff';
+    ctx.fillText((state.handle||'').toUpperCase(), W/2, H-70);
+    if(ctx.letterSpacing!==undefined) ctx.letterSpacing='0px';
   },
 };
-const TEMPLATE_LIST=[
-  ['cover','Capa'],['card','Cartão'],['text','Texto'],['split','Split']
-];
+const TEMPLATE_LIST=[['editorial','Editorial'],['texto','Texto']];
 
-/* ---------- render principal ---------- */
-const preview=document.getElementById('preview');
-const pctx=preview.getContext('2d');
-function render(){
-  const s=slide();
-  pctx.clearRect(0,0,W,H);
-  (TEMPLATES[state.template]||TEMPLATES.cover)(pctx,s);
-}
+/* ---------- render ---------- */
+const preview=document.getElementById('preview'), pctx=preview.getContext('2d');
+function render(){ pctx.clearRect(0,0,W,H); (TEMPLATES[state.template]||TEMPLATES.editorial)(pctx,slide()); }
 
-/* ---------- UI: template picker (com mini-preview) ---------- */
 function buildTemplatePicker(){
   const grid=document.getElementById('tplGrid'); grid.innerHTML='';
   TEMPLATE_LIST.forEach(([key,label])=>{
-    const card=document.createElement('div');
-    card.className='tpl-card'+(state.template===key?' active':'');
+    const card=document.createElement('div'); card.className='tpl-card'+(state.template===key?' active':'');
     const c=document.createElement('canvas'); c.width=W; c.height=H;
-    const demo={img:null,imgName:'',kicker:'novidade',title:'Título de exemplo',body:'texto de apoio',textPos:'bottom',accent:INK};
-    TEMPLATES[key](c.getContext('2d'),demo);
+    TEMPLATES[key](c.getContext('2d'),{tipo:'Capa',kicker:'tendência',title:'Título de exemplo',body:'texto de apoio aqui',img:null,imgName:''});
     const span=document.createElement('span'); span.textContent=label;
-    card.appendChild(c); card.appendChild(span);
-    card.onclick=()=>{ state.template=key; buildTemplatePicker(); render(); buildSlides(); };
+    card.append(c,span); card.onclick=()=>{ state.template=key; buildTemplatePicker(); render(); buildSlides(); };
     grid.appendChild(card);
   });
 }
 
-/* ---------- UI: swatches ---------- */
-function buildSwatches(){
-  const box=document.getElementById('swatches'); box.innerHTML='';
-  ACCENTS.forEach(col=>{
-    const sw=document.createElement('div');
-    sw.className='swatch'+(slide().accent===col?' sel':'');
-    sw.style.background=col;
-    sw.onclick=()=>{ slide().accent=col; buildSwatches(); render(); buildSlides(); };
-    box.appendChild(sw);
-  });
-}
-
-/* ---------- UI: lista de slides ---------- */
 function buildSlides(){
   const list=document.getElementById('slidesList'); list.innerHTML='';
   state.slides.forEach((s,i)=>{
-    const th=document.createElement('div');
-    th.className='slide-thumb'+(i===state.current?' active':'');
+    const th=document.createElement('div'); th.className='slide-thumb'+(i===state.current?' active':'');
     const c=document.createElement('canvas'); c.width=W; c.height=H;
     TEMPLATES[state.template](c.getContext('2d'),s);
     const num=document.createElement('span'); num.className='num'; num.textContent=i+1;
-    th.appendChild(c); th.appendChild(num);
-    if(state.slides.length>1){
-      const del=document.createElement('button'); del.className='del'; del.textContent='×';
-      del.onclick=(e)=>{ e.stopPropagation(); state.slides.splice(i,1);
-        state.current=Math.max(0,Math.min(state.current,state.slides.length-1));
-        syncInputs(); buildSlides(); render(); };
-      th.appendChild(del);
-    }
+    th.append(c,num);
+    if(state.slides.length>1){ const del=document.createElement('button'); del.className='del'; del.textContent='×';
+      del.onclick=e=>{ e.stopPropagation(); state.slides.splice(i,1); state.current=Math.max(0,Math.min(state.current,state.slides.length-1)); syncInputs(); buildSlides(); render(); };
+      th.appendChild(del); }
     th.onclick=()=>{ state.current=i; syncInputs(); buildSlides(); render(); };
     list.appendChild(th);
   });
   const add=document.createElement('button'); add.className='add-slide'; add.textContent='+';
-  add.title='Adicionar slide';
-  add.onclick=()=>{ state.slides.push(newSlide()); state.current=state.slides.length-1;
-    syncInputs(); buildSlides(); render(); };
+  add.onclick=()=>{ state.slides.push(newSlide()); state.current=state.slides.length-1; syncInputs(); buildSlides(); render(); };
   list.appendChild(add);
-  document.getElementById('slideCount').textContent=`Slide ${state.current+1} de ${state.slides.length}`;
+  const s=slide();
+  document.getElementById('slideCount').innerHTML=`<span class="badge b-${s.tipo}">${s.tipo}</span> ${state.current+1}/${state.slides.length}`;
 }
 
-/* ---------- sincronizar inputs com slide atual ---------- */
 function syncInputs(){
   const s=slide();
+  document.getElementById('inTipo').value=s.tipo;
   document.getElementById('inKicker').value=s.kicker;
   document.getElementById('inTitle').value=s.title;
   document.getElementById('inBody').value=s.body;
-  document.getElementById('inTextPos').value=s.textPos;
   document.getElementById('fileName').textContent=s.imgName||'Nenhuma foto neste slide';
-  buildSwatches();
 }
 
-/* ---------- listeners de conteúdo ---------- */
+/* ---------- edição ---------- */
+document.getElementById('inTipo').onchange=e=>{ slide().tipo=e.target.value; render(); buildSlides(); };
 document.getElementById('inKicker').oninput=e=>{ slide().kicker=e.target.value; render(); buildSlides(); };
 document.getElementById('inTitle').oninput =e=>{ slide().title =e.target.value; render(); buildSlides(); };
 document.getElementById('inBody').oninput  =e=>{ slide().body  =e.target.value; render(); buildSlides(); };
-document.getElementById('inTextPos').onchange=e=>{ slide().textPos=e.target.value; render(); buildSlides(); };
-document.getElementById('inBrand').oninput=e=>{ state.brand=e.target.value; render(); buildSlides(); };
-document.getElementById('showLogo').onchange=e=>{ state.showLogo=e.target.checked; render(); buildSlides(); };
+document.getElementById('inHandle').oninput =e=>{ state.handle=e.target.value; render(); buildSlides(); buildTemplatePicker(); };
 
-document.getElementById('btnUpload').onclick=()=>document.getElementById('fileInput').click();
-document.getElementById('fileInput').onchange=e=>{
-  const f=e.target.files[0]; if(!f) return;
-  const img=new Image();
-  img.onload=()=>{ slide().img=img; slide().imgName=f.name;
-    document.getElementById('fileName').textContent=f.name; render(); buildSlides(); };
-  img.src=URL.createObjectURL(f);
+document.getElementById('btnPhoto').onclick=()=>document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange=e=>{ const file=e.target.files[0]; if(!file) return;
+  const img=new Image(); img.onload=()=>{ slide().img=img; slide().imgName=file.name; syncInputs(); render(); buildSlides(); }; img.src=URL.createObjectURL(file); };
+
+/* ---------- upload em massa ---------- */
+let bulkImages=[];
+document.getElementById('btnBulk').onclick=()=>document.getElementById('bulkInput').click();
+document.getElementById('bulkInput').onchange=e=>{
+  const files=[...e.target.files]; if(!files.length) return;
+  bulkImages=[];
+  document.getElementById('bulkName').textContent=`${files.length} foto(s) carregada(s)`;
+  files.forEach(file=>{ const img=new Image(); img.onload=()=>{}; img.src=URL.createObjectURL(file); img._name=file.name; bulkImages.push(img); });
+  // se já existem slides, distribui as fotos
+  setTimeout(()=>assignPhotos(), 200);
 };
+function assignPhotos(){
+  bulkImages.forEach((img,i)=>{ if(state.slides[i]){ state.slides[i].img=img; state.slides[i].imgName=img._name||''; } });
+  syncInputs(); render(); buildSlides();
+}
 
 /* ---------- navegação ---------- */
 document.getElementById('prevSlide').onclick=()=>{ if(state.current>0){state.current--;syncInputs();buildSlides();render();} };
 document.getElementById('nextSlide').onclick=()=>{ if(state.current<state.slides.length-1){state.current++;syncInputs();buildSlides();render();} };
 
-/* ---------- export ---------- */
-function renderTo(canvas,s){
-  canvas.width=W; canvas.height=H;
-  TEMPLATES[state.template](canvas.getContext('2d'),s);
-}
-function download(canvas,name){
-  canvas.toBlob(blob=>{
-    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  },'image/png');
-}
-document.getElementById('btnExportOne').onclick=()=>{
-  const c=document.createElement('canvas'); renderTo(c,slide());
-  download(c,`carrossel-slide-${state.current+1}.png`);
-};
-document.getElementById('btnExportAll').onclick=async()=>{
-  for(let i=0;i<state.slides.length;i++){
-    const c=document.createElement('canvas'); renderTo(c,state.slides[i]);
-    await new Promise(r=>{ c.toBlob(blob=>{
-      const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-      a.download=`carrossel-slide-${i+1}.png`;
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(()=>URL.revokeObjectURL(a.href),1000); r();
-    },'image/png'); });
-    await new Promise(r=>setTimeout(r,350));
+/* ---------- STATUS ---------- */
+function setStatus(msg,type){ const el=document.getElementById('status'); el.textContent=msg; el.className='status show '+(type||'work'); if(!msg) el.className='status'; }
+
+/* ---------- GERAÇÃO ---------- */
+document.getElementById('btnGenerate').onclick=generate;
+async function generate(){
+  const text=document.getElementById('fullText').value.trim();
+  if(!text){ setStatus('Cole o texto primeiro.','err'); return; }
+  const key=document.getElementById('apiKey').value.trim();
+  let slidesData;
+  if(key){
+    try{ setStatus('✨ A IA está cortando e adaptando o texto…','work');
+      slidesData=await generateWithAI(text,key);
+      setStatus('Pronto! Carrossel gerado pela IA.','ok');
+    }catch(err){ console.error(err);
+      setStatus('IA indisponível ('+(err.message||'erro')+'). Usei o corte automático.','err');
+      slidesData=heuristicSplit(text);
+    }
+  }else{
+    slidesData=heuristicSplit(text);
+    setStatus('Carrossel gerado (corte automático). Adicione uma chave para a IA reescrever.','ok');
   }
+  applySlides(slidesData);
+}
+
+function applySlides(data){
+  state.slides = data.map(d=>({ tipo:d.tipo||'Capa', kicker:d.kicker||'', title:d.title||'', body:d.body||'', img:null, imgName:'' }));
+  if(!state.slides.length) state.slides=[newSlide()];
+  state.current=0;
+  assignPhotos();      // distribui fotos já carregadas
+  syncInputs(); buildSlides(); render();
+}
+
+/* corte automático (sem IA): distribui parágrafos nas 5 partes */
+function heuristicSplit(text){
+  const paras=text.split(/\n{2,}|\n/).map(s=>s.trim()).filter(Boolean);
+  const out=[]; const n=paras.length;
+  const titleOf=p=>{ const s=p.split(/[.!?]/)[0].trim(); return s.length>60? s.slice(0,58)+'…':s; };
+  if(n<=1){ out.push({tipo:'Capa',title:titleOf(text),body:''}); return out; }
+  const buckets={Capa:[],Problema:[],Virada:[],Solução:[],CTA:[]};
+  const order=TIPOS; paras.forEach((p,i)=>{ const b=order[Math.min(order.length-1, Math.floor(i*order.length/n))]; buckets[b].push(p); });
+  order.forEach(t=>{ const chunk=buckets[t]; if(!chunk.length) return;
+    out.push({ tipo:t, title:titleOf(chunk[0]), body: chunk.join(' ').replace(titleOf(chunk[0]),'').replace(/^[\s.!?…]+/,'').trim() });
+  });
+  return out.length?out:[{tipo:'Capa',title:titleOf(text),body:''}];
+}
+
+/* IA de verdade (Claude API, direto do navegador) */
+async function generateWithAI(text,apiKey){
+  const prompt=`Você é copywriter especialista em carrosséis de Instagram. A partir do texto abaixo, crie um carrossel seguindo EXATAMENTE esta estrutura narrativa de 5 slides:
+1. Capa — título curto e chamativo (gancho), sem corpo
+2. Problema — mostra a dor/situação
+3. Virada — o ponto de mudança / insight
+4. Solução — o que fazer / a resposta
+5. CTA — chamada para ação (seguir, salvar, comentar)
+
+Para cada slide devolva: "tipo", "kicker" (etiqueta curta opcional em maiúsculas, pode ser vazio), "title" (curto e forte) e "body" (1-3 frases, vazio na Capa).
+Responda SOMENTE com um array JSON válido, sem texto extra. Exemplo:
+[{"tipo":"Capa","kicker":"","title":"...","body":""},...]
+
+TEXTO:
+"""${text}"""`;
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'content-type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-opus-4-8',max_tokens:2000,messages:[{role:'user',content:prompt}]})
+  });
+  if(!res.ok){ const t=await res.text().catch(()=>res.status); throw new Error('HTTP '+res.status+' '+t.slice(0,120)); }
+  const data=await res.json();
+  const raw=(data.content||[]).map(b=>b.text||'').join('');
+  const m=raw.match(/\[[\s\S]*\]/); if(!m) throw new Error('resposta inesperada');
+  const arr=JSON.parse(m[0]);
+  return arr.map(o=>({tipo:TIPOS.includes(o.tipo)?o.tipo:'Capa',kicker:o.kicker||'',title:o.title||'',body:o.body||''}));
+}
+
+/* ---------- salvar chave localmente ---------- */
+const apiKeyEl=document.getElementById('apiKey');
+try{ apiKeyEl.value=localStorage.getItem('ci_apikey')||''; }catch(e){}
+apiKeyEl.oninput=()=>{ try{ localStorage.setItem('ci_apikey',apiKeyEl.value); }catch(e){} };
+
+/* ---------- export ---------- */
+function renderTo(c,s){ c.width=W; c.height=H; TEMPLATES[state.template](c.getContext('2d'),s); }
+document.getElementById('btnExportOne').onclick=()=>{ const c=document.createElement('canvas'); renderTo(c,slide());
+  c.toBlob(b=>dl(b,`carrossel-${state.current+1}.png`),'image/png'); };
+document.getElementById('btnExportAll').onclick=async()=>{
+  for(let i=0;i<state.slides.length;i++){ const c=document.createElement('canvas'); renderTo(c,state.slides[i]);
+    await new Promise(r=>c.toBlob(b=>{ dl(b,`carrossel-${i+1}.png`); r(); },'image/png'));
+    await new Promise(r=>setTimeout(r,350)); }
 };
+function dl(blob,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
 
 /* ---------- boot ---------- */
-function boot(){ buildTemplatePicker(); buildSlides(); buildSwatches(); syncInputs(); render(); }
-if(document.fonts && document.fonts.ready){
-  document.fonts.load('800 86px Poppins, Arial, sans-serif').then(()=>document.fonts.ready).then(boot);
-  setTimeout(boot,1500);
-} else { boot(); }
+function boot(){ buildTemplatePicker(); buildSlides(); syncInputs(); render(); }
+boot();
 </script>
