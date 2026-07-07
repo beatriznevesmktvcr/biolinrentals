@@ -187,19 +187,19 @@ const TEMPLATES = {
 
     const M=80, maxW=W-M*2;
     ctx.textAlign='left'; ctx.textBaseline='alphabetic';
-    const titleLines = (ctx.font=f(400,90), wrap(ctx,s.title||'Seu título aqui',maxW));
-    const bodyLines  = s.body ? (ctx.font=f(400,38), wrap(ctx,s.body,maxW)) : [];
-    const TLH=96, BLH=52;
+    const titleLines = (ctx.font=f(400,76), wrap(ctx,s.title||'Seu título aqui',maxW));
+    const bodyLines  = s.body ? (ctx.font=f(400,35), wrap(ctx,s.body,maxW)) : [];
+    const TLH=82, BLH=45;
     let blockH = (s.kicker?66:0) + titleLines.length*TLH + (bodyLines.length? 30+bodyLines.length*BLH : 0);
     const bottomReserve = 150;                 // espaço do @handle
     let y = H - bottomReserve - blockH;
 
     if(s.kicker){ ctx.font=f(600,28); ctx.fillStyle='#fff';
       ctx.fillText(s.kicker.toUpperCase(), M, y+28); y+=64; }
-    ctx.fillStyle='#fff'; ctx.font=f(400,90);
-    y += drawLines(ctx,titleLines,M,y+74,TLH);
-    if(bodyLines.length){ ctx.fillStyle='rgba(255,255,255,0.92)'; ctx.font=f(400,38);
-      drawLines(ctx,bodyLines,M,y+42,BLH); }
+    ctx.fillStyle='#fff'; ctx.font=f(400,76);
+    y += drawLines(ctx,titleLines,M,y+62,TLH);
+    if(bodyLines.length){ ctx.fillStyle='rgba(255,255,255,0.92)'; ctx.font=f(400,35);
+      drawLines(ctx,bodyLines,M,y+40,BLH); }
 
     drawHandle(ctx);
   },
@@ -212,11 +212,11 @@ const TEMPLATES = {
     let y=H*0.34;
     if(s.kicker){ ctx.font=f(700,30); ctx.fillStyle='rgba(255,255,255,0.8)';
       ctx.fillText(s.kicker.toUpperCase(),M,y); y+=60; }
-    ctx.fillStyle='#fff'; ctx.font=f(400,92);
+    ctx.fillStyle='#fff'; ctx.font=f(400,78);
     const tl=wrap(ctx,s.title||'Frase de impacto',maxW);
-    y += drawLines(ctx,tl,M,y+90,104);
-    if(s.body){ ctx.font=f(400,42); ctx.fillStyle='rgba(255,255,255,0.9)';
-      drawLines(ctx,wrap(ctx,s.body,maxW),M,y+50,56); }
+    y += drawLines(ctx,tl,M,y+76,88);
+    if(s.body){ ctx.font=f(400,38); ctx.fillStyle='rgba(255,255,255,0.9)';
+      drawLines(ctx,wrap(ctx,s.body,maxW),M,y+48,48); }
     drawHandle(ctx);
   },
 };
