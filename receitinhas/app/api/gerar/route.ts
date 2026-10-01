@@ -12,6 +12,19 @@ const MODEL = "claude-opus-5-5";
 
 const client = new Anthropic();
 
+/** Permite que o receitinhas.html (WordPress ou outro site) chame esta rota. */
+const CORS = {
+  "Access-Control-Allow-Origin": process.env.ALLOWED_ORIGIN ?? "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+const json = (body: unknown, status = 200) => NextResponse.json(body, { status, headers: CORS });
+
+export function OPTIONS() {
+  return new Response(null, { status: 204, headers: CORS });
+}
+
 /** Regras de corte resumidas: a IA usa isso para dizer como servir cada ideia. */
 function guiaDeCortes(idade: keyof typeof IDADE_LABEL) {
   const fase = idade === "6m" ? "6m" : idade === "9m" ? "9m" : "12m";
@@ -38,14 +51,11 @@ export async function POST(req: Request) {
   try {
     pedido = PedidoSchema.parse(await req.json());
   } catch {
-    return NextResponse.json({ erro: "Pedido inválido. Confira os ingredientes e tente de novo." }, { status: 400 });
+    return json({ erro: "Pedido inválido. Confira os ingredientes e tente de novo." }, 400);
   }
 
   if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json(
-      { erro: "O gerador ainda não está configurado: falta a variável ANTHROPIC_API_KEY no servidor." },
-      { status: 503 },
-    );
+    return json({ erro: "O gerador ainda não está configurado: falta a variável ANTHROPIC_API_KEY no servidor." }, 503);
   }
 
   const restricoes =
@@ -76,29 +86,26 @@ export async function POST(req: Request) {
     });
 
     if (response.stop_reason === "refusal") {
-      return NextResponse.json(
-        { erro: "Não consegui gerar esse cardápio. Tente descrever os ingredientes de outra forma." },
-        { status: 422 },
-      );
+      return json({ erro: "Não consegui gerar esse cardápio. Tente descrever os ingredientes de outra forma." }, 422);
     }
     if (response.stop_reason === "max_tokens" || !response.parsed_output) {
-      return NextResponse.json({ erro: "A resposta veio incompleta. Tente de novo." }, { status: 502 });
+      return json({ erro: "A resposta veio incompleta. Tente de novo." }, 502);
     }
 
     const cardapio = CardapioSchema.parse(response.parsed_output);
-    return NextResponse.json({ cardapio });
+    return json({ cardapio });
   } catch (error) {
     if (error instanceof Anthropic.AuthenticationError) {
-      return NextResponse.json({ erro: "A chave da API está inválida. Verifique a ANTHROPIC_API_KEY." }, { status: 503 });
+      return json({ erro: "A chave da API está inválida. Verifique a ANTHROPIC_API_KEY." }, 503);
     }
     if (error instanceof Anthropic.RateLimitError) {
-      return NextResponse.json({ erro: "Muita gente cozinhando agora 🍳 Tente de novo em um minutinho." }, { status: 429 });
+      return json({ erro: "Muita gente cozinhando agora 🍳 Tente de novo em um minutinho." }, 429);
     }
     if (error instanceof Anthropic.APIError) {
       console.error("Erro da API Anthropic", error.status, error.message);
-      return NextResponse.json({ erro: "O gerador deu uma engasgadinha. Tente de novo." }, { status: 502 });
+      return json({ erro: "O gerador deu uma engasgadinha. Tente de novo." }, 502);
     }
     console.error("Erro inesperado ao gerar cardápio", error);
-    return NextResponse.json({ erro: "Algo deu errado. Tente de novo." }, { status: 500 });
+    return json({ erro: "Algo deu errado. Tente de novo." }, 500);
   }
 }

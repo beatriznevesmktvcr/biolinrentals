@@ -37,6 +37,18 @@ Sem a chave, o site inteiro funciona; só o gerador com IA mostra um aviso de "n
 3. Em **Environment Variables**, adicione `ANTHROPIC_API_KEY` com a chave criada em https://console.anthropic.com.
 4. Clique em **Deploy**. Pronto, você ganha um link `*.vercel.app` para compartilhar.
 
+## Versão em um arquivo só (`receitinhas.html`)
+
+O arquivo `receitinhas.html` tem a plataforma inteira (receitas, filtros, cortes seguros e gerador)
+em um único HTML, para abrir direto no navegador ou colar em um bloco "HTML personalizado" do WordPress.
+
+- Receitas e cortes funcionam sem nenhum servidor.
+- Para o gerador com IA funcionar, publique a pasta `receitinhas` na Vercel (passos acima) e troque a
+  linha `const API_URL = "https://SEU-APP.vercel.app/api/gerar"` no início do arquivo pelo endereço do
+  seu app. Opcionalmente, defina `ALLOWED_ORIGIN` na Vercel com o domínio do seu site para que só ele
+  possa usar a rota.
+- Depois de mudar receitas ou cortes em `data/`, gere o arquivo de novo com `npm run build:html`.
+
 ## Adicionando receitas
 
 Todas as receitas ficam em `data/receitas.ts`. Copie um bloco, mude os campos e marque as flags

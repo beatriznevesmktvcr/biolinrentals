@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receitinhas · ideias sem açúcar para as crianças</title>
+<meta name="description" content="Receitas sem açúcar e sal opcional para bebês e crianças, filtros para alergias (sem ovo, sem trigo, sem leite/APLV, sem banana), gerador de cardápio com IA e guia de cortes seguros de frutas.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ff8c7a'/%3E%3Cpath d='M12 38a20 14 0 0 0 40 0z' fill='%23fff8ef'/%3E%3Ccircle cx='24' cy='24' r='5' fill='%23b9ecd6'/%3E%3Ccircle cx='36' cy='20' r='5' fill='%23f6c2dc'/%3E%3Ccircle cx='44' cy='28' r='4' fill='%23fff0a6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fff8ef;--ink:#3d3a4a;--ink-soft:#6f6b7d;--coral:#ff8c7a;--coral-dark:#e86f5d;
+    --peach:#ffd8b8;--mint:#b9ecd6;--mint-dark:#3ea67c;--sky:#cfe6ff;--lilac:#dcd4ff;
+    --sun:#fff0a6;--berry:#f6c2dc;--radius:2rem;--shadow:0 10px 30px -12px rgba(61,58,74,.18);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;min-height:100vh;background:var(--cream);color:var(--ink);font-family:"Nunito",system-ui,sans-serif;line-height:1.5;
+    background-image:radial-gradient(circle at 10% 10%,rgba(255,216,184,.45),transparent 35%),radial-gradient(circle at 90% 20%,rgba(185,236,214,.4),transparent 30%),radial-gradient(circle at 70% 90%,rgba(220,212,255,.4),transparent 35%);background-attachment:fixed}
+  h1,h2,h3,h4,.display{font-family:"Fredoka",system-ui,sans-serif;margin:0;line-height:1.15}
+  h1{font-size:2.4rem}h2{font-size:1.8rem}h3{font-size:1.25rem}
+  @media(min-width:768px){h1{font-size:3.2rem}h2{font-size:2rem}}
+  p{margin:0}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;padding:0}
+  ul,ol{margin:0;padding-left:1.25rem}
+  .wrap{max-width:72rem;margin:0 auto;padding:0 1rem 4rem}
+  .muted{color:var(--ink-soft)}
+  .center{text-align:center}
+  .stack>*+*{margin-top:1rem}
+  .section{margin-top:3rem}
+  .grid{display:grid;gap:1.25rem}
+  .grid-2{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr}.grid-5{grid-template-columns:1fr}
+  @media(min-width:640px){.grid-2,.grid-3,.grid-5{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:1024px){.grid-3{grid-template-columns:repeat(3,1fr)}.grid-5{grid-template-columns:repeat(5,1fr)}}
+  .row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:2px solid rgba(61,58,74,.06);padding:1.25rem}
+  a.card,button.card{display:block;transition:transform .15s}
+  a.card:hover{transform:translateY(-4px)}
+  .chip{display:inline-flex;align-items:center;gap:.35rem;border-radius:999px;padding:.45rem .9rem;font-weight:700;font-size:.85rem;border:2px solid transparent;background:var(--cream);cursor:pointer;transition:transform .15s}
+  .chip:hover{transform:translateY(-1px)}
+  .chip.sm{font-size:.72rem;padding:.3rem .6rem}
+  .chip.on{background:var(--coral);color:#fff;box-shadow:0 6px 16px -8px var(--coral-dark)}
+  .chip.ink{background:var(--ink);color:#fff}
+  .chip.ring{box-shadow:0 0 0 2px rgba(61,58,74,.3)}
+  .bg-sun{background:var(--sun)}.bg-mint{background:var(--mint)}.bg-berry{background:var(--berry)}.bg-sky{background:var(--sky)}
+  .bg-peach{background:var(--peach)}.bg-lilac{background:var(--lilac)}.bg-white{background:#fff}.bg-mint-soft{background:rgba(185,236,214,.6)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:999px;padding:.8rem 1.4rem;font-weight:700;font-family:"Fredoka",sans-serif;cursor:pointer;transition:transform .15s,background .15s}
+  .btn:hover{transform:translateY(-2px)}.btn:disabled{opacity:.6;cursor:wait;transform:none}
+  .btn-primary{background:var(--coral);color:#fff;box-shadow:0 10px 24px -10px rgba(232,111,93,.7)}
+  .btn-primary:hover{background:var(--coral-dark)}
+  .btn-ghost{background:#fff;border:2px solid rgba(61,58,74,.1)}
+  .big{font-size:1.1rem}
+  .emoji{line-height:1}
+  .input{width:100%;border-radius:999px;border:2px solid rgba(61,58,74,.1);background:var(--cream);padding:.75rem 1.25rem;font:inherit;outline:none}
+  .input:focus{border-color:var(--coral)}
+  textarea.input{border-radius:1.5rem;resize:vertical}
+  .alert{border-radius:1rem;background:rgba(255,140,122,.15);border:1px solid rgba(255,140,122,.4);padding:.5rem .75rem;font-size:.9rem}
+  .note{border-radius:1rem;background:rgba(185,236,214,.4);padding:.5rem .75rem;font-size:.9rem}
+  .label{font-weight:800;display:block;margin-bottom:.5rem}
+  nav{position:sticky;top:0;z-index:40;backdrop-filter:blur(8px);background:rgba(255,248,239,.85);border-bottom:1px solid rgba(61,58,74,.05)}
+  nav .bar{max-width:72rem;margin:0 auto;padding:0 1rem;height:4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .brand{font-family:"Fredoka",sans-serif;font-size:1.5rem;font-weight:700;color:var(--coral-dark);display:flex;align-items:center;gap:.5rem}
+  .links{display:none;gap:.25rem}
+  .menu-btn{display:inline-flex}
+  @media(min-width:768px){.links{display:flex}.menu-btn{display:none}}
+  .links .chip{background:rgba(255,255,255,.7)}
+  .links .chip.on{background:var(--coral);color:#fff}
+  .mobile-links{display:flex;flex-wrap:wrap;gap:.5rem;padding:0 1rem 1rem}
+  .mobile-links .chip{background:#fff}
+  .hidden{display:none!important}
+  .step{display:flex;gap:.75rem;margin-bottom:.75rem}
+  .step b{flex:none;width:2rem;height:2rem;border-radius:50%;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Fredoka",sans-serif}
+  footer{text-align:center;font-size:.85rem;color:var(--ink-soft);padding:0 1rem 2rem;max-width:42rem;margin:0 auto}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+  .float{display:inline-block;animation:float 4s ease-in-out infinite}
+  @keyframes pop{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+  .pop{animation:pop .25s ease-out both}
+  @keyframes dots{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+  .dot{display:inline-block;width:.5rem;height:.5rem;border-radius:50%;background:var(--coral);animation:dots 1.2s infinite ease-in-out}
+  @media print{nav,footer,.no-print{display:none!important}body{background:#fff}.print-show{display:block!important}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="bar">
+    <a href="#inicio" class="brand"><span class="float" aria-hidden="true">🥣</span>Receitinhas</a>
+    <div class="links" id="links"></div>
+    <button class="chip menu-btn" id="menu-btn" aria-label="Abrir menu">☰ Menu</button>
+  </div>
+  <div class="mobile-links hidden" id="mobile-links"></div>
+</nav>
+<main class="wrap" id="app"></main>
+<footer>
+  Feito com carinho para mães e pais. As informações aqui são educativas e não substituem a orientação do pediatra ou nutricionista da sua família. Em caso de alergia, converse sempre com o médico antes de introduzir alimentos novos.
+</footer>
+
+<script>
+/* ============================================================
+   CONFIGURAÇÃO
+   Para o gerador com IA funcionar, publique a pasta "receitinhas"
+   na Vercel (veja o README) e coloque aqui o endereço do seu app:
+   ============================================================ */
+const API_URL = "https://SEU-APP.vercel.app/api/gerar";
+
+const DATA = {"receitas":[{"slug":"panqueca-de-banana-e-aveia","nome":"Panqueca de banana e aveia","emoji":"🥞","refeicao":"cafe","idadeMin":"6m","tempo":15,"rende":"6 panquecas pequenas","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":false,"ingredientes":["1 banana madura","1 ovo","3 colheres (sopa) de farinha de aveia","Canela a gosto (opcional)","Azeite ou óleo de coco para untar"],"modo":["Amasse bem a banana com um garfo.","Misture o ovo e a farinha de aveia até ficar uma massinha.","Aqueça uma frigideira antiaderente untada em fogo baixo.","Coloque colheradas da massa e doure 2 minutos de cada lado."],"dicas":["Para bebês de 6 a 9 meses, corte em tiras do tamanho do dedo.","Dá para congelar prontas e esquentar na frigideira."]},{"slug":"panqueca-de-aveia-sem-ovo","nome":"Panqueca de aveia e maçã (sem ovo)","emoji":"🍎","refeicao":"cafe","idadeMin":"6m","tempo":20,"rende":"6 panquecas pequenas","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1/2 xícara de farinha de aveia","1/2 maçã ralada com casca","1 colher (sopa) de chia","1/2 xícara de água ou leite vegetal (aveia, coco)","Canela a gosto (opcional)"],"modo":["Misture a chia com a água e deixe 5 minutos até virar um gel.","Junte a farinha de aveia, a maçã ralada e a canela.","Em frigideira antiaderente untada, em fogo baixo, faça panquecas pequenas.","Doure 2 a 3 minutos de cada lado, até firmar."],"dicas":["Essa é a receita coringa: serve para todas as restrições."]},{"slug":"mingau-de-aveia-com-maca","nome":"Mingau de aveia com maçã","emoji":"🥣","refeicao":"cafe","idadeMin":"6m","tempo":10,"rende":"1 porção","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["3 colheres (sopa) de aveia em flocos finos","200 ml de leite vegetal (aveia ou coco) ou água","1/2 maçã picadinha","1 pitada de canela"],"modo":["Leve a aveia, o líquido e a maçã ao fogo baixo.","Mexa sempre por 5 minutos, até engrossar.","Finalize com canela e espere amornar."],"trocas":["Para quem não tem APLV, pode usar leite de vaca após 1 ano."],"dicas":["Para 6 meses, bata no liquidificador para ficar mais lisinho."]},{"slug":"omelete-de-forno-com-legumes","nome":"Omelete de forno com legumes","emoji":"🍳","refeicao":"cafe","idadeMin":"6m","tempo":25,"rende":"6 quadradinhos","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["3 ovos","1/2 cenoura ralada","1/2 abobrinha ralada","1 colher (sopa) de azeite","Salsinha ou orégano","Sal: opcional, só acima de 1 ano"],"modo":["Bata os ovos com um garfo e misture os legumes ralados e o tempero.","Despeje em forminha untada com azeite.","Asse a 180 °C por 15 a 20 minutos, até firmar.","Corte em quadradinhos ou tiras."],"dicas":["Troque os legumes pelo que tiver na geladeira: espinafre, brócolis, milho."]},{"slug":"paozinho-de-abobora-e-aveia","nome":"Pãozinho de abóbora e aveia","emoji":"🎃","refeicao":"cafe","idadeMin":"9m","tempo":40,"rende":"8 pãezinhos","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 xícara de abóbora cozida e amassada","1 e 1/2 xícara de farinha de aveia","1 colher (sopa) de chia hidratada em 3 colheres de água","2 colheres (sopa) de azeite","1 colher (chá) de fermento químico"],"modo":["Misture a abóbora, o azeite e a chia hidratada.","Acrescente a farinha de aveia aos poucos até dar ponto de enrolar.","Junte o fermento, modele bolinhas e coloque em assadeira untada.","Asse a 180 °C por 25 minutos, até dourar levemente."]},{"slug":"papinha-de-mamao-com-chia","nome":"Mamão amassado com chia","emoji":"🧡","refeicao":"cafe","idadeMin":"6m","tempo":5,"rende":"1 porção","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 fatia de mamão maduro","1 colher (chá) de chia"],"modo":["Amasse o mamão com um garfo.","Misture a chia e deixe 5 minutos para hidratar.","Sirva na colher ou deixe o bebê pegar com a mão."],"dicas":["Para BLW, ofereça o mamão em tiras grossas em vez de amassado."]},{"slug":"crepioca-simples","nome":"Crepioca","emoji":"🌮","refeicao":"cafe","idadeMin":"6m","tempo":10,"rende":"1 crepioca","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 ovo","2 colheres (sopa) de goma de tapioca","1 colher (sopa) de água","Orégano (opcional)"],"modo":["Misture tudo com um garfo.","Despeje em frigideira antiaderente em fogo baixo.","Quando firmar, vire e doure o outro lado.","Corte em tiras para o bebê pegar."],"dicas":["Pode rechear com abacate amassado ou frango desfiado."]},{"slug":"iogurte-com-frutas","nome":"Iogurte natural com frutas","emoji":"🍓","refeicao":"cafe","idadeMin":"6m","tempo":5,"rende":"1 porção","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 pote de iogurte natural integral sem açúcar (ou iogurte de coco para APLV)","Morangos ou manga picadinhos","1 colher (chá) de aveia em flocos (opcional)"],"modo":["Pique a fruta bem pequena ou amasse.","Misture no iogurte e polvilhe a aveia."],"trocas":["APLV: use iogurte de coco ou de amêndoas sem açúcar."]},{"slug":"bolinho-de-maca-e-aveia","nome":"Bolinho de maçã e aveia","emoji":"🧁","refeicao":"cafe","idadeMin":"9m","tempo":35,"rende":"8 bolinhos","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["2 ovos","1 maçã ralada","1 xícara de farinha de aveia","3 colheres (sopa) de óleo de coco ou azeite","1 colher (chá) de canela","1 colher (chá) de fermento químico"],"modo":["Bata os ovos com o óleo.","Misture a maçã, a farinha de aveia e a canela.","Por último, o fermento. Distribua em forminhas.","Asse a 180 °C por 20 a 25 minutos."]},{"slug":"vitamina-de-abacate-com-cacau","nome":"Vitamina de abacate com cacau","emoji":"🥑","refeicao":"cafe","idadeMin":"9m","tempo":5,"rende":"1 copo","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1/2 abacate pequeno","150 ml de leite vegetal (aveia ou coco)","1 colher (chá) de cacau 100%","1 tâmara sem caroço (opcional)"],"modo":["Bata tudo no liquidificador até ficar cremoso.","Sirva no copinho ou na colher."],"dicas":["Para quem não tem APLV, leite de vaca integral após 1 ano."]},{"slug":"overnight-oats-de-morango","nome":"Aveia de geladeira com morango","emoji":"🫐","refeicao":"cafe","idadeMin":"9m","tempo":5,"rende":"1 porção (deixar de um dia para o outro)","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["3 colheres (sopa) de aveia em flocos","100 ml de leite vegetal ou iogurte de coco","1 colher (chá) de chia","4 morangos picados"],"modo":["Misture tudo num potinho com tampa.","Deixe na geladeira de um dia para o outro.","De manhã, mexa e sirva."]},{"slug":"tapioca-de-coco","nome":"Tapioquinha de coco","emoji":"🥥","refeicao":"cafe","idadeMin":"9m","tempo":10,"rende":"1 tapioca","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["3 colheres (sopa) de goma de tapioca hidratada","1 colher (sopa) de coco ralado sem açúcar","Mamão ou manga amassados para rechear"],"modo":["Espalhe a goma na frigideira quente, em fogo baixo, e salpique o coco.","Quando grudar e virar um disco, vire e doure o outro lado.","Recheie com a fruta amassada e enrole."],"dicas":["Corte em rolinhos do tamanho do dedo para o bebê segurar."]},{"slug":"bolinho-de-arroz-com-legumes","nome":"Bolinho de arroz com legumes","emoji":"🍙","refeicao":"almoco","idadeMin":"9m","tempo":25,"rende":"8 bolinhos","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 xícara de arroz cozido (pode ser sobra)","1 ovo","1/2 cenoura ralada fininha","2 colheres (sopa) de farinha de aveia","Salsinha picada","Azeite para untar"],"modo":["Misture tudo numa tigela até dar liga.","Modele bolinhos achatados com as mãos molhadas.","Doure em frigideira untada, fogo baixo, 3 minutos de cada lado, ou asse a 200 °C por 20 minutos."]},{"slug":"almondegas-de-carne-com-aveia","nome":"Almôndegas de carne com aveia","emoji":"🍖","refeicao":"almoco","idadeMin":"6m","tempo":30,"rende":"12 almôndegas","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["300 g de carne moída magra","3 colheres (sopa) de farinha de aveia","2 colheres (sopa) de água","1/4 de cebola bem picadinha","1 dente de alho amassado","Salsinha ou cebolinha","Sal: opcional, só acima de 1 ano"],"modo":["Misture tudo com as mãos até ficar homogêneo.","Modele almôndegas alongadas (formato de dedo) para bebês de 6 a 9 meses.","Asse a 200 °C por 20 minutos ou cozinhe no molho de tomate caseiro."],"dicas":["A aveia substitui o ovo e o pão na liga. Congela muito bem."]},{"slug":"risotinho-de-abobora","nome":"Risotinho de abóbora","emoji":"🎃","refeicao":"almoco","idadeMin":"6m","tempo":30,"rende":"4 porções","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1/2 xícara de arroz","1 xícara de abóbora em cubos","1/4 de cebola picada","1 colher (sopa) de azeite","2 xícaras de água quente","Salsinha"],"modo":["Refogue a cebola no azeite, junte o arroz e a abóbora.","Vá colocando a água aos poucos, mexendo, até o arroz ficar bem macio.","Amasse um pouco da abóbora para ficar cremoso. Finalize com salsinha."],"dicas":["Para 6 meses, deixe bem cremoso. Para maiores, grãos mais soltos."]},{"slug":"pure-de-batata-doce-com-frango","nome":"Purê de batata-doce com frango desfiado","emoji":"🍠","refeicao":"almoco","idadeMin":"6m","tempo":30,"rende":"3 porções","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 batata-doce média","1 filé pequeno de frango","1 colher (sopa) de azeite","Alho e cebola para o frango","Cebolinha"],"modo":["Cozinhe a batata-doce em pedaços até ficar bem macia e amasse com o azeite.","Cozinhe o frango com alho e cebola em pouca água, desfie bem fininho.","Sirva o purê com o frango por cima."],"trocas":["O azeite dá cremosidade sem precisar de manteiga ou leite."]},{"slug":"hamburguer-de-feijao","nome":"Hambúrguer de feijão","emoji":"🫘","refeicao":"almoco","idadeMin":"9m","tempo":25,"rende":"6 hambúrgueres pequenos","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 xícara de feijão cozido e escorrido","3 colheres (sopa) de farinha de aveia","1/4 de cebola picadinha","1 pitada de cominho","Azeite para dourar"],"modo":["Amasse o feijão com um garfo (deixe pedacinhos).","Misture a aveia, a cebola e o cominho até dar liga.","Modele discos pequenos e doure em frigideira untada, 3 minutos de cada lado."]},{"slug":"macarrao-com-molho-de-tomate-caseiro","nome":"Macarrãozinho com molho de tomate caseiro","emoji":"🍝","refeicao":"almoco","idadeMin":"9m","tempo":30,"rende":"3 porções","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 xícara de macarrão de arroz ou de milho (sem trigo)","3 tomates maduros sem pele","1/4 de cebola","1 dente de alho","1 colher (sopa) de azeite","Manjericão fresco"],"modo":["Refogue cebola e alho no azeite, junte os tomates picados e cozinhe 15 minutos.","Amasse ou bata o molho. Finalize com manjericão.","Cozinhe o macarrão, misture ao molho e sirva."],"trocas":["Sem restrição a trigo? Pode usar macarrão comum (parafuso ou penne)."]},{"slug":"nuggets-de-frango-caseiro","nome":"Nuggets de frango caseiros","emoji":"🍗","refeicao":"almoco","idadeMin":"9m","tempo":35,"rende":"12 nuggets","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["300 g de peito de frango moído ou batido","1 ovo","4 colheres (sopa) de farinha de aveia (para a massa)","Aveia em flocos para empanar","Alho, cebola e salsinha","Azeite para untar"],"modo":["Misture o frango, o ovo, a farinha de aveia e os temperos.","Modele tirinhas e passe nos flocos de aveia.","Asse em assadeira untada a 200 °C por 20 minutos, virando na metade."]},{"slug":"sopa-cremosa-de-legumes-com-lentilha","nome":"Sopa cremosa de legumes com lentilha","emoji":"🍲","refeicao":"almoco","idadeMin":"6m","tempo":35,"rende":"4 porções","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1/2 xícara de lentilha","1 cenoura","1 batata","1 pedaço de abóbora","1/4 de cebola e 1 dente de alho","1 colher (sopa) de azeite","Água até cobrir"],"modo":["Refogue cebola e alho no azeite.","Junte os legumes picados, a lentilha e água. Cozinhe 25 minutos.","Amasse com garfo (6 meses: bata para ficar lisinho)."]},{"slug":"peixe-assado-com-batata-e-cenoura","nome":"Peixe assado com batata e cenoura","emoji":"🐟","refeicao":"almoco","idadeMin":"6m","tempo":35,"rende":"3 porções","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 filé de peixe sem espinhas (tilápia, pescada)","1 batata em palitos","1 cenoura em palitos","Azeite, alho, limão e salsinha"],"modo":["Coloque o peixe e os legumes numa assadeira, regue com azeite, alho e um pouco de limão.","Asse a 200 °C por 25 minutos, até os legumes ficarem macios.","Desfie o peixe com um garfo, conferindo espinhas."]},{"slug":"escondidinho-de-mandioca-com-carne","nome":"Escondidinho de mandioca com carne","emoji":"🥘","refeicao":"almoco","idadeMin":"9m","tempo":45,"rende":"4 porções","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["2 xícaras de mandioca cozida","2 colheres (sopa) de azeite","200 g de carne moída","Cebola, alho e tomate picados","Cheiro-verde"],"modo":["Amasse a mandioca ainda quente com o azeite e um pouco da água do cozimento.","Refogue a carne com cebola, alho e tomate.","Monte: carne embaixo, purê em cima. Leve ao forno 15 minutos a 200 °C."],"trocas":["O azeite substitui manteiga e leite no purê."]},{"slug":"omelete-de-espinafre","nome":"Omelete de espinafre","emoji":"🥬","refeicao":"almoco","idadeMin":"6m","tempo":10,"rende":"1 omelete","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["2 ovos","1 punhado de espinafre picado","1 colher (sopa) de cebola picadinha","Azeite"],"modo":["Refogue a cebola e o espinafre no azeite.","Junte os ovos batidos e cozinhe em fogo baixo até firmar.","Vire, doure e corte em tiras."]},{"slug":"falafel-de-forno","nome":"Bolinho de grão-de-bico de forno","emoji":"🧆","refeicao":"almoco","idadeMin":"9m","tempo":30,"rende":"12 bolinhos","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 xícara de grão-de-bico cozido","2 colheres (sopa) de farinha de aveia","Salsinha e coentro","1 dente de alho","1 colher (sopa) de azeite","1 pitada de cominho"],"modo":["Bata tudo no processador até virar uma pasta grossa.","Modele bolinhos e coloque em assadeira untada.","Asse a 200 °C por 20 minutos, virando na metade."]},{"slug":"arroz-colorido-com-frango","nome":"Arroz colorido com frango e legumes","emoji":"🌈","refeicao":"almoco","idadeMin":"9m","tempo":30,"rende":"4 porções","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 xícara de arroz cozido","1 filé de frango em cubinhos","1/2 cenoura, 1/2 abobrinha e milho cozidos","Cebola, alho, azeite e cheiro-verde"],"modo":["Refogue o frango com cebola e alho até dourar.","Junte os legumes picadinhos e o arroz, misture bem.","Finalize com cheiro-verde."]},{"slug":"frango-cremoso-com-abobora","nome":"Frango cremoso com creme de abóbora","emoji":"🍛","refeicao":"almoco","idadeMin":"9m","tempo":35,"rende":"4 porções","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["2 filés de frango em tiras","1 xícara de abóbora cozida","1/2 xícara de água do cozimento da abóbora","Cebola, alho e azeite","Salsinha"],"modo":["Bata a abóbora com a água até virar um creme.","Refogue o frango com cebola e alho no azeite.","Junte o creme de abóbora e cozinhe 5 minutos. Sirva com arroz."],"trocas":["O creme de abóbora faz as vezes do creme de leite, sem lactose."]},{"slug":"bolinho-de-banana-sem-ovo","nome":"Bolinho de banana e cacau (sem ovo)","emoji":"🍌","refeicao":"lanche","idadeMin":"9m","tempo":30,"rende":"8 bolinhos","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":false,"ingredientes":["2 bananas maduras","1 xícara de farinha de aveia","1 colher (sopa) de cacau 100%","2 colheres (sopa) de óleo de coco","1 colher (chá) de fermento químico"],"modo":["Amasse as bananas e misture o óleo de coco.","Junte a farinha de aveia, o cacau e, por último, o fermento.","Distribua em forminhas e asse a 180 °C por 20 minutos."]},{"slug":"cookies-de-aveia-e-maca","nome":"Cookies de aveia e maçã","emoji":"🍪","refeicao":"lanche","idadeMin":"9m","tempo":30,"rende":"12 cookies","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 xícara de aveia em flocos","1 maçã ralada com casca","2 colheres (sopa) de óleo de coco","1 colher (chá) de canela","2 colheres (sopa) de uva-passa picadinha (opcional)"],"modo":["Misture tudo e deixe descansar 10 minutos para a aveia hidratar.","Modele discos achatados em assadeira forrada.","Asse a 180 °C por 20 minutos, até firmar."],"dicas":["Uva-passa inteira é risco de engasgo: sempre bem picadinha."]},{"slug":"picole-de-manga-e-coco","nome":"Picolé de manga e coco","emoji":"🍧","refeicao":"lanche","idadeMin":"9m","tempo":10,"rende":"4 picolés (mais 4 h de freezer)","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 manga madura","100 ml de leite de coco"],"modo":["Bata a manga com o leite de coco.","Coloque em forminhas de picolé e congele por 4 horas."],"dicas":["Ótimo para aliviar a gengiva na fase dos dentinhos."]},{"slug":"chips-de-batata-doce","nome":"Chips de batata-doce assados","emoji":"🍠","refeicao":"lanche","idadeMin":"9m","tempo":30,"rende":"1 tigela","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 batata-doce","1 colher (sopa) de azeite","Orégano ou páprica doce"],"modo":["Corte a batata-doce em palitos ou fatias finas.","Misture com azeite e tempero.","Asse a 200 °C por 25 minutos, virando na metade, até ficarem macias por dentro."],"dicas":["Deixe macio por dentro, não crocante demais: chips muito duros podem engasgar."]},{"slug":"homus-com-palitinhos","nome":"Pastinha de grão-de-bico com palitinhos","emoji":"🥕","refeicao":"lanche","idadeMin":"6m","tempo":15,"rende":"1 potinho","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 xícara de grão-de-bico cozido","2 colheres (sopa) de azeite","Suco de 1/2 limão","1 dente de alho pequeno","Palitos de cenoura cozida e pepino"],"modo":["Bata o grão-de-bico com azeite, limão, alho e um pouco de água até ficar cremoso.","Sirva com palitos de cenoura cozida (macia) para o bebê mergulhar."]},{"slug":"bolo-de-cenoura-sem-acucar","nome":"Bolo de cenoura sem açúcar","emoji":"🎂","refeicao":"lanche","idadeMin":"12m","tempo":50,"rende":"1 bolo pequeno","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["2 cenouras médias","3 ovos","1/2 xícara de óleo de coco ou azeite suave","6 tâmaras sem caroço (hidratadas em água quente)","2 xícaras de farinha de aveia","1 colher (sopa) de fermento químico"],"modo":["Bata no liquidificador a cenoura, os ovos, o óleo e as tâmaras.","Numa tigela, misture com a farinha de aveia e depois o fermento.","Asse em forma untada a 180 °C por 35 a 40 minutos."],"dicas":["As tâmaras adoçam de forma natural: usamos só o suficiente e indicamos a partir de 1 ano."]},{"slug":"muffin-de-cenoura-e-laranja-sem-ovo","nome":"Muffin de cenoura e laranja (sem ovo)","emoji":"🍊","refeicao":"lanche","idadeMin":"9m","tempo":35,"rende":"8 muffins","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 cenoura ralada fininha","Suco de 1 laranja","1 colher (sopa) de linhaça moída + 3 colheres de água","1 xícara de farinha de aveia","3 colheres (sopa) de óleo de coco","1 colher (chá) de fermento químico"],"modo":["Misture a linhaça com a água e espere 5 minutos.","Junte a cenoura, o suco, o óleo e a farinha de aveia.","Acrescente o fermento, coloque nas forminhas e asse a 180 °C por 25 minutos."]},{"slug":"paozinho-de-batata-doce-com-polvilho","nome":"Pãozinho de batata-doce com polvilho","emoji":"🥔","refeicao":"lanche","idadeMin":"9m","tempo":40,"rende":"12 pãezinhos","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 xícara de batata-doce cozida e amassada","1 xícara de polvilho doce","3 colheres (sopa) de azeite","Orégano (opcional)"],"modo":["Misture a batata-doce ainda morna com o azeite.","Adicione o polvilho aos poucos até dar ponto de enrolar.","Faça bolinhas e asse a 180 °C por 25 minutos."],"dicas":["É o 'pão de queijo' sem queijo: perfeito para APLV."]},{"slug":"gelatina-de-frutas-com-agar","nome":"Gelatina de frutas com ágar-ágar","emoji":"🍮","refeicao":"lanche","idadeMin":"12m","tempo":15,"rende":"4 potinhos (mais 2 h de geladeira)","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["300 ml de suco natural de laranja ou morango batido e coado","1 colher (chá) de ágar-ágar em pó","Pedacinhos de fruta (opcional)"],"modo":["Misture o ágar-ágar no suco frio e leve ao fogo, mexendo, até ferver por 1 minuto.","Despeje em potinhos com os pedacinhos de fruta.","Deixe firmar na geladeira por 2 horas."]},{"slug":"smoothie-verde-de-pera","nome":"Smoothie de pera e espinafre","emoji":"🍐","refeicao":"lanche","idadeMin":"9m","tempo":5,"rende":"1 copo","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1 pera madura sem sementes","1 punhado de espinafre","100 ml de água de coco ou leite vegetal","1 colher (chá) de aveia"],"modo":["Bata tudo no liquidificador.","Sirva no copinho de transição."]},{"slug":"panquequinha-de-abobora","nome":"Panquequinha de abóbora","emoji":"🥞","refeicao":"lanche","idadeMin":"6m","tempo":15,"rende":"6 panquecas pequenas","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1/2 xícara de abóbora cozida e amassada","1 ovo","3 colheres (sopa) de farinha de aveia","Canela (opcional)"],"modo":["Misture tudo até formar uma massa.","Em frigideira antiaderente untada, fogo baixo, doure 2 minutos de cada lado."]},{"slug":"bolinho-de-banana-com-ovo","nome":"Bolinho de banana com ovo","emoji":"🧁","refeicao":"lanche","idadeMin":"9m","tempo":30,"rende":"8 bolinhos","semOvo":false,"semTrigo":true,"semLeite":true,"semBanana":false,"ingredientes":["2 bananas maduras","2 ovos","1 xícara de farinha de aveia","2 colheres (sopa) de azeite","1 colher (chá) de canela","1 colher (chá) de fermento químico"],"modo":["Amasse as bananas e misture os ovos e o azeite.","Junte a farinha de aveia e a canela. Por último o fermento.","Asse em forminhas a 180 °C por 20 minutos."]},{"slug":"abacate-amassado-com-limao","nome":"Abacate amassado com limão","emoji":"🥑","refeicao":"lanche","idadeMin":"6m","tempo":5,"rende":"1 porção","semOvo":true,"semTrigo":true,"semLeite":true,"semBanana":true,"ingredientes":["1/2 abacate maduro","Gotinhas de limão"],"modo":["Amasse o abacate com o garfo e pingue o limão.","Sirva na colher ou em tiras grossas para o bebê segurar."],"dicas":["Passe o abacate em aveia em flocos para não escorregar da mãozinha."]}],"frutas":[{"slug":"banana","nome":"Banana","emoji":"🍌","cor":"#f8e7a1","fases":{"6m":{"forma":"palito","texto":"Meia banana descascada em palito, ou deixe um pedaço da casca como 'cabo' para o bebê segurar."},"9m":{"forma":"cubinhos","texto":"Pedacinhos pequenos para treinar a pinça."},"12m":{"forma":"meia-lua","texto":"Rodelas ou pedaços cortados ao meio."}},"dica":"Escorrega da mão? Passe o palito em aveia em flocos ou coco ralado."},{"slug":"maca","nome":"Maçã","emoji":"🍎","cor":"#fbe3c4","fases":{"6m":{"forma":"palito","texto":"Sempre cozida ou assada até ficar bem macia, em palitos. Crua, só ralada fininha."},"9m":{"forma":"cubinhos","texto":"Cozida em cubinhos, ou crua ralada."},"12m":{"forma":"fatia-fina","texto":"Crua em fatias bem finas, sem casca. Pedaços grossos de maçã crua só depois dos 4 anos."}},"alerta":"Maçã crua e dura é uma das principais causas de engasgo em bebês."},{"slug":"pera","nome":"Pera","emoji":"🍐","cor":"#e9f0c2","fases":{"6m":{"forma":"palito","texto":"Bem madura e macia em palitos. Se estiver dura, cozinhe no vapor."},"9m":{"forma":"cubinhos","texto":"Madura em cubinhos pequenos."},"12m":{"forma":"fatia-fina","texto":"Fatias finas, sem sementes."}}},{"slug":"mamao","nome":"Mamão","emoji":"🧡","cor":"#ffb48a","fases":{"6m":{"forma":"palito","texto":"Palitos grossos, sem sementes. É macio e perfeito para começar."},"9m":{"forma":"cubinhos","texto":"Cubinhos pequenos."},"12m":{"forma":"cubinhos","texto":"Cubos um pouco maiores."}}},{"slug":"manga","nome":"Manga","emoji":"🥭","cor":"#ffcf5c","fases":{"6m":{"forma":"palito","texto":"Palitos grossos de manga madura, ou o caroço com um pouco de polpa para chupar (com supervisão)."},"9m":{"forma":"cubinhos","texto":"Cubinhos pequenos."},"12m":{"forma":"cubinhos","texto":"Cubos ou fatias."}},"dica":"Manga fibrosa pode ser difícil: prefira variedades macias como palmer ou tommy bem madura."},{"slug":"melancia","nome":"Melancia","emoji":"🍉","cor":"#ff8a8a","fases":{"6m":{"forma":"palito","texto":"Palitos sem sementes, ou um triângulo com a casca como 'cabo'."},"9m":{"forma":"cubinhos","texto":"Cubinhos pequenos, sem nenhuma semente."},"12m":{"forma":"cubinhos","texto":"Cubos ou fatias finas sem sementes."}},"alerta":"Retire TODAS as sementes, inclusive as brancas."},{"slug":"melao","nome":"Melão","emoji":"🍈","cor":"#e4f2b0","fases":{"6m":{"forma":"palito","texto":"Palitos grossos de melão maduro."},"9m":{"forma":"cubinhos","texto":"Cubinhos pequenos."},"12m":{"forma":"cubinhos","texto":"Cubos ou fatias."}}},{"slug":"morango","nome":"Morango","emoji":"🍓","cor":"#ff7a90","fases":{"6m":{"forma":"pedaco-grande","texto":"Morango grande e maduro inteiro (maior que a boca do bebê), ou amassado. Morango pequeno: cortado em 4."},"9m":{"forma":"quartos","texto":"Cortado em 4 no comprimento, ou em pedacinhos."},"12m":{"forma":"quartos","texto":"Em quartos ou metades no comprimento. Inteiro pequeno só depois dos 4 anos."}}},{"slug":"uva","nome":"Uva","emoji":"🍇","cor":"#c6a3e3","fases":{"6m":{"forma":"esmagado","texto":"Esmagada ou cortada em 4 no comprimento, sem casca e sem sementes."},"9m":{"forma":"quartos","texto":"Sempre em 4 no comprimento."},"12m":{"forma":"quartos","texto":"Sempre em 4 no comprimento, até os 5 anos."}},"alerta":"Uva inteira ou cortada ao meio na largura é um dos maiores riscos de engasgo. Sempre em 4, no sentido do comprimento."},{"slug":"abacate","nome":"Abacate","emoji":"🥑","cor":"#c5e39a","fases":{"6m":{"forma":"palito","texto":"Palitos grossos de abacate maduro, ou amassado na colher."},"9m":{"forma":"cubinhos","texto":"Cubinhos pequenos."},"12m":{"forma":"fatia-fina","texto":"Fatias ou cubos."}},"dica":"Passe em aveia em flocos para não escorregar da mão."},{"slug":"laranja","nome":"Laranja e tangerina","emoji":"🍊","cor":"#ffb15c","fases":{"6m":{"forma":"pedaco-grande","texto":"Um quarto da laranja com a casca para segurar, sem sementes. Ou gomo grande sem a pele fininha."},"9m":{"forma":"cubinhos","texto":"Gomos sem a pele fininha e sem sementes, cortados em pedacinhos."},"12m":{"forma":"cubinhos","texto":"Gomos picados, sem sementes."}},"alerta":"A película dos gomos pode grudar no céu da boca: retire enquanto o bebê for pequeno."},{"slug":"kiwi","nome":"Kiwi","emoji":"🥝","cor":"#b7e08a","fases":{"6m":{"forma":"palito","texto":"Bem maduro, sem casca, em palitos ou metade grande."},"9m":{"forma":"cubinhos","texto":"Cubinhos pequenos."},"12m":{"forma":"fatia-fina","texto":"Fatias finas ou cubos."}}},{"slug":"pessego","nome":"Pêssego, ameixa e nectarina","emoji":"🍑","cor":"#ffcf9e","fases":{"6m":{"forma":"palito","texto":"Madura, sem casca e SEM caroço, em palitos ou metade grande."},"9m":{"forma":"cubinhos","texto":"Cubinhos pequenos, sem caroço."},"12m":{"forma":"fatia-fina","texto":"Fatias finas, sem caroço."}},"alerta":"Sempre retire o caroço antes de oferecer."},{"slug":"mirtilo","nome":"Mirtilo (blueberry)","emoji":"🫐","cor":"#9aa7e6","fases":{"6m":{"forma":"esmagado","texto":"Esmagado com o dedo até achatar."},"9m":{"forma":"esmagado","texto":"Esmagado ou cortado ao meio."},"12m":{"forma":"quartos","texto":"Cortado ao meio ou em 4 até os 4 anos."}},"alerta":"Redondo e firme: nunca inteiro para menores de 4 anos."},{"slug":"tomate-cereja","nome":"Tomate-cereja","emoji":"🍅","cor":"#ff8c7a","fases":{"6m":{"forma":"quartos","texto":"Em 4 no comprimento, sem a pele se possível. Tomate grande: em meia-lua."},"9m":{"forma":"quartos","texto":"Sempre em 4 no comprimento."},"12m":{"forma":"quartos","texto":"Sempre em 4 no comprimento, até os 5 anos."}},"alerta":"Mesma regra da uva: nunca inteiro ou ao meio."},{"slug":"cereja","nome":"Cereja","emoji":"🍒","cor":"#e0556f","fases":{"6m":{"forma":"esmagado","texto":"Sem caroço, esmagada ou picadinha."},"9m":{"forma":"quartos","texto":"Sem caroço, em 4."},"12m":{"forma":"quartos","texto":"Sem caroço, em 4 até os 5 anos."}},"alerta":"O caroço é pequeno e redondo: tire sempre, sem exceção."},{"slug":"abacaxi","nome":"Abacaxi","emoji":"🍍","cor":"#ffe08a","fases":{"6m":{"forma":"palito","texto":"Palito grande e fino, bem maduro, sem o miolo. Sirva com supervisão."},"9m":{"forma":"cubinhos","texto":"Cubinhos bem pequenos, sem fibras."},"12m":{"forma":"cubinhos","texto":"Cubos pequenos."}},"dica":"Ácido demais pode irritar a pele ao redor da boca: ofereça pouco no começo."}],"regras":[{"emoji":"🪑","titulo":"Sentado e acordado","texto":"Bebê sempre sentadinho, com o tronco reto, nunca deitado ou no carrinho em movimento."},{"emoji":"👀","titulo":"Nunca sozinho","texto":"Um adulto sempre ao lado, olhando. Nada de celular na hora da comida."},{"emoji":"⭕","titulo":"Redondo e duro, nunca","texto":"Uva, tomate-cereja, mirtilo, cereja: sempre em 4 no comprimento. Nozes inteiras, pipoca e balas: só depois dos 5 anos."},{"emoji":"🍯","titulo":"Sem mel antes de 1 ano","texto":"Risco de botulismo. E sem açúcar nenhum até os 2 anos, segundo o Ministério da Saúde."},{"emoji":"🧂","titulo":"Sal opcional e pouquinho","texto":"Antes de 1 ano, nada de sal. Depois, uma pitadinha no máximo. Use ervas e alho para dar sabor."},{"emoji":"😮","titulo":"Gag não é engasgo","texto":"Ânsia, tosse, cara vermelha e barulho: é o reflexo de gag, normal e protetor. Engasgo é silencioso, sem tosse, com lábios roxos. Aí sim, socorra."}],"FASES":{"6m":{"titulo":"6 a 9 meses","sub":"pegada de mão inteira (palmar)","emoji":"🖐️"},"9m":{"titulo":"9 a 12 meses","sub":"pegada de pinça (polegar + indicador)","emoji":"🤏"},"12m":{"titulo":"1 ano ou mais","sub":"já mastiga melhor, mas ainda sem pressa","emoji":"🧒"}},"FORMAS":{"amassado":"Amassado","ralado":"Ralado","palito":"Palito do tamanho do dedo","meia-lua":"Meia-lua","fatia-fina":"Fatia fininha","cubinhos":"Cubinhos pequenos","quartos":"Cortado em 4 no comprimento","esmagado":"Esmagado com o dedo","pedaco-grande":"Pedaço grande (maior que a boca)"},"ALERGENOS":{"semOvo":{"label":"Sem ovo","curto":"sem ovo","emoji":"🥚","descricao":"Receitas que não levam ovo (ou usam chia/linhaça no lugar)."},"semTrigo":{"label":"Sem trigo","curto":"sem trigo","emoji":"🌾","descricao":"Sem farinha de trigo: usamos farinha de aveia, tapioca ou polvilho."},"semLeite":{"label":"Sem leite (APLV)","curto":"sem leite","emoji":"🥛","descricao":"Sem leite de vaca e derivados. Quando precisa, vai leite vegetal ou nada."},"semBanana":{"label":"Sem banana","curto":"sem banana","emoji":"🍌","descricao":"Para quem tem alergia ou não gosta de banana."}},"REFEICOES":{"cafe":{"label":"Café da manhã","emoji":"🌞","cor":"bg-sun"},"almoco":{"label":"Almoço & jantar","emoji":"🍽️","cor":"bg-mint"},"lanche":{"label":"Lanche","emoji":"🍓","cor":"bg-berry"}},"IDADES":{"6m":"6+ meses","9m":"9+ meses","12m":"1 ano+"},"IDADE_LABEL":{"6m":"6 a 8 meses","9m":"9 a 11 meses","12m":"1 ano","24m":"2 anos ou mais"}};
+</script>
+<script>
+(function(){
+  const $ = (s, el=document) => el.querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const { receitas, frutas, regras, ALERGENOS, REFEICOES, IDADES, FASES, FORMAS, IDADE_LABEL } = DATA;
+  const ALG = Object.keys(ALERGENOS), REF = Object.keys(REFEICOES), ORDEM_IDADE = ["6m","9m","12m"];
+
+  /* ---------- navegação ---------- */
+  const LINKS = [["inicio","🏠 Início"],["receitas","📖 Receitas"],["gerar","✨ Gerar com IA"],["cortes","🔪 Cortes seguros"]];
+  function renderNav(){
+    const cur = route().view === "receita" ? "receitas" : route().view;
+    const html = LINKS.map(([h,l]) => `<a class="chip ${cur===h?"on":""}" href="#${h}">${l}</a>`).join("");
+    $("#links").innerHTML = html; $("#mobile-links").innerHTML = html;
+  }
+  $("#menu-btn").addEventListener("click", () => $("#mobile-links").classList.toggle("hidden"));
+  $("#mobile-links").addEventListener("click", () => $("#mobile-links").classList.add("hidden"));
+
+  function route(){
+    const h = location.hash.replace(/^#/, "") || "inicio";
+    const [view, ...rest] = h.split("/");
+    const q = new URLSearchParams(rest.join("/").includes("?") ? rest.join("/").split("?")[1] : (view.includes("?") ? view.split("?")[1] : ""));
+    return { view: view.split("?")[0], param: rest.join("/").split("?")[0], q };
+  }
+
+  /* ---------- pedaços reutilizáveis ---------- */
+  const tagRef = r => `<span class="chip sm ${REFEICOES[r].cor}">${REFEICOES[r].emoji} ${REFEICOES[r].label}</span>`;
+  const tagIdade = i => `<span class="chip sm bg-sky">👶 ${IDADES[i]}</span>`;
+  const tagsAlg = (r, compact) => `<div class="row" style="gap:.35rem">${ALG.filter(k=>r[k]).map(k=>`<span class="chip sm bg-mint-soft">✓ ${compact?ALERGENOS[k].curto:ALERGENOS[k].label}</span>`).join("")}</div>`;
+  const cardReceita = r => `
+    <a class="card pop" href="#receita/${r.slug}" style="display:flex;flex-direction:column;gap:.75rem">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><span class="emoji" style="font-size:3rem">${r.emoji}</span><span class="muted" style="font-size:.75rem;font-weight:800">⏱️ ${r.tempo} min</span></div>
+      <h3>${esc(r.nome)}</h3>
+      <div class="row" style="gap:.35rem">${tagRef(r.refeicao)}${tagIdade(r.idadeMin)}</div>
+      ${tagsAlg(r,true)}
+    </a>`;
+
+  function corteIcon(forma, cor, size=56){
+    const st = "rgba(61,58,74,0.35)", c = `stroke="${st}" stroke-width="2" fill="${cor}"`;
+    const shapes = {
+      amassado: `<path d="M12 44c6-10 18-14 28-10s14 10 16 14c-8 4-20 6-30 4S14 48 12 44z" ${c}/><circle cx="24" cy="40" r="2" fill="${st}"/><circle cx="36" cy="38" r="2" fill="${st}"/><circle cx="46" cy="42" r="2" fill="${st}"/>`,
+      ralado: [0,1,2,3,4,5,6].map(i=>`<path d="M${12+i*6} ${46-(i%2)*6} q3 -8 6 0" stroke="${cor}" stroke-width="3" fill="none" stroke-linecap="round"/>`).join("")+`<path d="M8 50h48" stroke="${st}" stroke-width="2" stroke-linecap="round"/>`,
+      palito: `<rect x="26" y="8" width="12" height="48" rx="6" ${c}/><path d="M14 28 L8 56 M50 28 L56 56" stroke="${st}" stroke-width="1.5" stroke-dasharray="3 3"/>`,
+      "meia-lua": `<path d="M10 40 A22 22 0 0 1 54 40 Z" ${c}/>`,
+      "fatia-fina": `<ellipse cx="32" cy="34" rx="22" ry="7" ${c}/><ellipse cx="32" cy="24" rx="22" ry="7" ${c}/>`,
+      cubinhos: [[14,18],[30,14],[44,22],[18,36],[36,36],[48,42]].map(([x,y])=>`<rect x="${x}" y="${y}" width="10" height="10" rx="2" ${c}/>`).join(""),
+      quartos: `<path d="M18 10 a14 20 0 0 0 0 44 L18 10z" ${c}/><path d="M22 10 a14 20 0 0 1 0 44 L22 10z" ${c}/><path d="M46 10 a14 20 0 0 0 0 44 L46 10z" ${c}/><path d="M50 10 a14 20 0 0 1 0 44 L50 10z" ${c}/>`,
+      esmagado: `<ellipse cx="32" cy="40" rx="22" ry="8" ${c}/><path d="M28 10 l4 8 l4 -8" stroke="${st}" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M32 18 v10" stroke="${st}" stroke-width="2" stroke-linecap="round"/>`,
+      "pedaco-grande": `<path d="M10 50 L32 10 L54 50 Z" ${c}/><path d="M10 50 h44" stroke="#4caf7a" stroke-width="6" stroke-linecap="round"/>`,
+    };
+    return `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true">${shapes[forma]||""}</svg>`;
+  }
+
+  /* ---------- telas ---------- */
+  const views = {};
+
+  views.inicio = () => {
+    const destaques = ["panqueca-de-aveia-sem-ovo","almondegas-de-carne-com-aveia","cookies-de-aveia-e-maca"].map(s=>receitas.find(r=>r.slug===s)).filter(Boolean);
+    return `
+      <section class="center stack" style="padding-top:2.5rem">
+        <div class="emoji" style="font-size:4rem;display:flex;justify-content:center;gap:.75rem" aria-hidden="true"><span class="float">🍓</span><span class="float" style="animation-delay:.6s">🥑</span><span class="float" style="animation-delay:1.2s">🥕</span></div>
+        <h1>Ideias de <span style="color:var(--coral-dark)">receitinhas</span><br>para todo dia, sem sufoco</h1>
+        <p class="muted big" style="max-width:40rem;margin:0 auto">Receitas sem açúcar, com sal opcional, pensadas para bebês e crianças. Filtre por alergia, gere um cardápio com o que você tem em casa e aprenda a cortar as frutas com segurança.</p>
+        <div class="row" style="justify-content:center"><a class="btn btn-primary big" href="#gerar">✨ Gerar cardápio com IA</a><a class="btn btn-ghost big" href="#receitas">📖 Ver todas as receitas</a></div>
+      </section>
+      <section class="grid grid-3 section">
+        <a class="card bg-peach" href="#receitas"><div class="emoji" style="font-size:3rem">📖</div><h2 style="margin-top:.5rem">Receitas</h2><p class="muted">Sem açúcar, sal opcional e separadas por alergia. Café, almoço, jantar e lanche.</p></a>
+        <a class="card bg-lilac" href="#gerar"><div class="emoji" style="font-size:3rem">✨</div><h2 style="margin-top:.5rem">Gerar com IA</h2><p class="muted">Diga o que tem na geladeira e receba 7 cafés, 7 almoços/jantares e 7 lanches.</p></a>
+        <a class="card bg-mint" href="#cortes"><div class="emoji" style="font-size:3rem">🔪</div><h2 style="margin-top:.5rem">Cortes seguros</h2><p class="muted">Como cortar cada fruta em cada fase para evitar engasgos.</p></a>
+      </section>
+      <section class="section stack">
+        <h2>Escolha pela necessidade da sua família</h2>
+        <div class="grid grid-5">
+          <a class="card" href="#receitas"><div class="emoji" style="font-size:2.5rem">🌟</div><h3 style="margin-top:.5rem">Gerais</h3><p class="muted" style="font-size:.9rem">Sem açúcar e sal opcional, sempre.</p><p style="font-size:.75rem;font-weight:800;color:var(--coral-dark);margin-top:.5rem">${receitas.length} receitas</p></a>
+          ${ALG.map(k=>`<a class="card" href="#receitas?filtro=${k}"><div class="emoji" style="font-size:2.5rem">${ALERGENOS[k].emoji}</div><h3 style="margin-top:.5rem">${ALERGENOS[k].label}</h3><p class="muted" style="font-size:.9rem">${ALERGENOS[k].descricao}</p><p style="font-size:.75rem;font-weight:800;color:var(--coral-dark);margin-top:.5rem">${receitas.filter(r=>r[k]).length} receitas</p></a>`).join("")}
+        </div>
+      </section>
+      <section class="section row">${REF.map(k=>`<a class="chip big ${REFEICOES[k].cor}" href="#receitas?refeicao=${k}">${REFEICOES[k].emoji} ${REFEICOES[k].label}</a>`).join("")}</section>
+      <section class="section stack"><h2>Queridinhas da casa</h2><div class="grid grid-3">${destaques.map(cardReceita).join("")}</div></section>
+      <section class="section card bg-sun" style="background:rgba(255,240,166,.6)">
+        <h2 style="margin-bottom:1rem">Nossas regrinhas de ouro</h2>
+        <div class="grid grid-3">
+          <div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="emoji" style="font-size:1.8rem">🚫🍬</span><span><b>Zero açúcar</b> até os 2 anos: nem mel, nem adoçante, nem suco de caixinha.</span></div>
+          <div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="emoji" style="font-size:1.8rem">🧂</span><span><b>Sal opcional:</b> nada antes de 1 ano, e só uma pitadinha depois.</span></div>
+          <div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="emoji" style="font-size:1.8rem">🥣</span><span><b>Comida de verdade:</b> ingredientes simples que você já tem em casa.</span></div>
+        </div>
+      </section>`;
+  };
+
+  const filtro = { alergenos: [], refeicao: "todas", idade: "todas", busca: "" };
+  views.receitas = (q) => {
+    if (q.has("filtro")) filtro.alergenos = q.getAll("filtro").filter(f=>ALG.includes(f));
+    if (q.has("refeicao")) filtro.refeicao = REF.includes(q.get("refeicao")) ? q.get("refeicao") : "todas";
+    return `
+      <header class="stack" style="padding-top:2.5rem"><h1>📖 Receitas</h1><p class="muted big" style="max-width:40rem">Todas sem açúcar e com sal opcional. Marque as restrições da sua família e a gente mostra só o que serve.</p></header>
+      <div class="card stack no-print" style="margin-top:1.5rem">
+        <div><span class="label">🩺 Restrições (pode marcar mais de uma)</span><div class="row" id="f-alg"></div></div>
+        <div class="grid grid-2">
+          <div><span class="label">🍽️ Refeição</span><div class="row" id="f-ref"></div></div>
+          <div><span class="label">👶 Idade do bebê</span><div class="row" id="f-idade"></div></div>
+        </div>
+        <label><span class="label">🔎 Buscar por nome ou ingrediente</span><input class="input" id="f-busca" type="search" placeholder="Ex.: abóbora, frango, aveia..."></label>
+      </div>
+      <p class="muted" id="f-count" style="font-weight:800;margin-top:1.5rem"></p>
+      <div class="grid grid-3" id="f-lista" style="margin-top:1rem"></div>`;
+  };
+  views.receitas.after = () => {
+    const paint = () => {
+      $("#f-alg").innerHTML = ALG.map(a=>`<button class="chip ${filtro.alergenos.includes(a)?"on":""}" data-alg="${a}" aria-pressed="${filtro.alergenos.includes(a)}">${ALERGENOS[a].emoji} ${ALERGENOS[a].label}</button>`).join("");
+      $("#f-ref").innerHTML = `<button class="chip ${filtro.refeicao==="todas"?"ink":""}" data-ref="todas">Todas</button>` + REF.map(k=>`<button class="chip ${filtro.refeicao===k?REFEICOES[k].cor+" ring":""}" data-ref="${k}">${REFEICOES[k].emoji} ${REFEICOES[k].label}</button>`).join("");
+      $("#f-idade").innerHTML = `<button class="chip ${filtro.idade==="todas"?"ink":""}" data-idade="todas">Todas</button>` + ORDEM_IDADE.map(i=>`<button class="chip ${filtro.idade===i?"bg-sky ring":""}" data-idade="${i}">${IDADES[i]}</button>`).join("");
+      $("#f-busca").value = filtro.busca;
+      const termo = filtro.busca.trim().toLowerCase();
+      const lista = receitas.filter(r => !filtro.alergenos.some(a=>!r[a]) && (filtro.refeicao==="todas"||r.refeicao===filtro.refeicao) && (filtro.idade==="todas"||ORDEM_IDADE.indexOf(r.idadeMin)<=ORDEM_IDADE.indexOf(filtro.idade)) && (!termo || [r.nome,...r.ingredientes].join(" ").toLowerCase().includes(termo)));
+      $("#f-count").textContent = lista.length===0 ? "Nenhuma receita com essa combinação ainda. Tente tirar um filtro ou use o gerador com IA ✨" : `${lista.length} ${lista.length===1?"receita encontrada":"receitas encontradas"}`;
+      $("#f-lista").innerHTML = lista.map(cardReceita).join("");
+    };
+    $("#app").addEventListener("click", e => {
+      const b = e.target.closest("button[data-alg],button[data-ref],button[data-idade]"); if(!b) return;
+      if (b.dataset.alg) filtro.alergenos = filtro.alergenos.includes(b.dataset.alg) ? filtro.alergenos.filter(x=>x!==b.dataset.alg) : [...filtro.alergenos, b.dataset.alg];
+      if (b.dataset.ref) filtro.refeicao = b.dataset.ref;
+      if (b.dataset.idade) filtro.idade = b.dataset.idade;
+      paint();
+    });
+    $("#f-busca").addEventListener("input", e => { filtro.busca = e.target.value; paint(); });
+    paint();
+  };
+
+  views.receita = (q, slug) => {
+    const r = receitas.find(x=>x.slug===slug);
+    if (!r) return `<div class="center" style="padding-top:4rem"><h1>Ops, receita não encontrada 🫣</h1><p style="margin-top:1rem"><a class="btn btn-primary" href="#receitas">Ver todas as receitas</a></p></div>`;
+    const parecidas = receitas.filter(x=>x.slug!==r.slug && x.refeicao===r.refeicao).slice(0,3);
+    const extras = [...(r.dicas||[]).map(d=>`<p><b>💡 Dica:</b> ${esc(d)}</p>`), ...(r.trocas||[]).map(t=>`<p><b>🔁 Troca:</b> ${esc(t)}</p>`)];
+    return `
+      <article class="stack" style="padding-top:2.5rem;max-width:48rem;margin:0 auto">
+        <a class="chip bg-white no-print" href="#receitas">← Voltar para as receitas</a>
+        <header class="card stack">
+          <div class="emoji" style="font-size:4.5rem">${r.emoji}</div>
+          <h1>${esc(r.nome)}</h1>
+          <div class="row">${tagRef(r.refeicao)}${tagIdade(r.idadeMin)}<span class="chip sm">⏱️ ${r.tempo} min</span><span class="chip sm">🍽️ ${esc(r.rende)}</span></div>
+          ${tagsAlg(r,false)}
+          <p class="muted" style="font-size:.9rem">🚫🍬 Sem açúcar · 🧂 Sal opcional (só acima de 1 ano, uma pitadinha)</p>
+        </header>
+        <div class="grid grid-2">
+          <section class="card"><h2 style="margin-bottom:.75rem">🧺 Ingredientes</h2><ul style="list-style:none;padding:0">${r.ingredientes.map(i=>`<li style="display:flex;gap:.5rem;margin-bottom:.4rem"><span style="color:var(--mint-dark)">●</span><span>${esc(i)}</span></li>`).join("")}</ul></section>
+          <section class="card"><h2 style="margin-bottom:.75rem">👩‍🍳 Modo de preparo</h2>${r.modo.map((p,i)=>`<div class="step"><b>${i+1}</b><span style="padding-top:.25rem">${esc(p)}</span></div>`).join("")}</section>
+        </div>
+        ${extras.length?`<section class="card stack" style="background:rgba(255,240,166,.5)">${extras.join("")}</section>`:""}
+        <div class="row no-print"><button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir receita</button><a class="btn btn-ghost" href="#cortes">🔪 Ver cortes seguros</a></div>
+        ${parecidas.length?`<section class="stack no-print"><h2>Você também pode gostar</h2><div class="row">${parecidas.map(p=>`<a class="chip bg-white" href="#receita/${p.slug}">${p.emoji} ${esc(p.nome)}</a>`).join("")}</div></section>`:""}
+      </article>`;
+  };
+
+  let fase = "6m", buscaFruta = "";
+  views.cortes = () => `
+    <header class="stack" style="padding-top:2.5rem"><h1>🔪 Cortes seguros de frutas</h1><p class="muted big" style="max-width:40rem">O formato certo muda conforme a fase do bebê. Escolha a idade e veja como oferecer cada fruta. O gerador com IA usa estas mesmas regras quando monta o cardápio.</p></header>
+    <div class="card row" style="margin-top:1.5rem;gap:1rem"><div class="row" id="c-fases" role="tablist"></div><input class="input" id="c-busca" type="search" placeholder="Buscar fruta..." style="width:auto;margin-left:auto"></div>
+    <p class="muted" id="c-sub" style="margin-top:1rem"></p>
+    <div class="grid grid-3" id="c-lista" style="margin-top:1rem"></div>
+    <section class="section stack"><h2>Regras de ouro contra engasgos</h2><div class="grid grid-3">${regras.map(r=>`<div class="card"><div class="emoji" style="font-size:2.5rem">${r.emoji}</div><h3 style="margin-top:.5rem">${esc(r.titulo)}</h3><p class="muted" style="margin-top:.25rem">${esc(r.texto)}</p></div>`).join("")}</div></section>
+    <section class="section card" style="background:rgba(207,230,255,.5)"><h2 style="margin-bottom:.5rem">🧑‍⚕️ Faça um curso de primeiros socorros</h2><p class="muted">Saber a manobra de desengasgo para bebês (manobra de Heimlich adaptada) dá muita segurança para toda a família. Procure cursos presenciais na sua cidade: bombeiros, hospitais e cruz vermelha costumam oferecer.</p></section>`;
+  views.cortes.after = () => {
+    const paint = () => {
+      $("#c-fases").innerHTML = Object.keys(FASES).map(k=>`<button class="chip ${fase===k?"on":""}" role="tab" aria-selected="${fase===k}" data-fase="${k}">${FASES[k].emoji} ${FASES[k].titulo}</button>`).join("");
+      $("#c-sub").innerHTML = `<b>${FASES[fase].titulo}:</b> ${FASES[fase].sub}.`;
+      const lista = frutas.filter(f=>f.nome.toLowerCase().includes(buscaFruta.trim().toLowerCase()));
+      $("#c-lista").innerHTML = lista.map(f=>{const fs=f.fases[fase];return `
+        <div class="card pop" style="display:flex;flex-direction:column;gap:.75rem">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="row" style="flex-wrap:nowrap"><span class="emoji" style="font-size:2.5rem">${f.emoji}</span><h3>${esc(f.nome)}</h3></div>${corteIcon(fs.forma,f.cor)}</div>
+          <span class="chip sm bg-mint-soft" style="align-self:flex-start">✂️ ${FORMAS[fs.forma]}</span>
+          <p>${esc(fs.texto)}</p>
+          ${f.alerta?`<p class="alert">⚠️ <b>Atenção:</b> ${esc(f.alerta)}</p>`:""}
+          ${f.dica?`<p class="muted" style="font-size:.9rem">💡 ${esc(f.dica)}</p>`:""}
+        </div>`;}).join("");
+    };
+    $("#c-fases").addEventListener("click", e => { const b=e.target.closest("[data-fase]"); if(b){fase=b.dataset.fase; paint();} });
+    $("#c-busca").addEventListener("input", e => { buscaFruta=e.target.value; paint(); });
+    paint();
+  };
+
+  /* ---------- gerador ---------- */
+  const EXEMPLO = "ovos, aveia em flocos, batata-doce, abóbora, cenoura, frango, carne moída, arroz, feijão, maçã, mamão, abacate, leite de coco, azeite, alho, cebola";
+  const ESPERA = ["Abrindo a geladeira... 🧊","Lavando os legumes... 🥕","Escolhendo as frutinhas... 🍓","Cortando tudo em palitinhos seguros... 🔪","Mexendo a panela... 🍲","Quase pronto, só ajeitando o pratinho... 🍽️"];
+  const SECOES = [["cafe","🌞 Café da manhã","bg-sun"],["almocoJantar","🍽️ Almoço & jantar","bg-mint"],["lanche","🍓 Lanche","bg-berry"]];
+  const STORAGE = "receitinhas:ultimo-cardapio";
+  const g = { idade: "9m", restricoes: [], cardapio: null, quando: null, secao: "cafe", carregando: false, erro: null };
+  try { const s = JSON.parse(localStorage.getItem(STORAGE)); if (s) { g.cardapio=s.cardapio; g.quando=s.quando; g.idade=s.pedido.idade; g.restricoes=s.pedido.restricoes; g.ingredientes=s.pedido.ingredientes; } } catch(e){}
+
+  views.gerar = () => `
+    <header class="stack" style="padding-top:2.5rem"><h1>✨ Gerar cardápio com IA</h1><p class="muted big" style="max-width:40rem">Escreva o que tem na sua geladeira e despensa. A gente devolve 7 cafés da manhã, 7 almoços ou jantares e 7 lanches, sem açúcar, respeitando as restrições e com a dica de como servir com segurança.</p></header>
+    <form class="card stack no-print" id="g-form" style="margin-top:1.5rem">
+      <label><span class="label big">🧺 O que você tem em casa?</span><textarea class="input" id="g-ing" rows="4" required minlength="3" placeholder="Ex.: ovos, aveia, batata-doce, frango, cenoura, maçã...">${esc(g.ingredientes||"")}</textarea><button type="button" id="g-exemplo" style="font-size:.85rem;font-weight:800;color:var(--coral-dark);margin-top:.5rem;cursor:pointer">Usar uma lista de exemplo</button></label>
+      <div class="grid grid-2">
+        <div><span class="label big">👶 Idade</span><div class="row" id="g-idade"></div></div>
+        <div><span class="label big">🩺 Restrições</span><div class="row" id="g-alg"></div><p class="muted" id="g-alg-hint" style="font-size:.75rem;margin-top:.5rem"></p></div>
+      </div>
+      <label><span class="label big">💬 Alguma observação? (opcional)</span><input class="input" id="g-obs" maxlength="500" placeholder="Ex.: não gosta de brócolis, tenho pouco tempo, estamos sem forno..."></label>
+      <p class="alert hidden" id="g-erro" role="alert"></p>
+      <div class="row"><button class="btn btn-primary big" id="g-btn" type="submit">✨ Gerar 21 ideias</button><span class="muted hidden" id="g-wait" style="font-weight:800" aria-live="polite"></span></div>
+    </form>
+    <section id="resultado" class="stack section"></section>`;
+  views.gerar.after = () => {
+    const paintForm = () => {
+      $("#g-idade").innerHTML = Object.keys(IDADE_LABEL).map(k=>`<button type="button" class="chip ${g.idade===k?"bg-sky ring":""}" data-idade="${k}" aria-pressed="${g.idade===k}">${IDADE_LABEL[k]}</button>`).join("");
+      $("#g-alg").innerHTML = ALG.map(a=>`<button type="button" class="chip ${g.restricoes.includes(a)?"on":""}" data-alg="${a}" aria-pressed="${g.restricoes.includes(a)}">${ALERGENOS[a].emoji} ${ALERGENOS[a].label}</button>`).join("");
+      $("#g-alg-hint").textContent = g.restricoes.length ? "" : "Nenhuma marcada: receitas gerais (sem açúcar, sal opcional).";
+    };
+    const paintResult = () => {
+      const c = g.cardapio, box = $("#resultado");
+      if (!c) { box.innerHTML = ""; return; }
+      box.innerHTML = `
+        <div class="row" style="justify-content:space-between"><div><h2>Seu cardápio da semana</h2>${g.quando?`<p class="muted" style="font-size:.85rem">Gerado em ${esc(g.quando)} · fica salvo neste navegador</p>`:""}</div><div class="row no-print"><button class="btn btn-ghost" onclick="window.print()">🖨️ Imprimir</button><button class="btn btn-ghost" id="g-limpar">🗑️ Limpar</button></div></div>
+        <div class="row no-print" role="tablist">${SECOES.map(([k,l,cor])=>`<button class="chip big ${g.secao===k?cor+" ring":"bg-white"}" role="tab" data-secao="${k}" aria-selected="${g.secao===k}">${l} <span style="opacity:.6">(${(c[k]||[]).length})</span></button>`).join("")}</div>
+        ${SECOES.map(([k,l,cor])=>`<div class="${g.secao===k?"":"hidden print-show"}"><h3 class="hidden print-show" style="margin-bottom:.75rem">${l}</h3><div class="grid grid-3">${(c[k]||[]).map((d,i)=>`
+          <div class="card" style="display:flex;flex-direction:column;gap:.75rem">
+            <div style="display:flex;justify-content:space-between"><span class="chip sm ${cor}">Dia ${i+1}</span><span class="muted" style="font-size:.75rem;font-weight:800">⏱️ ${Number(d.tempoMin)||"?"} min</span></div>
+            <div class="row" style="flex-wrap:nowrap"><span class="emoji" style="font-size:2.5rem">${esc(d.emoji||"🍽️")}</span><h4 style="font-size:1.2rem">${esc(d.nome)}</h4></div>
+            <p class="note">🔪 ${esc(d.comoServir||"")}</p>
+            <button type="button" class="no-print" data-toggle style="font-size:.85rem;font-weight:800;color:var(--coral-dark);align-self:flex-start;cursor:pointer" aria-expanded="false">Ver receita ▼</button>
+            <div class="hidden print-show stack" style="font-size:.9rem"><div><b>🧺 Ingredientes</b><ul>${(d.ingredientes||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div><div><b>👩‍🍳 Preparo</b><ol>${(d.modo||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div></div>
+          </div>`).join("")}</div></div>`).join("")}
+        ${(c.listaDeCompras||[]).length?`<div class="card" style="background:rgba(220,212,255,.5)"><h3 style="margin-bottom:.5rem">🛒 Faltou pouco: lista de compras</h3><div class="row">${c.listaDeCompras.map(x=>`<span class="chip bg-white">${esc(x)}</span>`).join("")}</div></div>`:""}`;
+    };
+    $("#g-exemplo").addEventListener("click", () => { $("#g-ing").value = EXEMPLO; });
+    $("#g-form").addEventListener("click", e => {
+      const b = e.target.closest("[data-idade],[data-alg]"); if(!b) return;
+      if (b.dataset.idade) g.idade = b.dataset.idade;
+      if (b.dataset.alg) g.restricoes = g.restricoes.includes(b.dataset.alg) ? g.restricoes.filter(x=>x!==b.dataset.alg) : [...g.restricoes, b.dataset.alg];
+      paintForm();
+    });
+    $("#resultado").addEventListener("click", e => {
+      const t = e.target.closest("[data-secao],[data-toggle],#g-limpar"); if(!t) return;
+      if (t.dataset.secao) { g.secao = t.dataset.secao; paintResult(); }
+      else if (t.hasAttribute("data-toggle")) { const d = t.nextElementSibling; const open = d.classList.toggle("hidden"); t.textContent = open ? "Ver receita ▼" : "Esconder receita ▲"; t.setAttribute("aria-expanded", String(!open)); }
+      else if (t.id === "g-limpar") { g.cardapio = null; g.quando = null; try{localStorage.removeItem(STORAGE)}catch(e){} paintResult(); }
+    });
+    $("#g-form").addEventListener("submit", async e => {
+      e.preventDefault();
+      const pedido = { ingredientes: $("#g-ing").value, idade: g.idade, restricoes: g.restricoes, observacoes: $("#g-obs").value };
+      const btn = $("#g-btn"), wait = $("#g-wait"), erro = $("#g-erro");
+      erro.classList.add("hidden"); btn.disabled = true; btn.textContent = "Cozinhando..."; wait.classList.remove("hidden");
+      let i = 0; const tick = () => { wait.innerHTML = `<span class="dot"></span> <span class="dot" style="animation-delay:.2s"></span> <span class="dot" style="animation-delay:.4s"></span> ${ESPERA[i++ % ESPERA.length]}`; }; tick(); const timer = setInterval(tick, 2500);
+      try {
+        if (API_URL.includes("SEU-APP")) throw { erro: "O gerador ainda não está conectado: edite a linha API_URL no início do arquivo com o endereço do seu app na Vercel." };
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(pedido) });
+        const data = await res.json();
+        if (!res.ok || !data.cardapio) throw { erro: data.erro || "Não deu certo. Tente de novo." };
+        g.cardapio = data.cardapio; g.secao = "cafe"; g.ingredientes = pedido.ingredientes;
+        g.quando = new Date().toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+        try { localStorage.setItem(STORAGE, JSON.stringify({ cardapio: g.cardapio, quando: g.quando, pedido })); } catch(e){}
+        paintResult(); setTimeout(() => $("#resultado").scrollIntoView({ behavior: "smooth" }), 50);
+      } catch (err) {
+        erro.textContent = "😕 " + (err && err.erro ? err.erro : "Sem conexão com o servidor. Confira a internet e tente de novo."); erro.classList.remove("hidden");
+      } finally { clearInterval(timer); btn.disabled = false; btn.textContent = "✨ Gerar 21 ideias"; wait.classList.add("hidden"); }
+    });
+    paintForm(); paintResult();
+  };
+
+  /* ---------- render ---------- */
+  function render(){
+    const { view, param, q } = route();
+    const fn = views[view] || views.inicio;
+    $("#app").innerHTML = fn(q, param);
+    if (fn.after) fn.after();
+    renderNav();
+    window.scrollTo({ top: 0 });
+  }
+  window.addEventListener("hashchange", render);
+  render();
+})();
+</script>
+</body>
+</html>
