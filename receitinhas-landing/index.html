@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receitinhas · receitas sem açúcar para bebês e crianças</title>
+<meta name="description" content="Receitinhas: portal de receitas sem açúcar e sal opcional para bebês e crianças, separadas por alergia (sem ovo, sem trigo, sem leite/APLV, sem banana). Acesso vitalício.">
+<meta property="og:title" content="Receitinhas · receitas sem açúcar para bebês e crianças">
+<meta property="og:description" content="Receitas sem açúcar, sal opcional e separadas por alergia. Pague uma vez, use para sempre.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ff8c7a'/%3E%3Cpath d='M12 38a20 14 0 0 0 40 0z' fill='%23fff8ef'/%3E%3Ccircle cx='24' cy='24' r='5' fill='%23b9ecd6'/%3E%3Ccircle cx='36' cy='20' r='5' fill='%23f6c2dc'/%3E%3Ccircle cx='44' cy='28' r='4' fill='%23fff0a6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fff8ef;--ink:#3d3a4a;--ink-soft:#6f6b7d;--coral:#ff8c7a;--coral-dark:#e86f5d;
+    --peach:#ffd8b8;--mint:#b9ecd6;--mint-dark:#3ea67c;--sky:#cfe6ff;--lilac:#dcd4ff;
+    --sun:#fff0a6;--berry:#f6c2dc;--radius:2rem;--shadow:0 10px 30px -12px rgba(61,58,74,.18);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:"Nunito",system-ui,sans-serif;font-weight:400;line-height:1.55;
+    background-image:radial-gradient(circle at 10% 10%,rgba(255,216,184,.45),transparent 35%),radial-gradient(circle at 90% 20%,rgba(185,236,214,.4),transparent 30%),radial-gradient(circle at 70% 90%,rgba(220,212,255,.4),transparent 35%);background-attachment:fixed}
+  h1,h2,h3{font-family:"Quicksand",system-ui,sans-serif;font-weight:500;letter-spacing:-.01em;margin:0;line-height:1.15}
+  h1{font-size:2.5rem;font-weight:300}h2{font-size:1.9rem}h3{font-size:1.2rem}
+  @media(min-width:768px){h1{font-size:3.6rem}h2{font-size:2.3rem}}
+  p{margin:0}
+  a{color:inherit;text-decoration:none}
+  .light{font-weight:300}.muted{color:var(--ink-soft)}.center{text-align:center}
+  .wrap{max-width:68rem;margin:0 auto;padding:0 1rem}
+  section{padding:3.5rem 0}
+  .grid{display:grid;gap:1.25rem}
+  @media(min-width:640px){.grid-2,.grid-3,.grid-5{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:1024px){.grid-3{grid-template-columns:repeat(3,1fr)}.grid-5{grid-template-columns:repeat(5,1fr)}}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:2px solid rgba(61,58,74,.06);padding:1.5rem}
+  .chip{display:inline-flex;align-items:center;gap:.35rem;border-radius:999px;padding:.45rem .9rem;font-weight:600;font-size:.85rem;background:#fff}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:999px;padding:.9rem 1.6rem;font-weight:600;font-family:"Quicksand",sans-serif;font-size:1.1rem;transition:transform .15s,background .15s;cursor:pointer}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--coral);color:#fff;box-shadow:0 10px 24px -10px rgba(232,111,93,.7)}
+  .btn-primary:hover{background:var(--coral-dark)}
+  .btn-ghost{background:#fff;border:2px solid rgba(61,58,74,.1)}
+  .bg-sun{background:rgba(255,240,166,.6)}.bg-peach{background:rgba(255,216,184,.6)}.bg-mint{background:rgba(185,236,214,.6)}.bg-sky{background:rgba(207,230,255,.6)}.bg-berry{background:rgba(246,194,220,.6)}.bg-lilac{background:rgba(220,212,255,.55)}
+  .emoji{font-size:2.6rem;line-height:1}
+  nav{position:sticky;top:0;z-index:40;backdrop-filter:blur(8px);background:rgba(255,248,239,.85);border-bottom:1px solid rgba(61,58,74,.05)}
+  nav .wrap{height:4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .brand{font-family:"Quicksand",sans-serif;font-size:1.5rem;font-weight:500;color:var(--coral-dark);display:flex;align-items:center;gap:.5rem}
+  .nav-links{display:none;gap:1.25rem;font-weight:600;font-size:.95rem}
+  @media(min-width:768px){.nav-links{display:flex}}
+  .hero{padding:4.5rem 0 3rem;text-align:center}
+  .hero .emojis{font-size:4rem;display:flex;justify-content:center;gap:.75rem;margin-bottom:1.25rem}
+  .float{display:inline-block;animation:float 4s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+  .hero p.lead{font-size:1.2rem;max-width:40rem;margin:1.25rem auto 0}
+  .cta{display:flex;flex-wrap:wrap;justify-content:center;gap:.75rem;margin-top:1.75rem}
+  .count{font-size:.75rem;font-weight:700;color:var(--coral-dark);margin-top:.5rem}
+  .steps .card{position:relative}
+  .steps .num{position:absolute;top:-.9rem;left:1.5rem;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Quicksand",sans-serif;font-weight:600}
+  .receita li{display:flex;gap:.5rem;margin-top:.35rem}
+  .receita li::before{content:"●";color:var(--mint-dark);font-size:.7rem;line-height:1.9}
+  .receita ul{list-style:none;padding:0;margin:.75rem 0 0;font-size:.95rem}
+  details{background:#fff;border-radius:1.25rem;box-shadow:var(--shadow);border:2px solid rgba(61,58,74,.06);padding:1rem 1.25rem;margin-bottom:.75rem}
+  summary{cursor:pointer;font-weight:600;font-family:"Quicksand",sans-serif;font-size:1.05rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.4rem;color:var(--coral-dark);transition:transform .2s}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{margin-top:.6rem}
+  footer{text-align:center;font-size:.85rem;color:var(--ink-soft);padding:2rem 1rem 3rem;max-width:42rem;margin:0 auto}
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+  .reveal.in{opacity:1;transform:none}
+  .wa-float{position:fixed;right:1rem;bottom:1rem;z-index:50;width:3.5rem;height:3.5rem;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -8px rgba(37,211,102,.6);font-size:1.6rem}
+</style>
+</head>
+<body>
+<script>
+  /* ================= CONFIGURAÇÃO =================
+     WHATSAPP: seu número com DDD e código do país, só dígitos (ex.: "5511999999999").
+     MENSAGEM: texto que já vem escrito quando a pessoa abre o WhatsApp.
+     PORTAL_URL: endereço do portal com login, quando estiver no ar. Vazio = esconde o botão "Já tenho login".
+     PRECO: texto do valor (ex.: "R$ 47 · pagamento único"). Vazio = não mostra valor.
+  ================================================== */
+  window.CONFIG = {
+    WHATSAPP: "",
+    MENSAGEM: "Oi! Quero meu acesso ao Receitinhas 🥣",
+    PORTAL_URL: "",
+    PRECO: "",
+  };
+</script>
+
+<nav>
+  <div class="wrap">
+    <a href="#topo" class="brand"><span class="float" aria-hidden="true">🥣</span>Receitinhas</a>
+    <div class="nav-links">
+      <a href="#dentro">O que tem</a>
+      <a href="#receitas">Receitas</a>
+      <a href="#como">Como funciona</a>
+      <a href="#faq">Dúvidas</a>
+      <a href="#acesso" class="chip" style="background:var(--coral);color:#fff">Quero acesso</a>
+    </div>
+  </div>
+</nav>
+
+<header id="topo" class="hero wrap">
+  <div class="emojis" aria-hidden="true"><span class="float">🍓</span><span class="float" style="animation-delay:.6s">🥑</span><span class="float" style="animation-delay:1.2s">🥕</span></div>
+  <h1>Receitinhas para todo dia,<br><span style="color:var(--coral-dark);font-weight:500">sem açúcar e sem sufoco</span></h1>
+  <p class="lead muted light">Um portal de receitas pensadas para bebês e crianças: sem açúcar, sal opcional e separadas por alergia. Você paga uma vez e usa para sempre.</p>
+  <div class="cta">
+    <a href="#acesso" class="btn btn-primary">💛 Quero meu acesso</a>
+    <a href="#receitas" class="btn btn-ghost">Ver exemplos</a>
+  </div>
+</header>
+
+<section id="para-quem" class="wrap">
+  <div class="grid grid-3">
+    <div class="card bg-peach reveal"><div class="emoji" aria-hidden="true">👶</div><h3 style="margin-top:.5rem">Começando a introdução alimentar</h3><p class="muted light" style="margin-top:.25rem">Receitas desde os 6 meses, com texturas e formatos certos para cada fase.</p></div>
+    <div class="card bg-mint reveal"><div class="emoji" aria-hidden="true">🩺</div><h3 style="margin-top:.5rem">Famílias com alergia</h3><p class="muted light" style="margin-top:.25rem">Filtros para sem ovo, sem trigo, sem leite (APLV) e sem banana, com as trocas já resolvidas.</p></div>
+    <div class="card bg-sky reveal"><div class="emoji" aria-hidden="true">⏰</div><h3 style="margin-top:.5rem">Mães sem tempo</h3><p class="muted light" style="margin-top:.25rem">Poucos ingredientes, passos curtos e busca pelo que você tem na geladeira.</p></div>
+  </div>
+</section>
+
+<section id="dentro" class="wrap">
+  <h2 class="center">O que você encontra lá dentro</h2>
+  <p class="center muted light" style="margin-top:.5rem">Todas as receitas são sem açúcar. O sal é sempre opcional.</p>
+  <div class="grid grid-5" style="margin-top:1.75rem">
+    <div class="card bg-sun reveal"><div class="emoji" aria-hidden="true">🌟</div><h3 style="margin-top:.5rem">Gerais</h3><p class="muted light" style="font-size:.9rem">Sem açúcar e sal opcional, sempre.</p><p class="count">39 receitas</p></div>
+    <div class="card bg-peach reveal"><div class="emoji" aria-hidden="true">🥚</div><h3 style="margin-top:.5rem">Sem ovo</h3><p class="muted light" style="font-size:.9rem">Chia e linhaça no lugar do ovo.</p><p class="count">29 receitas</p></div>
+    <div class="card bg-mint reveal"><div class="emoji" aria-hidden="true">🌾</div><h3 style="margin-top:.5rem">Sem trigo</h3><p class="muted light" style="font-size:.9rem">Farinha de aveia, tapioca ou polvilho.</p><p class="count">39 receitas</p></div>
+    <div class="card bg-sky reveal"><div class="emoji" aria-hidden="true">🥛</div><h3 style="margin-top:.5rem">Sem leite (APLV)</h3><p class="muted light" style="font-size:.9rem">Leite vegetal ou nenhum.</p><p class="count">39 receitas</p></div>
+    <div class="card bg-berry reveal"><div class="emoji" aria-hidden="true">🍌</div><h3 style="margin-top:.5rem">Sem banana</h3><p class="muted light" style="font-size:.9rem">Para quem tem alergia ou não gosta.</p><p class="count">36 receitas</p></div>
+  </div>
+  <div class="center" style="margin-top:1.5rem;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem">
+    <span class="chip" style="background:var(--sun)">🌞 Café da manhã</span>
+    <span class="chip" style="background:var(--mint)">🍽️ Almoço &amp; jantar</span>
+    <span class="chip" style="background:var(--berry)">🍓 Lanche</span>
+    <span class="chip" style="background:var(--sky)">👶 6+, 9+ meses e 1 ano+</span>
+  </div>
+</section>
+
+<section id="receitas" class="wrap">
+  <h2 class="center">Um gostinho das receitas</h2>
+  <div class="grid grid-3" style="margin-top:1.75rem">
+    <article class="card receita reveal">
+      <div class="emoji" aria-hidden="true">🍎</div>
+      <h3 style="margin-top:.5rem">Panqueca de aveia e maçã</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem"><span class="chip" style="background:var(--sun);font-size:.72rem;padding:.3rem .6rem">🌞 Café</span><span class="chip" style="background:var(--sky);font-size:.72rem;padding:.3rem .6rem">👶 6+ meses</span><span class="chip" style="background:var(--mint);font-size:.72rem;padding:.3rem .6rem">✓ sem ovo · trigo · leite · banana</span></div>
+      <ul class="light"><li>Farinha de aveia</li><li>Maçã ralada com casca</li><li>Chia hidratada</li><li>Água ou leite vegetal</li></ul>
+      <p class="muted light" style="font-size:.9rem;margin-top:.75rem">💡 A receita coringa: serve para todas as restrições.</p>
+    </article>
+    <article class="card receita reveal">
+      <div class="emoji" aria-hidden="true">🍖</div>
+      <h3 style="margin-top:.5rem">Almôndegas de carne com aveia</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem"><span class="chip" style="background:var(--mint);font-size:.72rem;padding:.3rem .6rem">🍽️ Almoço</span><span class="chip" style="background:var(--sky);font-size:.72rem;padding:.3rem .6rem">👶 6+ meses</span><span class="chip" style="background:var(--mint);font-size:.72rem;padding:.3rem .6rem">✓ sem ovo · trigo · leite · banana</span></div>
+      <ul class="light"><li>Carne moída magra</li><li>Farinha de aveia</li><li>Cebola, alho e salsinha</li></ul>
+      <p class="muted light" style="font-size:.9rem;margin-top:.75rem">💡 A aveia faz a liga no lugar do ovo. Congela muito bem.</p>
+    </article>
+    <article class="card receita reveal">
+      <div class="emoji" aria-hidden="true">🍪</div>
+      <h3 style="margin-top:.5rem">Cookies de aveia e maçã</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem"><span class="chip" style="background:var(--berry);font-size:.72rem;padding:.3rem .6rem">🍓 Lanche</span><span class="chip" style="background:var(--sky);font-size:.72rem;padding:.3rem .6rem">👶 9+ meses</span><span class="chip" style="background:var(--mint);font-size:.72rem;padding:.3rem .6rem">✓ sem ovo · trigo · leite · banana</span></div>
+      <ul class="light"><li>Aveia em flocos</li><li>Maçã ralada</li><li>Óleo de coco e canela</li></ul>
+      <p class="muted light" style="font-size:.9rem;margin-top:.75rem">💡 Sem açúcar nenhum: a maçã adoça sozinha.</p>
+    </article>
+  </div>
+  <p class="center muted light" style="margin-top:1.25rem">Lá dentro, cada receita vem com ingredientes, passo a passo, dicas e trocas para cada restrição.</p>
+</section>
+
+<section id="como" class="wrap">
+  <h2 class="center">Como funciona</h2>
+  <div class="grid grid-3 steps" style="margin-top:2.25rem">
+    <div class="card reveal"><span class="num">1</span><div class="emoji" aria-hidden="true">💬</div><h3 style="margin-top:.5rem">Me chama no WhatsApp</h3><p class="muted light" style="margin-top:.25rem">Você fala comigo, tira dúvidas e faz o Pix. Pagamento único, sem mensalidade.</p></div>
+    <div class="card reveal"><span class="num">2</span><div class="emoji" aria-hidden="true">🔑</div><h3 style="margin-top:.5rem">Recebe seu login</h3><p class="muted light" style="margin-top:.25rem">Eu crio seu usuário e te mando login e senha na hora.</p></div>
+    <div class="card reveal"><span class="num">3</span><div class="emoji" aria-hidden="true">💛</div><h3 style="margin-top:.5rem">Usa para sempre</h3><p class="muted light" style="margin-top:.25rem">Entra quando quiser, no celular ou no computador. Receitas novas entram sem custo.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="card bg-sun reveal">
+    <h2>Nossas regrinhas de ouro</h2>
+    <div class="grid grid-3 light" style="margin-top:1rem">
+      <div style="display:flex;gap:.75rem"><span style="font-size:1.8rem" aria-hidden="true">🚫🍬</span><span><b style="font-weight:600">Zero açúcar</b> até os 2 anos: nem mel, nem adoçante, nem suco de caixinha.</span></div>
+      <div style="display:flex;gap:.75rem"><span style="font-size:1.8rem" aria-hidden="true">🧂</span><span><b style="font-weight:600">Sal opcional:</b> nada antes de 1 ano, e só uma pitadinha depois.</span></div>
+      <div style="display:flex;gap:.75rem"><span style="font-size:1.8rem" aria-hidden="true">🥣</span><span><b style="font-weight:600">Comida de verdade:</b> ingredientes simples que você já tem em casa.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="wrap" style="max-width:46rem">
+  <h2 class="center" style="margin-bottom:1.5rem">Dúvidas comuns</h2>
+  <details><summary>A partir de que idade as receitas servem?</summary><p class="light">A partir dos 6 meses, quando começa a introdução alimentar. Cada receita mostra a idade mínima (6+, 9+ meses ou 1 ano+) e como adaptar a textura.</p></details>
+  <details><summary>Meu bebê tem APLV. Tem receita para ele?</summary><p class="light">Sim. Tem um filtro só para "sem leite": as receitas usam leite vegetal ou nenhum, e as trocas já vêm explicadas. O mesmo vale para sem ovo, sem trigo e sem banana, e você pode combinar mais de um filtro.</p></details>
+  <details><summary>É assinatura?</summary><p class="light">Não. É um pagamento único por Pix e o acesso é vitalício. As receitas novas que eu for colocando entram para você sem custo.</p></details>
+  <details><summary>Como recebo o acesso?</summary><p class="light">Depois do Pix eu crio seu login e te mando e-mail e senha pelo WhatsApp. Aí é só entrar no portal.</p></details>
+  <details><summary>As receitas substituem o pediatra?</summary><p class="light">Não. São sugestões educativas. Em caso de alergia ou dúvida, converse sempre com o pediatra ou nutricionista da sua família antes de introduzir alimentos novos.</p></details>
+</section>
+
+<section id="acesso" class="wrap">
+  <div class="card bg-lilac center reveal" style="padding:2.5rem 1.5rem">
+    <div class="emoji" aria-hidden="true">💛</div>
+    <h2 style="margin-top:.5rem">Quero meu acesso vitalício</h2>
+    <p id="preco" style="font-size:2rem;color:var(--coral-dark);font-family:Quicksand,sans-serif;margin-top:.5rem;display:none"></p>
+    <p class="muted light" style="max-width:32rem;margin:.75rem auto 0">Me chama no WhatsApp, eu te explico tudo e libero seu login assim que o Pix cair.</p>
+    <div class="cta">
+      <a id="btn-wa" class="btn btn-primary" href="#" target="_blank" rel="noopener">💬 Chamar no WhatsApp</a>
+      <a id="btn-portal" class="btn btn-ghost" href="#" style="display:none">Já tenho login</a>
+    </div>
+    <p id="aviso-config" class="muted light" style="font-size:.85rem;margin-top:1rem;display:none">⚙️ Configure o número do WhatsApp no início do arquivo para ativar este botão.</p>
+  </div>
+</section>
+
+<footer>
+  <p class="light">Feito com carinho para mães e pais. As receitas são sugestões educativas e não substituem a orientação do pediatra ou nutricionista da sua família.</p>
+</footer>
+
+<a id="wa-float" class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" style="display:none">💬</a>
+
+<script>
+  (function () {
+    const { WHATSAPP, MENSAGEM, PORTAL_URL, PRECO } = window.CONFIG;
+    const num = WHATSAPP.replace(/\D/g, "");
+    const url = num ? `https://wa.me/${num}?text=${encodeURIComponent(MENSAGEM)}` : "";
+    const btn = document.getElementById("btn-wa"), flt = document.getElementById("wa-float");
+    if (url) { btn.href = url; flt.href = url; flt.style.display = "flex"; }
+    else { btn.href = "#acesso"; btn.removeAttribute("target"); document.getElementById("aviso-config").style.display = "block"; }
+    if (PORTAL_URL) { const p = document.getElementById("btn-portal"); p.href = PORTAL_URL; p.style.display = "inline-flex"; }
+    if (PRECO) { const el = document.getElementById("preco"); el.textContent = PRECO; el.style.display = "block"; }
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+  })();
+</script>
+</body>
+</html>
