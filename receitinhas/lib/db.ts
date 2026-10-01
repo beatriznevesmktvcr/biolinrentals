@@ -18,6 +18,11 @@ async function criarExecutor(): Promise<Executor> {
     const sql = postgres(url, { ssl: local ? false : "require", max: 5, prepare: false });
     exec = async (text, params) => (await sql.unsafe(text, params as never[])) as unknown as Row[];
   } else {
+    if (process.env.VERCEL) {
+      throw new Error(
+        "Falta o banco de dados: na Vercel, abra a aba Storage, crie um banco Neon (Postgres), conecte ao projeto e faça um novo deploy.",
+      );
+    }
     const { PGlite } = await import("@electric-sql/pglite");
     const { mkdirSync } = await import("node:fs");
     const dir = process.env.PGLITE_DIR ?? "./dados/receitinhas";
