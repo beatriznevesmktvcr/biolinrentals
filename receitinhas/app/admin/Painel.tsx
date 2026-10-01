@@ -2,10 +2,10 @@
 
 import { useActionState, useState, useTransition } from "react";
 import type { Usuario } from "@/lib/auth";
-import { alternarAtivo, criarMembro, excluirMembro, novaSenha, salvarLoja, type EstadoAdmin } from "./actions";
+import { alternarAtivo, criarMembro, excluirMembro, novaSenha, type EstadoAdmin } from "./actions";
 
 function Credenciais({ c }: { c: NonNullable<EstadoAdmin["credenciais"]> }) {
-  const texto = `Oi, ${c.nome.split(" ")[0]}! 💛 Seu acesso ao Receitinhas está liberado.\n\nEntre em: ${typeof window !== "undefined" ? window.location.origin : ""}/entrar\nLogin: ${c.email}\nSenha: ${c.senha}\n\nO acesso é vitalício. Qualquer dúvida é só chamar!`;
+  const texto = `Oi, ${c.nome.split(" ")[0]}! 💛 Seu acesso ao Receitinhas está liberado.\n\nEntre em: ${typeof window !== "undefined" ? window.location.origin : ""}\nLogin: ${c.email}\nSenha: ${c.senha}\n\nO acesso é vitalício. Qualquer dúvida é só chamar!`;
   const [copiado, setCopiado] = useState(false);
   return (
     <div className="rounded-2xl bg-mint/50 p-4 space-y-2 pop">
@@ -53,31 +53,6 @@ export function FormNovoMembro() {
       <Aviso estado={estado} />
       <button type="submit" disabled={pendente} className="btn btn-primary w-full">
         {pendente ? "Criando..." : "Criar login"}
-      </button>
-    </form>
-  );
-}
-
-export function FormLoja({ loja }: { loja: { comoComprar: string; whatsapp: string; valor: string } }) {
-  const [estado, action, pendente] = useActionState<EstadoAdmin, FormData>(salvarLoja, {});
-  return (
-    <form action={action} className="card p-6 space-y-4">
-      <h2 className="text-2xl">🛍️ Vitrine (página inicial)</h2>
-      <label className="block">
-        <span className="font-semibold block mb-1">Valor do acesso (texto livre)</span>
-        <input name="valor" defaultValue={loja.valor} className="field" placeholder="R$ 47,00 · pagamento único" />
-      </label>
-      <label className="block">
-        <span className="font-semibold block mb-1">WhatsApp (com DDD, só números)</span>
-        <input name="whatsapp" defaultValue={loja.whatsapp} className="field" placeholder="5511999999999" inputMode="numeric" />
-      </label>
-      <label className="block">
-        <span className="font-semibold block mb-1">Como comprar (chave Pix, passo a passo...)</span>
-        <textarea name="comoComprar" defaultValue={loja.comoComprar} rows={5} className="field" />
-      </label>
-      <Aviso estado={estado} />
-      <button type="submit" disabled={pendente} className="btn btn-primary w-full">
-        {pendente ? "Salvando..." : "Salvar vitrine"}
       </button>
     </form>
   );

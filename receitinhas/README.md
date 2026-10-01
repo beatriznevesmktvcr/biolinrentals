@@ -8,12 +8,11 @@ login e a senha dela no painel e manda por WhatsApp.
 
 | Página | Quem vê | O que faz |
 | --- | --- | --- |
-| `/` | todo mundo | Vitrine: o que tem dentro, como comprar (valor, Pix, WhatsApp) e botão de entrar |
-| `/entrar` | todo mundo | Login com e-mail e senha |
+| `/` | todo mundo | Página de login (e-mail e senha), e nada mais |
 | `/receitas` | membros | Biblioteca com filtros por alergia, refeição, idade e busca por ingrediente |
 | `/receitas/[slug]` | membros | Receita completa com ingredientes, preparo, dicas, trocas e impressão |
 | `/conta` | membros | Trocar a própria senha |
-| `/admin` | você | Criar logins (senha gerada e mensagem pronta para o WhatsApp), nova senha, desativar, excluir; editar os textos da vitrine |
+| `/admin` | você | Criar logins (senha gerada e mensagem pronta para o WhatsApp), nova senha, desativar, excluir |
 
 ## Como as receitas entram
 
@@ -29,7 +28,7 @@ são ligadas pelo campo `foto` da receita. Não precisa de painel para isso.
 3. Em **Environment Variables**, adicione:
    - `SESSION_SECRET`: um texto longo e aleatório (ex.: saída de `openssl rand -base64 48`)
    - `ADMIN_EMAIL`, `ADMIN_SENHA`, `ADMIN_NOME`: sua conta de administradora, criada na primeira visita
-4. Clique em **Deploy**. Entre em `/entrar` com a sua conta e vá para `/admin`.
+4. Clique em **Deploy**. Entre na página inicial com a sua conta e vá para `/admin`.
 
 Depois do primeiro acesso você pode trocar a senha em `/conta`; as variáveis `ADMIN_*` deixam de ser
 usadas (a conta já existe).

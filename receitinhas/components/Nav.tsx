@@ -18,10 +18,7 @@ export function Nav({ usuario }: Props) {
         ...(usuario.admin ? [{ href: "/admin", label: "Painel", emoji: "🔑" }] : []),
         { href: "/conta", label: "Minha conta", emoji: "👩" },
       ]
-    : [
-        { href: "/", label: "Início", emoji: "🏠" },
-        { href: "/#como-comprar", label: "Como ter acesso", emoji: "💛" },
-      ];
+    : [];
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href.split("#")[0]));
 
@@ -37,16 +34,12 @@ export function Nav({ usuario }: Props) {
           <span aria-hidden>{l.emoji}</span> {l.label}
         </Link>
       ))}
-      {usuario ? (
+      {usuario && (
         <form action="/sair" method="post">
           <button type="submit" className="chip bg-white/70 text-ink hover:bg-white">
             Sair
           </button>
         </form>
-      ) : (
-        <Link href="/entrar" onClick={() => setOpen(false)} className="chip bg-ink text-white">
-          Entrar
-        </Link>
       )}
     </>
   );
@@ -61,19 +54,22 @@ export function Nav({ usuario }: Props) {
           Receitinhas
         </Link>
 
-        <div className="hidden md:flex items-center gap-1">{itens}</div>
-
-        <button
-          className="md:hidden chip bg-white/80"
-          onClick={() => setOpen((o) => !o)}
-          aria-expanded={open}
-          aria-label="Abrir menu"
-        >
-          {open ? "✕" : "☰"} Menu
-        </button>
+        {usuario && (
+          <>
+            <div className="hidden md:flex items-center gap-1">{itens}</div>
+            <button
+              className="md:hidden chip bg-white/80"
+              onClick={() => setOpen((o) => !o)}
+              aria-expanded={open}
+              aria-label="Abrir menu"
+            >
+              {open ? "✕" : "☰"} Menu
+            </button>
+          </>
+        )}
       </div>
 
-      {open && <div className="md:hidden px-4 pb-4 flex flex-wrap gap-2 pop">{itens}</div>}
+      {usuario && open && <div className="md:hidden px-4 pb-4 flex flex-wrap gap-2 pop">{itens}</div>}
     </nav>
   );
 }

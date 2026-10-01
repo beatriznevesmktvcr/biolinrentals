@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { entrar, type EstadoLogin } from "./actions";
+import { entrar, type EstadoLogin } from "@/lib/login-action";
 
 export function FormLogin({ voltar }: { voltar: string }) {
   const [estado, action, pendente] = useActionState<EstadoLogin, FormData>(entrar, {});

@@ -1,20 +1,16 @@
 import type { Metadata } from "next";
 import { exigirAdmin, type Usuario } from "@/lib/auth";
 import { q } from "@/lib/db";
-import { textosDaLoja } from "@/lib/config";
 import { receitas } from "@/data/receitas";
-import { FormNovoMembro, FormLoja, LinhaMembro } from "./Painel";
+import { FormNovoMembro, LinhaMembro } from "./Painel";
 
 export const metadata: Metadata = { title: "Painel" };
 
 export default async function AdminPage() {
   const admin = await exigirAdmin();
-  const [membros, loja] = await Promise.all([
-    q<Usuario>(
-      "SELECT id, email, nome, papel, ativo, observacao, criado_em, ultimo_acesso FROM usuarios WHERE papel = 'membro' ORDER BY criado_em DESC",
-    ),
-    textosDaLoja(),
-  ]);
+  const membros = await q<Usuario>(
+    "SELECT id, email, nome, papel, ativo, observacao, criado_em, ultimo_acesso FROM usuarios WHERE papel = 'membro' ORDER BY criado_em DESC",
+  );
   const ativos = membros.filter((m) => m.ativo).length;
 
   return (
@@ -22,7 +18,7 @@ export default async function AdminPage() {
       <header className="space-y-2">
         <h1 className="text-4xl md:text-5xl">🔑 Painel</h1>
         <p className="text-ink-soft text-lg font-light">
-          Oi, {admin.nome.split(" ")[0]}. Aqui você cria os logins depois do Pix e cuida da vitrine.
+          Oi, {admin.nome.split(" ")[0]}. Aqui você cria os logins depois do Pix e cuida dos membros.
         </p>
       </header>
 
@@ -42,9 +38,8 @@ export default async function AdminPage() {
         ))}
       </section>
 
-      <section className="grid lg:grid-cols-2 gap-6 items-start">
+      <section className="max-w-2xl">
         <FormNovoMembro />
-        <FormLoja loja={loja} />
       </section>
 
       <section className="space-y-3">

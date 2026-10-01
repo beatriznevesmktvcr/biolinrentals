@@ -71,7 +71,7 @@ export const usuarioAtual = cache(async (): Promise<Usuario | null> => {
 
 export async function exigirUsuario(voltar?: string): Promise<Usuario> {
   const u = await usuarioAtual();
-  if (!u) redirect(`/entrar${voltar ? `?voltar=${encodeURIComponent(voltar)}` : ""}`);
+  if (!u) redirect(`/${voltar ? `?voltar=${encodeURIComponent(voltar)}` : ""}`);
   return u;
 }
 

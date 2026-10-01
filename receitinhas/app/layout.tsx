@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s · Receitinhas",
   },
   description:
-    "Portal de receitas sem açúcar e sal opcional para bebês e crianças, separadas por alergia: sem ovo, sem trigo, sem leite (APLV) e sem banana. Acesso vitalício.",
+    "Portal de receitas sem açúcar e sal opcional para bebês e crianças, separadas por alergia: sem ovo, sem trigo, sem leite (APLV) e sem banana.",
 };
 
 export const viewport: Viewport = {

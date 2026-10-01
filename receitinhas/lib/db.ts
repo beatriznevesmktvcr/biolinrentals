@@ -1,5 +1,5 @@
 /**
- * Banco de dados (só usuários e configurações; as receitas ficam em data/receitas.ts).
+ * Banco de dados (só usuários; as receitas ficam em data/receitas.ts).
  *  - Em produção (Vercel): Postgres via DATABASE_URL (ex.: Neon, criado com um clique na Vercel).
  *  - Sem DATABASE_URL (no seu computador): usa o PGlite, um Postgres embutido que salva em ./dados.
  * As tabelas são criadas automaticamente na primeira vez.
@@ -60,10 +60,6 @@ async function prepararEsquema(exec: Executor) {
       observacao TEXT NOT NULL DEFAULT '',
       criado_em TIMESTAMPTZ NOT NULL DEFAULT now(),
       ultimo_acesso TIMESTAMPTZ
-    );
-    CREATE TABLE IF NOT EXISTS configuracoes (
-      chave TEXT PRIMARY KEY,
-      valor TEXT NOT NULL DEFAULT ''
     );
   `;
   for (const stmt of ddl.split(";").map((s) => s.trim()).filter(Boolean)) {

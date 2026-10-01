@@ -10,7 +10,7 @@ export function proxy(req: NextRequest) {
   if (req.cookies.get(COOKIE)?.value) return NextResponse.next();
   const url = req.nextUrl.clone();
   const voltar = url.pathname + url.search;
-  url.pathname = "/entrar";
+  url.pathname = "/";
   url.search = `?voltar=${encodeURIComponent(voltar)}`;
   return NextResponse.redirect(url);
 }

@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { q, um } from "@/lib/db";
 import { exigirAdmin, gerarHash, gerarSenha } from "@/lib/auth";
-import { CHAVES, salvarConfiguracao } from "@/lib/config";
 
 export interface EstadoAdmin {
   erro?: string;
@@ -58,16 +57,4 @@ export async function excluirMembro(id: number) {
   if (id === admin.id) return;
   await q("DELETE FROM usuarios WHERE id = $1 AND papel = 'membro'", [id]);
   revalidatePath("/admin");
-}
-
-export async function salvarLoja(_prev: EstadoAdmin, form: FormData): Promise<EstadoAdmin> {
-  await exigirAdmin();
-  await Promise.all([
-    salvarConfiguracao(CHAVES.comoComprar, String(form.get("comoComprar") ?? "").trim()),
-    salvarConfiguracao(CHAVES.whatsapp, String(form.get("whatsapp") ?? "").trim()),
-    salvarConfiguracao(CHAVES.valor, String(form.get("valor") ?? "").trim()),
-  ]);
-  revalidatePath("/");
-  revalidatePath("/admin");
-  return { ok: "Textos da vitrine salvos." };
 }
