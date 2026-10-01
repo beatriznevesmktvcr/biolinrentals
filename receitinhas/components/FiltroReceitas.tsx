@@ -1,24 +1,27 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { receitas } from "@/data/receitas";
-import { ALERGENOS, IDADES, REFEICOES, type Alergeno, type Idade, type Refeicao } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import { ALERGENOS, IDADES, REFEICOES, type Alergeno, type Idade, type Receita, type Refeicao } from "@/lib/types";
 import { ReceitaCard } from "./ReceitaCard";
 
 const ORDEM_IDADE: Idade[] = ["6m", "9m", "12m"];
 
-export function FiltroReceitas() {
-  const params = useSearchParams();
+interface Props {
+  receitas: Receita[];
+  filtroInicial?: string[];
+  refeicaoInicial?: string;
+}
+
+export function FiltroReceitas({ receitas, filtroInicial = [], refeicaoInicial }: Props) {
   const router = useRouter();
 
   const [alergenos, setAlergenos] = useState<Alergeno[]>(() =>
-    params.getAll("filtro").filter((f): f is Alergeno => f in ALERGENOS),
+    filtroInicial.filter((f): f is Alergeno => f in ALERGENOS),
   );
-  const [refeicao, setRefeicao] = useState<Refeicao | "todas">(() => {
-    const r = params.get("refeicao");
-    return r && r in REFEICOES ? (r as Refeicao) : "todas";
-  });
+  const [refeicao, setRefeicao] = useState<Refeicao | "todas">(() =>
+    refeicaoInicial && refeicaoInicial in REFEICOES ? (refeicaoInicial as Refeicao) : "todas",
+  );
   const [idade, setIdade] = useState<Idade | "todas">("todas");
   const [busca, setBusca] = useState("");
 
@@ -46,7 +49,7 @@ export function FiltroReceitas() {
       }
       return true;
     });
-  }, [alergenos, refeicao, idade, busca]);
+  }, [receitas, alergenos, refeicao, idade, busca]);
 
   return (
     <div className="space-y-6">
@@ -132,7 +135,7 @@ export function FiltroReceitas() {
 
       <p className="text-ink-soft font-bold">
         {lista.length === 0
-          ? "Nenhuma receita com essa combinação ainda. Tente tirar um filtro ou use o gerador com IA ✨"
+          ? "Nenhuma receita com essa combinação ainda. Tente tirar um filtro 💛"
           : `${lista.length} ${lista.length === 1 ? "receita" : "receitas"} encontrada${lista.length === 1 ? "" : "s"}`}
       </p>
 

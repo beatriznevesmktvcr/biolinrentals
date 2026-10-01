@@ -1,80 +1,60 @@
 # 🥣 Receitinhas
 
-Plataforma lúdica para ajudar mães e pais a terem ideias de receitas para bebês e crianças:
-**sem açúcar, sal opcional e separadas por alergia**.
+Portal de receitas para bebês e crianças, **sem açúcar e com sal opcional**, separadas por alergia
+(sem ovo, sem trigo, sem leite/APLV, sem banana). Acesso vitalício: a pessoa faz o Pix, você cria o
+login e a senha dela no painel e manda por WhatsApp.
 
 ## O que tem
 
-| Página | O que faz |
-| --- | --- |
-| `/` | Início com atalhos, categorias e regrinhas de ouro |
-| `/receitas` | Biblioteca de receitas com filtros: sem ovo, sem trigo (farinha de aveia), sem leite (APLV), sem banana, refeição, idade e busca por ingrediente |
-| `/receitas/[slug]` | Receita completa com ingredientes, preparo, dicas, trocas e botão de imprimir |
-| `/gerar` | Gerador com IA: a família escreve o que tem em casa e recebe **7 cafés da manhã, 7 almoços/jantares e 7 lanches**, respeitando idade e restrições. Pode entrar com a conta do ChatGPT para gerar com o próprio plano |
+| Página | Quem vê | O que faz |
+| --- | --- | --- |
+| `/` | todo mundo | Vitrine: o que tem dentro, como comprar (valor, Pix, WhatsApp) e botão de entrar |
+| `/entrar` | todo mundo | Login com e-mail e senha |
+| `/receitas` | membros | Biblioteca com filtros por alergia, refeição, idade e busca por ingrediente |
+| `/receitas/[slug]` | membros | Receita completa com ingredientes, preparo, dicas, trocas e impressão |
+| `/conta` | membros | Trocar a própria senha |
+| `/admin` | você | Criar logins (senha gerada e mensagem pronta para o WhatsApp), nova senha, desativar, excluir; editar os textos da vitrine |
 
-## Como a IA é paga
+## Como as receitas entram
 
-O gerador tem dois caminhos, e o site escolhe automaticamente:
+As receitas ficam no arquivo `data/receitas.ts`. Você me manda a receita (nome, ingredientes, modo de
+preparo, dicas e para quais restrições ela serve) e eu coloco no portal. Fotos vão em `public/fotos` e
+são ligadas pelo campo `foto` da receita. Não precisa de painel para isso.
 
-1. **Login com ChatGPT** (botão "Entrar com ChatGPT"): a pessoa entra com a conta dela. Se o plano for
-   Plus ou Pro e ela aceitar a permissão, as receitas são geradas com o plano dela, sem custo para o site.
-2. **IA do site** (`OPENAI_API_KEY`): usada quando ninguém está logado ou o plano da pessoa não libera uso
-   em outros apps. Custa para quem cuida do site.
+## Colocando no ar (Vercel, grátis)
 
-Se nenhum dos dois estiver configurado, o botão de gerar mostra um aviso explicando.
+1. Em https://vercel.com, importe este repositório e escolha `receitinhas` como **Root Directory**.
+2. Na aba **Storage**, crie um banco **Neon (Postgres)** e conecte ao projeto. Isso cria a variável
+   `DATABASE_URL` sozinha. As tabelas são criadas automaticamente na primeira visita.
+3. Em **Environment Variables**, adicione:
+   - `SESSION_SECRET`: um texto longo e aleatório (ex.: saída de `openssl rand -base64 48`)
+   - `ADMIN_EMAIL`, `ADMIN_SENHA`, `ADMIN_NOME`: sua conta de administradora, criada na primeira visita
+4. Clique em **Deploy**. Entre em `/entrar` com a sua conta e vá para `/admin`.
 
-### Ativando o login com ChatGPT
-
-O "Sign in with ChatGPT" para sites é liberado pela OpenAI por cadastro (hoje em teste limitado com
-parceiros). Peça acesso em https://developers.openai.com/siwc e registre:
-
-- **Redirect URI**: `https://SEU-APP.vercel.app/api/auth/chatgpt/callback`
-- **Escopos**: `openid profile email offline_access resource.invoke chatgpt.tokens.use.direct`
-
-Depois preencha na Vercel `SIWC_CLIENT_ID`, `APP_URL` e `SESSION_SECRET` (veja `.env.example`).
-O fluxo é OAuth 2.0 Authorization Code com PKCE e OpenID Connect; os endpoints são descobertos em
-`https://auth.openai.com/.well-known/openid-configuration`, com os valores documentados como reserva.
+Depois do primeiro acesso você pode trocar a senha em `/conta`; as variáveis `ADMIN_*` deixam de ser
+usadas (a conta já existe).
 
 ## Rodando no seu computador
 
-Precisa do [Node.js](https://nodejs.org) 20 ou mais novo.
+Precisa do [Node.js](https://nodejs.org) 20 ou mais novo. Sem `DATABASE_URL`, o app usa um Postgres
+embutido (PGlite) salvo na pasta `dados/`, sem instalar nada.
 
 ```bash
 cd receitinhas
 npm install
-cp .env.example .env.local   # e coloque sua chave da Anthropic
+cp .env.example .env.local   # preencha ADMIN_EMAIL, ADMIN_SENHA e SESSION_SECRET
 npm run dev
 ```
 
 Abra http://localhost:3000.
 
-Sem chave e sem login configurado, o site inteiro funciona; só o gerador com IA mostra um aviso.
+## Segurança
 
-## Colocando no ar (Vercel, grátis)
-
-1. Crie uma conta em https://vercel.com e importe este repositório.
-2. Em **Root Directory**, escolha `receitinhas`.
-3. Em **Environment Variables**, adicione `OPENAI_API_KEY` (IA do site) e/ou as variáveis do login com ChatGPT.
-4. Clique em **Deploy**. Pronto, você ganha um link `*.vercel.app` para compartilhar.
-
-## Versão em um arquivo só (`receitinhas.html`)
-
-O arquivo `receitinhas.html` tem a plataforma inteira (receitas, filtros e gerador)
-em um único HTML, para abrir direto no navegador ou colar em um bloco "HTML personalizado" do WordPress.
-
-- As receitas e os filtros funcionam sem nenhum servidor.
-- Para o gerador com IA funcionar, publique a pasta `receitinhas` na Vercel (passos acima) e troque a
-  linha `const API_URL = "https://SEU-APP.vercel.app/api/gerar"` no início do arquivo pelo endereço do
-  seu app. Para o botão "Entrar com ChatGPT" funcionar a partir do seu site, defina também
-  `ALLOWED_ORIGIN` na Vercel com o domínio dele (ex.: `https://meusite.com.br`).
-- Depois de mudar receitas em `data/`, gere o arquivo de novo com `npm run build:html`.
-
-## Adicionando receitas
-
-Todas as receitas ficam em `data/receitas.ts`. Copie um bloco, mude os campos e marque as flags
-`semOvo`, `semTrigo`, `semLeite`, `semBanana` como `true` quando a receita funciona para aquela restrição
-(contando as trocas sugeridas).
+- Senhas guardadas com bcrypt; sessão em cookie criptografado (90 dias), somente HTTP e seguro em produção.
+- Seis tentativas erradas de login bloqueiam o e-mail por 15 minutos.
+- Páginas de membros e painel são protegidas no servidor; o conteúdo das receitas não é enviado para quem
+  não está logado.
 
 ## Tecnologia
 
-Next.js (App Router) · React · Tailwind CSS v4 · SDK oficial da OpenAI (Responses API com saída estruturada via Zod) · Sign in with ChatGPT (OAuth 2.0 + PKCE + OIDC, cookies criptografados com jose).
+Next.js (App Router, Server Actions) · React · Tailwind CSS v4 · Postgres (Neon) ou PGlite local · bcryptjs · jose.

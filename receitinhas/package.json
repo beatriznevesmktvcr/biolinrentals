@@ -10,15 +10,18 @@
     "build:html": "node --experimental-strip-types scripts/build-standalone.mjs"
   },
   "dependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "bcryptjs": "^3.0.3",
     "jose": "^6.2.12",
     "next": "latest",
-    "openai": "^7.25.0",
+    "postgres": "^3.4.9",
     "react": "latest",
     "react-dom": "latest",
     "zod": "latest"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "latest",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",

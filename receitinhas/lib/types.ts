@@ -19,6 +19,8 @@ export interface Receita {
   modo: string[];
   dicas?: string[];
   trocas?: string[];
+  /** Caminho de uma foto em public/fotos (ex.: "/fotos/panqueca.jpg"). Opcional. */
+  foto?: string;
 }
 
 export const REFEICOES: Record<Refeicao, { label: string; emoji: string; cor: string }> = {
