@@ -94,8 +94,8 @@ export default async function ReceitaPage({ params }: Props) {
 
       <div className="flex flex-wrap gap-3 no-print">
         <PrintButton />
-        <Link href="/cortes" className="btn btn-ghost">
-          🔪 Ver cortes seguros
+        <Link href="/gerar" className="btn btn-ghost">
+          ✨ Gerar cardápio com IA
         </Link>
       </div>
 

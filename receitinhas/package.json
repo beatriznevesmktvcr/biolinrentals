@@ -10,8 +10,9 @@
     "build:html": "node --experimental-strip-types scripts/build-standalone.mjs"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "latest",
+    "jose": "^6.2.12",
     "next": "latest",
+    "openai": "^7.25.0",
     "react": "latest",
     "react-dom": "latest",
     "zod": "latest"

@@ -7,9 +7,7 @@ export const IdeiaSchema = z.object({
   ingredientes: z.array(z.string()).describe("Ingredientes com quantidades aproximadas"),
   modo: z.array(z.string()).describe("Passos curtos do preparo, de 2 a 4 passos"),
   tempoMin: z.number().describe("Tempo total aproximado em minutos"),
-  comoServir: z
-    .string()
-    .describe("Como cortar/oferecer de forma segura para a idade informada, em uma frase"),
+  dica: z.string().describe("Uma dica curta: textura, como oferecer para a idade ou uma troca"),
 });
 
 export const CardapioSchema = z.object({

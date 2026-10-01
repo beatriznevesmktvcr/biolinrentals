@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s · Receitinhas",
   },
   description:
-    "Plataforma lúdica com receitas sem açúcar e sal opcional para bebês e crianças, filtros para alergias (sem ovo, sem trigo, sem leite/APLV, sem banana), gerador de cardápio com IA e guia de cortes seguros de frutas.",
+    "Plataforma lúdica com receitas sem açúcar e sal opcional para bebês e crianças, filtros para alergias (sem ovo, sem trigo, sem leite/APLV, sem banana) e gerador de cardápio com IA (com login pelo ChatGPT).",
 };
 
 export const viewport: Viewport = {

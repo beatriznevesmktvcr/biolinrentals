@@ -14,16 +14,9 @@ const atalhos: { href: string; titulo: string; texto: string; emoji: string; cor
   {
     href: "/gerar",
     titulo: "Gerar com IA",
-    texto: "Diga o que tem na geladeira e receba 7 cafés, 7 almoços/jantares e 7 lanches.",
+    texto: "Diga o que tem na geladeira e receba 7 cafés, 7 almoços/jantares e 7 lanches. Pode usar o seu ChatGPT.",
     emoji: "✨",
     cor: "bg-lilac",
-  },
-  {
-    href: "/cortes",
-    titulo: "Cortes seguros",
-    texto: "Como cortar cada fruta em cada fase para evitar engasgos.",
-    emoji: "🔪",
-    cor: "bg-mint",
   },
 ];
 
@@ -53,8 +46,8 @@ export default function Home() {
           para todo dia, sem sufoco
         </h1>
         <p className="text-lg md:text-xl text-ink-soft max-w-2xl mx-auto">
-          Receitas sem açúcar, com sal opcional, pensadas para bebês e crianças. Filtre por alergia,
-          gere um cardápio com o que você tem em casa e aprenda a cortar as frutas com segurança.
+          Receitas sem açúcar, com sal opcional, pensadas para bebês e crianças. Filtre por alergia ou
+          gere um cardápio da semana com o que você tem em casa.
         </p>
         <div className="flex flex-wrap justify-center gap-3 pt-2">
           <Link href="/gerar" className="btn btn-primary text-lg">
@@ -67,7 +60,7 @@ export default function Home() {
       </section>
 
       {/* ATALHOS */}
-      <section className="grid md:grid-cols-3 gap-5">
+      <section className="grid md:grid-cols-2 gap-5">
         {atalhos.map((a) => (
           <Link
             key={a.href}

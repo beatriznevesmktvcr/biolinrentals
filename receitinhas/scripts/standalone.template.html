@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Receitinhas · ideias sem açúcar para as crianças</title>
-<meta name="description" content="Receitas sem açúcar e sal opcional para bebês e crianças, filtros para alergias (sem ovo, sem trigo, sem leite/APLV, sem banana), gerador de cardápio com IA e guia de cortes seguros de frutas.">
+<meta name="description" content="Receitas sem açúcar e sal opcional para bebês e crianças, filtros para alergias (sem ovo, sem trigo, sem leite/APLV, sem banana) e gerador de cardápio com IA (com login pelo ChatGPT).">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ff8c7a'/%3E%3Cpath d='M12 38a20 14 0 0 0 40 0z' fill='%23fff8ef'/%3E%3Ccircle cx='24' cy='24' r='5' fill='%23b9ecd6'/%3E%3Ccircle cx='36' cy='20' r='5' fill='%23f6c2dc'/%3E%3Ccircle cx='44' cy='28' r='4' fill='%23fff0a6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -102,7 +102,7 @@
    Para o gerador com IA funcionar, publique a pasta "receitinhas"
    na Vercel (veja o README) e coloque aqui o endereço do seu app:
    ============================================================ */
-const API_URL = "https://SEU-APP.vercel.app/api/gerar";
+const APP_URL = "https://SEU-APP.vercel.app";
 
 const DATA = __DATA__;
 </script>
@@ -110,11 +110,13 @@ const DATA = __DATA__;
 (function(){
   const $ = (s, el=document) => el.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const { receitas, frutas, regras, ALERGENOS, REFEICOES, IDADES, FASES, FORMAS, IDADE_LABEL } = DATA;
+  const { receitas, ALERGENOS, REFEICOES, IDADES, IDADE_LABEL } = DATA;
+  const API_URL = APP_URL + "/api/gerar";
+  const configurado = !APP_URL.includes("SEU-APP");
   const ALG = Object.keys(ALERGENOS), REF = Object.keys(REFEICOES), ORDEM_IDADE = ["6m","9m","12m"];
 
   /* ---------- navegação ---------- */
-  const LINKS = [["inicio","🏠 Início"],["receitas","📖 Receitas"],["gerar","✨ Gerar com IA"],["cortes","🔪 Cortes seguros"]];
+  const LINKS = [["inicio","🏠 Início"],["receitas","📖 Receitas"],["gerar","✨ Gerar com IA"]];
   function renderNav(){
     const cur = route().view === "receita" ? "receitas" : route().view;
     const html = LINKS.map(([h,l]) => `<a class="chip ${cur===h?"on":""}" href="#${h}">${l}</a>`).join("");
@@ -142,21 +144,6 @@ const DATA = __DATA__;
       ${tagsAlg(r,true)}
     </a>`;
 
-  function corteIcon(forma, cor, size=56){
-    const st = "rgba(61,58,74,0.35)", c = `stroke="${st}" stroke-width="2" fill="${cor}"`;
-    const shapes = {
-      amassado: `<path d="M12 44c6-10 18-14 28-10s14 10 16 14c-8 4-20 6-30 4S14 48 12 44z" ${c}/><circle cx="24" cy="40" r="2" fill="${st}"/><circle cx="36" cy="38" r="2" fill="${st}"/><circle cx="46" cy="42" r="2" fill="${st}"/>`,
-      ralado: [0,1,2,3,4,5,6].map(i=>`<path d="M${12+i*6} ${46-(i%2)*6} q3 -8 6 0" stroke="${cor}" stroke-width="3" fill="none" stroke-linecap="round"/>`).join("")+`<path d="M8 50h48" stroke="${st}" stroke-width="2" stroke-linecap="round"/>`,
-      palito: `<rect x="26" y="8" width="12" height="48" rx="6" ${c}/><path d="M14 28 L8 56 M50 28 L56 56" stroke="${st}" stroke-width="1.5" stroke-dasharray="3 3"/>`,
-      "meia-lua": `<path d="M10 40 A22 22 0 0 1 54 40 Z" ${c}/>`,
-      "fatia-fina": `<ellipse cx="32" cy="34" rx="22" ry="7" ${c}/><ellipse cx="32" cy="24" rx="22" ry="7" ${c}/>`,
-      cubinhos: [[14,18],[30,14],[44,22],[18,36],[36,36],[48,42]].map(([x,y])=>`<rect x="${x}" y="${y}" width="10" height="10" rx="2" ${c}/>`).join(""),
-      quartos: `<path d="M18 10 a14 20 0 0 0 0 44 L18 10z" ${c}/><path d="M22 10 a14 20 0 0 1 0 44 L22 10z" ${c}/><path d="M46 10 a14 20 0 0 0 0 44 L46 10z" ${c}/><path d="M50 10 a14 20 0 0 1 0 44 L50 10z" ${c}/>`,
-      esmagado: `<ellipse cx="32" cy="40" rx="22" ry="8" ${c}/><path d="M28 10 l4 8 l4 -8" stroke="${st}" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M32 18 v10" stroke="${st}" stroke-width="2" stroke-linecap="round"/>`,
-      "pedaco-grande": `<path d="M10 50 L32 10 L54 50 Z" ${c}/><path d="M10 50 h44" stroke="#4caf7a" stroke-width="6" stroke-linecap="round"/>`,
-    };
-    return `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true">${shapes[forma]||""}</svg>`;
-  }
 
   /* ---------- telas ---------- */
   const views = {};
@@ -167,13 +154,12 @@ const DATA = __DATA__;
       <section class="center stack" style="padding-top:2.5rem">
         <div class="emoji" style="font-size:4rem;display:flex;justify-content:center;gap:.75rem" aria-hidden="true"><span class="float">🍓</span><span class="float" style="animation-delay:.6s">🥑</span><span class="float" style="animation-delay:1.2s">🥕</span></div>
         <h1>Ideias de <span style="color:var(--coral-dark)">receitinhas</span><br>para todo dia, sem sufoco</h1>
-        <p class="muted big" style="max-width:40rem;margin:0 auto">Receitas sem açúcar, com sal opcional, pensadas para bebês e crianças. Filtre por alergia, gere um cardápio com o que você tem em casa e aprenda a cortar as frutas com segurança.</p>
+        <p class="muted big" style="max-width:40rem;margin:0 auto">Receitas sem açúcar, com sal opcional, pensadas para bebês e crianças. Filtre por alergia ou gere um cardápio da semana com o que você tem em casa.</p>
         <div class="row" style="justify-content:center"><a class="btn btn-primary big" href="#gerar">✨ Gerar cardápio com IA</a><a class="btn btn-ghost big" href="#receitas">📖 Ver todas as receitas</a></div>
       </section>
-      <section class="grid grid-3 section">
+      <section class="grid grid-2 section">
         <a class="card bg-peach" href="#receitas"><div class="emoji" style="font-size:3rem">📖</div><h2 style="margin-top:.5rem">Receitas</h2><p class="muted">Sem açúcar, sal opcional e separadas por alergia. Café, almoço, jantar e lanche.</p></a>
-        <a class="card bg-lilac" href="#gerar"><div class="emoji" style="font-size:3rem">✨</div><h2 style="margin-top:.5rem">Gerar com IA</h2><p class="muted">Diga o que tem na geladeira e receba 7 cafés, 7 almoços/jantares e 7 lanches.</p></a>
-        <a class="card bg-mint" href="#cortes"><div class="emoji" style="font-size:3rem">🔪</div><h2 style="margin-top:.5rem">Cortes seguros</h2><p class="muted">Como cortar cada fruta em cada fase para evitar engasgos.</p></a>
+        <a class="card bg-lilac" href="#gerar"><div class="emoji" style="font-size:3rem">✨</div><h2 style="margin-top:.5rem">Gerar com IA</h2><p class="muted">Diga o que tem na geladeira e receba 7 cafés, 7 almoços/jantares e 7 lanches. Pode usar o seu ChatGPT.</p></a>
       </section>
       <section class="section stack">
         <h2>Escolha pela necessidade da sua família</h2>
@@ -253,36 +239,9 @@ const DATA = __DATA__;
           <section class="card"><h2 style="margin-bottom:.75rem">👩‍🍳 Modo de preparo</h2>${r.modo.map((p,i)=>`<div class="step"><b>${i+1}</b><span style="padding-top:.25rem">${esc(p)}</span></div>`).join("")}</section>
         </div>
         ${extras.length?`<section class="card stack" style="background:rgba(255,240,166,.5)">${extras.join("")}</section>`:""}
-        <div class="row no-print"><button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir receita</button><a class="btn btn-ghost" href="#cortes">🔪 Ver cortes seguros</a></div>
+        <div class="row no-print"><button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir receita</button><a class="btn btn-ghost" href="#gerar">✨ Gerar cardápio com IA</a></div>
         ${parecidas.length?`<section class="stack no-print"><h2>Você também pode gostar</h2><div class="row">${parecidas.map(p=>`<a class="chip bg-white" href="#receita/${p.slug}">${p.emoji} ${esc(p.nome)}</a>`).join("")}</div></section>`:""}
       </article>`;
-  };
-
-  let fase = "6m", buscaFruta = "";
-  views.cortes = () => `
-    <header class="stack" style="padding-top:2.5rem"><h1>🔪 Cortes seguros de frutas</h1><p class="muted big" style="max-width:40rem">O formato certo muda conforme a fase do bebê. Escolha a idade e veja como oferecer cada fruta. O gerador com IA usa estas mesmas regras quando monta o cardápio.</p></header>
-    <div class="card row" style="margin-top:1.5rem;gap:1rem"><div class="row" id="c-fases" role="tablist"></div><input class="input" id="c-busca" type="search" placeholder="Buscar fruta..." style="width:auto;margin-left:auto"></div>
-    <p class="muted" id="c-sub" style="margin-top:1rem"></p>
-    <div class="grid grid-3" id="c-lista" style="margin-top:1rem"></div>
-    <section class="section stack"><h2>Regras de ouro contra engasgos</h2><div class="grid grid-3">${regras.map(r=>`<div class="card"><div class="emoji" style="font-size:2.5rem">${r.emoji}</div><h3 style="margin-top:.5rem">${esc(r.titulo)}</h3><p class="muted" style="margin-top:.25rem">${esc(r.texto)}</p></div>`).join("")}</div></section>
-    <section class="section card" style="background:rgba(207,230,255,.5)"><h2 style="margin-bottom:.5rem">🧑‍⚕️ Faça um curso de primeiros socorros</h2><p class="muted">Saber a manobra de desengasgo para bebês (manobra de Heimlich adaptada) dá muita segurança para toda a família. Procure cursos presenciais na sua cidade: bombeiros, hospitais e cruz vermelha costumam oferecer.</p></section>`;
-  views.cortes.after = () => {
-    const paint = () => {
-      $("#c-fases").innerHTML = Object.keys(FASES).map(k=>`<button class="chip ${fase===k?"on":""}" role="tab" aria-selected="${fase===k}" data-fase="${k}">${FASES[k].emoji} ${FASES[k].titulo}</button>`).join("");
-      $("#c-sub").innerHTML = `<b>${FASES[fase].titulo}:</b> ${FASES[fase].sub}.`;
-      const lista = frutas.filter(f=>f.nome.toLowerCase().includes(buscaFruta.trim().toLowerCase()));
-      $("#c-lista").innerHTML = lista.map(f=>{const fs=f.fases[fase];return `
-        <div class="card pop" style="display:flex;flex-direction:column;gap:.75rem">
-          <div style="display:flex;justify-content:space-between;align-items:center"><div class="row" style="flex-wrap:nowrap"><span class="emoji" style="font-size:2.5rem">${f.emoji}</span><h3>${esc(f.nome)}</h3></div>${corteIcon(fs.forma,f.cor)}</div>
-          <span class="chip sm bg-mint-soft" style="align-self:flex-start">✂️ ${FORMAS[fs.forma]}</span>
-          <p>${esc(fs.texto)}</p>
-          ${f.alerta?`<p class="alert">⚠️ <b>Atenção:</b> ${esc(f.alerta)}</p>`:""}
-          ${f.dica?`<p class="muted" style="font-size:.9rem">💡 ${esc(f.dica)}</p>`:""}
-        </div>`;}).join("");
-    };
-    $("#c-fases").addEventListener("click", e => { const b=e.target.closest("[data-fase]"); if(b){fase=b.dataset.fase; paint();} });
-    $("#c-busca").addEventListener("input", e => { buscaFruta=e.target.value; paint(); });
-    paint();
   };
 
   /* ---------- gerador ---------- */
@@ -294,7 +253,8 @@ const DATA = __DATA__;
   try { const s = JSON.parse(localStorage.getItem(STORAGE)); if (s) { g.cardapio=s.cardapio; g.quando=s.quando; g.idade=s.pedido.idade; g.restricoes=s.pedido.restricoes; g.ingredientes=s.pedido.ingredientes; } } catch(e){}
 
   views.gerar = () => `
-    <header class="stack" style="padding-top:2.5rem"><h1>✨ Gerar cardápio com IA</h1><p class="muted big" style="max-width:40rem">Escreva o que tem na sua geladeira e despensa. A gente devolve 7 cafés da manhã, 7 almoços ou jantares e 7 lanches, sem açúcar, respeitando as restrições e com a dica de como servir com segurança.</p></header>
+    <header class="stack" style="padding-top:2.5rem"><h1>✨ Gerar cardápio com IA</h1><p class="muted big" style="max-width:40rem">Escreva o que tem na sua geladeira e despensa. A gente devolve 7 cafés da manhã, 7 almoços ou jantares e 7 lanches, sem açúcar e respeitando as restrições. Se quiser, entre com a sua conta do ChatGPT para gerar com o seu próprio plano.</p></header>
+    <section class="card no-print" id="g-login" style="margin-top:1.5rem;background:rgba(220,212,255,.4)"></section>
     <form class="card stack no-print" id="g-form" style="margin-top:1.5rem">
       <label><span class="label big">🧺 O que você tem em casa?</span><textarea class="input" id="g-ing" rows="4" required minlength="3" placeholder="Ex.: ovos, aveia, batata-doce, frango, cenoura, maçã...">${esc(g.ingredientes||"")}</textarea><button type="button" id="g-exemplo" style="font-size:.85rem;font-weight:800;color:var(--coral-dark);margin-top:.5rem;cursor:pointer">Usar uma lista de exemplo</button></label>
       <div class="grid grid-2">
@@ -307,6 +267,25 @@ const DATA = __DATA__;
     </form>
     <section id="resultado" class="stack section"></section>`;
   views.gerar.after = () => {
+    const loginBox = $("#g-login");
+    const voltar = encodeURIComponent(location.href.split("?")[0].split("#")[0] + "#gerar");
+    const q = new URLSearchParams(location.search);
+    const avisoLogin = q.get("login") === "ok" ? "✅ Você entrou com o ChatGPT!" : q.get("login") === "erro" ? `😕 Não deu para entrar com o ChatGPT: ${q.get("motivo") || "tente de novo"}.` : q.get("login") === "nao-configurado" ? "😕 O login com ChatGPT ainda não foi configurado no app." : "";
+    if (q.get("login")) history.replaceState({}, "", location.pathname + location.hash);
+    const paintLogin = (me) => {
+      const aviso = avisoLogin ? `<p style="font-weight:800;margin-bottom:.75rem">${esc(avisoLogin)}</p>` : "";
+      if (me && me.usuario) {
+        loginBox.innerHTML = aviso + `<div class="row" style="gap:.75rem">${me.usuario.foto?`<img src="${esc(me.usuario.foto)}" alt="" style="width:2.5rem;height:2.5rem;border-radius:50%;border:2px solid #fff">`:`<span class="emoji" style="font-size:2rem">🧑‍🍳</span>`}<div style="flex:1;min-width:12rem"><p style="font-weight:800">Olá, ${esc(me.usuario.nome)}!</p><p class="muted" style="font-size:.9rem">${me.usuario.usaPlano?"As receitas serão geradas com o seu plano do ChatGPT.":me.geradorDoSite?"Seu plano do ChatGPT não liberou uso em outros apps, então vamos usar a IA do site.":"Seu plano do ChatGPT não liberou uso em outros apps (precisa ser Plus ou Pro)."}</p></div><button type="button" class="btn btn-ghost" id="g-sair">Sair</button></div>`;
+        $("#g-sair").addEventListener("click", async () => { try { await fetch(APP_URL + "/api/auth/chatgpt/sair", { method: "POST", credentials: "include" }); } catch(e){} carregarMe(); });
+      } else {
+        loginBox.innerHTML = aviso + `<div class="row" style="gap:.75rem"><div style="flex:1;min-width:12rem"><p style="font-weight:800">Quer gerar com o seu ChatGPT?</p><p class="muted" style="font-size:.9rem">Entre com a sua conta: se você tem ChatGPT Plus ou Pro, as receitas usam o seu plano.${me&&me.geradorDoSite?" Sem login, usamos a IA do site mesmo.":""}</p></div><a class="btn btn-primary" href="${configurado?APP_URL+"/api/auth/chatgpt/start?voltar="+voltar:"#gerar"}" ${me&&!me.loginDisponivel?'style="opacity:.6" title="Login ainda não configurado"':""}>Entrar com ChatGPT</a></div>`;
+      }
+    };
+    const carregarMe = () => {
+      if (!configurado) { paintLogin({ loginDisponivel: false, geradorDoSite: false, usuario: null }); return; }
+      fetch(APP_URL + "/api/me", { credentials: "include", cache: "no-store" }).then(r => r.json()).then(paintLogin).catch(() => paintLogin(null));
+    };
+    carregarMe();
     const paintForm = () => {
       $("#g-idade").innerHTML = Object.keys(IDADE_LABEL).map(k=>`<button type="button" class="chip ${g.idade===k?"bg-sky ring":""}" data-idade="${k}" aria-pressed="${g.idade===k}">${IDADE_LABEL[k]}</button>`).join("");
       $("#g-alg").innerHTML = ALG.map(a=>`<button type="button" class="chip ${g.restricoes.includes(a)?"on":""}" data-alg="${a}" aria-pressed="${g.restricoes.includes(a)}">${ALERGENOS[a].emoji} ${ALERGENOS[a].label}</button>`).join("");
@@ -322,7 +301,7 @@ const DATA = __DATA__;
           <div class="card" style="display:flex;flex-direction:column;gap:.75rem">
             <div style="display:flex;justify-content:space-between"><span class="chip sm ${cor}">Dia ${i+1}</span><span class="muted" style="font-size:.75rem;font-weight:800">⏱️ ${Number(d.tempoMin)||"?"} min</span></div>
             <div class="row" style="flex-wrap:nowrap"><span class="emoji" style="font-size:2.5rem">${esc(d.emoji||"🍽️")}</span><h4 style="font-size:1.2rem">${esc(d.nome)}</h4></div>
-            <p class="note">🔪 ${esc(d.comoServir||"")}</p>
+            <p class="note">💡 ${esc(d.dica||"")}</p>
             <button type="button" class="no-print" data-toggle style="font-size:.85rem;font-weight:800;color:var(--coral-dark);align-self:flex-start;cursor:pointer" aria-expanded="false">Ver receita ▼</button>
             <div class="hidden print-show stack" style="font-size:.9rem"><div><b>🧺 Ingredientes</b><ul>${(d.ingredientes||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div><div><b>👩‍🍳 Preparo</b><ol>${(d.modo||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div></div>
           </div>`).join("")}</div></div>`).join("")}
@@ -348,8 +327,8 @@ const DATA = __DATA__;
       erro.classList.add("hidden"); btn.disabled = true; btn.textContent = "Cozinhando..."; wait.classList.remove("hidden");
       let i = 0; const tick = () => { wait.innerHTML = `<span class="dot"></span> <span class="dot" style="animation-delay:.2s"></span> <span class="dot" style="animation-delay:.4s"></span> ${ESPERA[i++ % ESPERA.length]}`; }; tick(); const timer = setInterval(tick, 2500);
       try {
-        if (API_URL.includes("SEU-APP")) throw { erro: "O gerador ainda não está conectado: edite a linha API_URL no início do arquivo com o endereço do seu app na Vercel." };
-        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(pedido) });
+        if (!configurado) throw { erro: "O gerador ainda não está conectado: edite a linha APP_URL no início do arquivo com o endereço do seu app na Vercel." };
+        const res = await fetch(API_URL, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify(pedido) });
         const data = await res.json();
         if (!res.ok || !data.cardapio) throw { erro: data.erro || "Não deu certo. Tente de novo." };
         g.cardapio = data.cardapio; g.secao = "cafe"; g.ingredientes = pedido.ingredientes;

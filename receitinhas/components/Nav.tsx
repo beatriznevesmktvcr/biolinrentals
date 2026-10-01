@@ -8,7 +8,6 @@ const links = [
   { href: "/", label: "Início", emoji: "🏠" },
   { href: "/receitas", label: "Receitas", emoji: "📖" },
   { href: "/gerar", label: "Gerar com IA", emoji: "✨" },
-  { href: "/cortes", label: "Cortes seguros", emoji: "🔪" },
 ];
 
 export function Nav() {

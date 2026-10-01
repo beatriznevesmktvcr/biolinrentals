@@ -14,8 +14,8 @@ export default function GerarPage() {
         <h1 className="text-4xl md:text-5xl font-bold">✨ Gerar cardápio com IA</h1>
         <p className="text-ink-soft text-lg max-w-2xl">
           Escreva o que tem na sua geladeira e despensa. A gente devolve 7 cafés da manhã, 7 almoços ou
-          jantares e 7 lanches, sem açúcar, respeitando as restrições e com a dica de como servir com
-          segurança.
+          jantares e 7 lanches, sem açúcar e respeitando as restrições. Se quiser, entre com a sua conta
+          do ChatGPT para gerar com o seu próprio plano.
         </p>
       </header>
       <Gerador />
