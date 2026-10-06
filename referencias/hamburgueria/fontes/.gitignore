@@ -3,3 +3,6 @@
 *.otf
 *.woff
 *.woff2
+
+# Poppins é licença aberta (SIL OFL), pode ficar no repositório
+!Poppins-*.ttf
