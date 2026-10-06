@@ -21,8 +21,11 @@ entra só em pontos de ênfase: a tag do gancho e o preço.
 
 ## Tipografia
 
-- **Título**: caixa alta, condensada, pesada, com textura de carimbo ou tinta
-  gasta (estilo stencil / grunge). Ex.: "RELAXA, HOJE TEM..".
+- **Título**: **Brothers Bold** (Emigre, design de John Downer), sempre em caixa
+  alta, cor creme `#FBE7D2`. Para chegar mais perto da arte original, aplicar
+  textura de carimbo ou tinta gasta por cima. Ex.: "RELAXA, HOJE TEM..".
+  Prévia em `brothers-bold-preview.png`. O arquivo `.ttf` fica em `fontes/`
+  apenas localmente: é fonte comercial e não é enviada ao repositório público.
 - **Gancho**: sans-serif geométrica regular, em caixa baixa, dentro de uma tag
   vermelha levemente rotacionada. Ex.: "Abriu a geladeira... não tinha nada?".
 - **Oferta e preço**: sans-serif geométrica bold, caixa alta no preço, com o

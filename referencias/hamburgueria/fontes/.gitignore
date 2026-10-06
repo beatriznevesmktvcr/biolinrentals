@@ -1,0 +1,5 @@
+# Fontes comerciais: não publicar no repositório público
+*.ttf
+*.otf
+*.woff
+*.woff2
