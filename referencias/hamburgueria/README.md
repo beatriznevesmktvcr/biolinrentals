@@ -6,22 +6,46 @@ Fonte: post promocional do 389 Burger (Brasília). Arte salva em `389-burger-pro
 ## Resumo do estilo
 
 Fotografia escura e quente de restaurante, com o produto em destaque e uma
-tipografia grande e "suja" (textura de carimbo/stencil) em creme. O vermelho
-entra só em pontos de ênfase: a tag do gancho e o preço.
+tipografia grande e "suja" (textura de carimbo/stencil) em creme. Na arte de
+referência o vermelho marca a tag do gancho e o preço. Na nossa marca, o preço
+passa para o laranja da logo e o vermelho fica só na tag.
+
+## Logo
+
+Hambúrguer estilizado: pão de cima inclinado e queijo derretendo em laranja,
+pão de baixo em branco e base em laranja, com contornos pretos.
+
+- `logo/logo-fundo-preto.png`: arquivo original, quadrado, fundo preto.
+- `logo/logo-transparente.png`: fundo transparente, recortado. Usar só sobre
+  fundos escuros, porque o pão branco some em fundo claro.
+
+Prévia da identidade completa (logo, fontes e paleta) em `identidade-preview.png`.
 
 ## Paleta
 
+### Cores da marca (logo)
+
+| Papel | Cor | Hex |
+|---|---|---|
+| Cor principal / destaque | Laranja | `#F4981A` |
+| Apoio | Branco | `#FFFFFF` |
+| Fundo | Preto | `#000000` |
+
+### Cores de apoio (referência 389 Burger)
+
 | Papel | Cor | Hex aproximado |
 |---|---|---|
-| Destaque / ênfase | Vermelho vivo | `#F1171F` |
+| Ênfase pontual (tag do gancho, selos) | Vermelho vivo | `#F1171F` |
 | Título principal | Creme / off-white | `#FBE7D2` |
-| Texto corrido | Branco | `#FFFFFF` |
-| Fundo | Preto e madeira escura | `#000000` – `#2A1608` |
+| Fundo de foto | Madeira escura | `#2A1608` |
 | Luz ambiente | Âmbar / dourado | `#E8A040` |
 
-## Tipografia
+**Como combinar**: o laranja da logo é a cor de destaque principal, por
+exemplo no valor do preço. O vermelho fica reservado para a tag do gancho, para
+não competir com o laranja. Títulos em creme e textos em branco sobre fundo
+escuro.
 
-Prévia das duas fontes juntas em `tipografia-preview.png`.
+## Tipografia
 
 ### Título: Brothers Bold
 
@@ -40,8 +64,8 @@ Prévia das duas fontes juntas em `tipografia-preview.png`.
 - **Gancho**: Poppins Medium, caixa baixa, creme, dentro da tag vermelha
   levemente rotacionada. Ex.: "Abriu a geladeira... não tinha nada?".
 - **Nome do combo**: Poppins Medium, branco. Ex.: "Burger + Batata + Refri".
-- **Preço**: Poppins Bold, caixa alta, branco com o valor em vermelho
-  `#F1171F`. Ex.: "POR **R$45** NO 389".
+- **Preço**: Poppins Bold, caixa alta, branco com o valor em laranja
+  `#F4981A`. Ex.: "POR **R$45** NO 389".
 - **Regras da promoção**: Poppins SemiBold, pequena, branco.
 - **Texto institucional do rodapé**: Poppins Light, pequena, branco.
 
@@ -52,7 +76,7 @@ Prévia das duas fontes juntas em `tipografia-preview.png`.
 3. Foto do combo (burger + batata + refrigerante) centralizada, mesa de madeira,
    luz quente lateral, fundo desfocado com pontos de luz (bokeh).
 4. Bloco de oferta centralizado abaixo da foto: nome do combo, preço com o
-   valor em vermelho, regras em letras miúdas.
+   valor em laranja, regras em letras miúdas.
 5. Rodapé com logo à esquerda, linha divisória vertical e texto institucional
    à direita.
 
